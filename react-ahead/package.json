@@ -1,5 +1,5 @@
 {
-  "name": "react-ahead-ui",
+  "name": "react-ahead",
   "version": "0.1.0",
   "description": "ui front-end written in React for the autocomplete library",
   "main": "src/index.js",

@@ -1,8 +1,9 @@
 {
-  "name": "react-ahead",
+  "name": "react-ahead-library",
   "version": "0.1.0",
   "description": "UI and trie-based engine for autocomplete",
   "main": "index.js",
+  "private": true,
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -11,6 +12,10 @@
     "select",
     "UI",
     "engine"
+  ],
+  "workspaces": [
+    "react-ahead",
+    "react-hound"
   ],
   "author": "Jacob Zuo <chopinsky@live.com>",
   "license": "MIT"
