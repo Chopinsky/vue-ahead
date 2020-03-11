@@ -1,0 +1,17 @@
+{
+  "name": "react-ahead",
+  "version": "0.1.0",
+  "description": "UI and trie-based engine for autocomplete",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "react",
+    "select",
+    "UI",
+    "engine"
+  ],
+  "author": "Jacob Zuo <chopinsky@live.com>",
+  "license": "MIT"
+}
