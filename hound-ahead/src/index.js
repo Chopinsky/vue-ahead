@@ -1,6 +1,6 @@
 const axios = require('axios').default;
 
-const search = require('./search').searchEngine;
+const search = require('./search').indexEngine;
 
 const AheadEngine = function (options) {
   let s = search();
