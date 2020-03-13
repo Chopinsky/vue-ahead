@@ -65,22 +65,35 @@ const trie = function () {
 };
 
 const indexEngine = function (option) {
-  let _trie = trie();
-  let _rIndex = {};
-  let _store = { index: 0 };
+  let _option = option || {};
+  let _trie, _rIndex, _store;
+  
+  const reset = () => {
+    _trie = trie();
+    _rIndex = {};
+    _store = { 
+      index: 0,
+      shelves: {},
+      dict: {},
+    };
+  };
 
-  const _option = option || {};
+  const add = (phrase, scopeToken) => {
+    if (!phrase) {
+      return;
+    }
 
-  const add = phrase => {
-    if (!phrase || _store.hasOwnProperty(phrase)) {
+    phrase = phrase.toLowerCase().trim();
+    if (_store.dict.hasOwnProperty(phrase)) {
       return;
     }
     
-    const token = _option.token || ' ';
+    const token = scopeToken || _option.token || ' ';
     const tokens = phrase.split(token);
     
     const key = _store.index++;
-    _store[key] = phrase;
+    _store.shelves[key] = phrase;
+    _store.dict[phrase] = key;
 
     if (!Array.isArray(tokens) || !tokens.length) {
       return;
@@ -103,15 +116,12 @@ const indexEngine = function (option) {
       }
 
       _rIndex[word].sort(function(a, b) {
-        return a - b;
+        return a.index - b.index;
       });
     }
   };
 
-  const getWords = target => {
-    const token = _option.token || ' ';
-    const tokens = target.split(token).filter(token => token);
-
+  const findKeywords = tokens => {
     if (!Array.isArray(tokens) || !tokens.length) {
       return null;
     }
@@ -137,20 +147,20 @@ const indexEngine = function (option) {
       items.push(matches);
     }
 
-    return { words: items, tokens };
+    return items;
   };
 
-  const getDocs = target => {
-    const { words, tokens } = getWords(target);
-    if (!words || !words.length) {
+  const findDocs = tokens => {
+    const keywords = findKeywords(tokens);
+    if (!keywords || !keywords.length) {
       return null;
     }
 
     let matched = {};
     let init = true;
 
-    for (let i = 0; i < words.length; i++) {
-      const wordsBag = Object.keys(words[i]);
+    for (let i = 0; i < keywords.length; i++) {
+      const wordsBag = Object.keys(keywords[i]);
 
       if (!wordsBag || !wordsBag.length) {
         if (!_option.allowMissedMatch) {
@@ -173,21 +183,25 @@ const indexEngine = function (option) {
         for (let k = 0; k < docs.length; k++) {
           const { doc, index } = docs[k];
 
-          // if the doc is not in the last bag
-          if (!matched.hasOwnProperty(doc)) {
-            if (init || _option.allowMissedMatch) {
-              // create new entry if: 1) we're in the init process, or 2) we allow skipping missing terms
-              next[doc] = { pos: index, match: 1 };
-              hasMatches = true;
+          // the doc is in the current bag, check if we can improve it
+          // this also implies that regardless of the last doc status, the current doc is legit to be updated
+          // hence this logic block must come before the validation check block below
+          if (next.hasOwnProperty(doc)) {
+            if (next[doc].pos > index) {
+              next[doc].pos = index;
             }
 
             continue;
           }
 
-          // the doc is in the last bag, check if we can get better deal
-          if (next.hasOwnProperty(doc)) {
-            if (next[doc].pos > index) {
-              next[doc].pos = index;
+          // if the doc is not in the last bag, the doc is likely to be dropped from further consideration,
+          // however we must consider if this is a initial run (i.e. no previous matches), or if we allow the 
+          // doc to miss the term in its source
+          if (!matched.hasOwnProperty(doc)) {
+            if (init || _option.allowMissedMatch) {
+              // create new entry if: 1) we're in the init process, or 2) we allow skipping missing terms
+              next[doc] = { pos: index, match: 1 };
+              hasMatches = true;
             }
 
             continue;
@@ -217,39 +231,66 @@ const indexEngine = function (option) {
       matched = next;
     }
     
-    return { docs: matched, tokens };
+    return matched;
   }
 
   const find = target => {
-    const { docs, tokens } = getDocs(target) || { docs: {}};
+    if (!target) {
+      return {
+        matches: null,
+        tokens: null,
+      };
+    }
+
+    target = target.toLowerCase().trim();
+    const tokens = target.split(_option.token || ' ').filter(token => token);
+
+    const docs = findDocs(tokens) || {};
     const docsArr = Object.keys(docs);
 
-    if (!Array.isArray(docsArr) || !docsArr.length) {
-      return null;
-    }
-
-    return {
-      matches: docsArr.map(docIdx => {
-        let source = _store[docIdx];
-        return {
-          source,
-          matchCount: docs[docIdx].match,
-        }
-      }),
+    const output = {
+      matches: null,
       tokens,
     }
+
+    if (!Array.isArray(docsArr) || !docsArr.length) {
+      return output;
+    }
+
+    output.matches = docsArr.map(docIdx => {
+      let source = _store.shelves[docIdx];
+      return {
+        source,
+        matchCount: docs[docIdx].match,
+      }
+    })
+
+    return output;
   }
 
-  const reset = () => {
-    _trie = trie();
-    _store = {};
-    _rIndex = {};
+  const replaceOptions = (options) => {
+    _option = options;
   };
+
+  const setOption = (name, value) => {
+    _option[name] = value;
+  }
+
+  const _debug = () => {
+    Object.keys(_rIndex)
+      .forEach(key => console.log(key));
+  };
+
+  // must initialize the `this` context before returning.
+  reset();
 
   return {
     add,
     reset,
     find,
+    replaceOptions,
+    setOption,
+    _debug,
   }
 }
 
