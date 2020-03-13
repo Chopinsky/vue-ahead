@@ -1,5 +1,5 @@
 const trie = function () {
-  this._root = {
+  const _root = {
     children: {}
   };
 
@@ -8,7 +8,7 @@ const trie = function () {
       return;
     }
 
-    let node = this._root;
+    let node = _root;
 
     for (let i = 0; i < token.length; i++) {
       let c = token[i];
@@ -35,7 +35,7 @@ const trie = function () {
       return keywords;
     }
 
-    let node = this._root;
+    let node = _root;
 
     for (let i = 0; i < token.length; i++) {
       let c = token[i];
@@ -65,23 +65,22 @@ const trie = function () {
 };
 
 const indexEngine = function (option) {
-  this._trie = trie();
-  this._rIndex = {};
-  this._store = { index: 0 };
+  let _trie = trie();
+  let _rIndex = {};
+  let _store = { index: 0 };
 
-  this._option = option || {};
+  const _option = option || {};
 
   const add = phrase => {
-    if (!phrase || this._store.hasOwnProperty(phrase)) {
+    if (!phrase || _store.hasOwnProperty(phrase)) {
       return;
     }
-
     
-    const token = this._option.token || ' ';
+    const token = _option.token || ' ';
     const tokens = phrase.split(token);
     
-    const key = this._store.index++;
-    this._store[key] = phrase;
+    const key = _store.index++;
+    _store[key] = phrase;
 
     if (!Array.isArray(tokens) || !tokens.length) {
       return;
@@ -89,29 +88,32 @@ const indexEngine = function (option) {
 
     for (let i = 0; i < tokens.length; i++) {
       let word = tokens[i];
+      if (!word || !word.length) {
+        continue;
+      }
       
       for (let j = word.length - 1; j >= 0; j--) {
-        this._trie.insert(word.substring(j), word);
+        _trie.insert(word.substring(j), word);
       }
 
-      if (this._rIndex.hasOwnProperty(word)) {
-        this._rIndex[word].push({ doc: key, index: i });
+      if (_rIndex.hasOwnProperty(word)) {
+        _rIndex[word].push({ doc: key, index: i });
       } else {
-        this._rIndex[word] = [{ doc: key, index: i }];
+        _rIndex[word] = [{ doc: key, index: i }];
       }
 
-      this._rIndex[word].sort(function(a, b) {
+      _rIndex[word].sort(function(a, b) {
         return a - b;
       });
     }
   };
 
   const getWords = target => {
-    const token = this._option.token || ' ';
-    const tokens = target.split(token);
+    const token = _option.token || ' ';
+    const tokens = target.split(token).filter(token => token);
 
     if (!Array.isArray(tokens) || !tokens.length) {
-      return;
+      return null;
     }
 
     let items = [];
@@ -121,10 +123,10 @@ const indexEngine = function (option) {
         continue;
       }
 
-      let { found, matches } = this._trie.find(tokens[i]) || {};
+      let { found, matches } = _trie.find(tokens[i]) || {};
       
       if (!found) {
-        if (!this._option.allowSkipMatch) {
+        if (!_option.allowMissedMatch) {
           return null;
         }
 
@@ -135,52 +137,113 @@ const indexEngine = function (option) {
       items.push(matches);
     }
 
-    return items;
+    return { words: items, tokens };
   };
 
-  const find = target => {
-    const words = getWords(target);
+  const getDocs = target => {
+    const { words, tokens } = getWords(target);
     if (!words || !words.length) {
       return null;
     }
 
-    let keys = {};
+    let matched = {};
+    let init = true;
 
     for (let i = 0; i < words.length; i++) {
-      let th = i > 0 ? {...keys} : null;
+      const wordsBag = Object.keys(words[i]);
 
-      if (!bag || !bag.length) {
-        if (!this._option.allowSkipMatch) {
+      if (!wordsBag || !wordsBag.length) {
+        if (!_option.allowMissedMatch) {
           return null;
         }
 
         continue;
       }
 
-      Object
-        .keys(bag)
-        .forEach(word => {
-          let { doc, index } = this._rIndex[word] || {};
+      let next = {};
+      let hasMatches = false;
 
-          if (i == 0) {
-            if (!keys.hasOwnProperty(doc) || keys[doc] >= index) {
-              key[doc] = index;
+      for (let j = 0; j < wordsBag.length; j++) {
+        const docs = _rIndex[wordsBag[j]];
+
+        if (!docs || !docs.length) {
+          continue;
+        }
+
+        for (let k = 0; k < docs.length; k++) {
+          const { doc, index } = docs[k];
+
+          // if the doc is not in the last bag
+          if (!matched.hasOwnProperty(doc)) {
+            if (init || _option.allowMissedMatch) {
+              // create new entry if: 1) we're in the init process, or 2) we allow skipping missing terms
+              next[doc] = { pos: index, match: 1 };
+              hasMatches = true;
             }
-          } else {
-            if (!keys.hasOwnProperty(doc)) {
-              if (this._option.allowSkipMatch)
-            }
+
+            continue;
           }
-        });
+
+          // the doc is in the last bag, check if we can get better deal
+          if (next.hasOwnProperty(doc)) {
+            if (next[doc].pos > index) {
+              next[doc].pos = index;
+            }
+
+            continue;
+          }
+
+          // update the doc matches and the position
+          if (matched[doc].pos < index) {
+            next[doc] = { pos: index, match: matched[doc].match + 1 };
+            hasMatches = true;
+          }
+        }
+      }
+
+      // if allowing doc to miss matching for this term, add all the docs.  
+      if (_option.allowMissedMatch) {
+        next = Object.assign(matched, next);
+        if (!hasMatches) {
+          hasMatches = (Object.keys(next) || []).length > 0;
+        }
+      }
+
+      if (!hasMatches && !_option.allowMissedMatch) {
+        return null;
+      }
       
-      keys = key;
+      init = false;
+      matched = next;
     }
-      
+    
+    return { docs: matched, tokens };
+  }
+
+  const find = target => {
+    const { docs, tokens } = getDocs(target) || { docs: {}};
+    const docsArr = Object.keys(docs);
+
+    if (!Array.isArray(docsArr) || !docsArr.length) {
+      return null;
+    }
+
+    return {
+      matches: docsArr.map(docIdx => {
+        let source = _store[docIdx];
+        return {
+          source,
+          matchCount: docs[docIdx].match,
+        }
+      }),
+      tokens,
+    }
   }
 
   const reset = () => {
-    this._trie = trie();
-    this._store = {};
+    _trie = trie();
+    _store = {};
+    _rIndex = {};
   };
 
   return {
