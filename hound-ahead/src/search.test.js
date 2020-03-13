@@ -34,7 +34,7 @@ describe('index search engine tests', () => {
     let { matches } = e.find('th an af app');
   
     expect(matches.length).toBe(1);
-    expect(matches[0].source).toBe(' the before and after blocks only apply to the tests within that describe block.   ');
+    expect(matches[0].source).toBe('the before and after blocks only apply to the tests within that describe block.');
   });
 });
 

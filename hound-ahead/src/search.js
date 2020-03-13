@@ -1,6 +1,9 @@
+const { cache } = require('./cache');
+
 const trie = function () {
   const _root = {
-    children: {}
+    children: {},
+    dict: {},
   };
 
   const insert = (token, src) => {
@@ -8,8 +11,12 @@ const trie = function () {
       return;
     }
 
-    let node = _root;
+    token = token.trim().toLowerCase();
+    if (_root.dict.hasOwnProperty(token)) {
+      return;
+    }
 
+    let node = _root;
     for (let i = 0; i < token.length; i++) {
       let c = token[i];
 
@@ -28,13 +35,12 @@ const trie = function () {
     }
   };
 
-  const find = (token) => {
-    let keywords = null;
-
+  const find = token => {
     if (typeof token !== 'string' || !token) {
-      return keywords;
+      return null;
     }
 
+    token = token.trim().toLowerCase();
     let node = _root;
 
     for (let i = 0; i < token.length; i++) {
@@ -64,12 +70,14 @@ const trie = function () {
   };
 };
 
-const indexEngine = function (option) {
+exports.indexEngine = option => {
   let _option = option || {};
-  let _trie, _rIndex, _store;
+  let _trie, _rIndex, _store, _cache;
   
   const reset = () => {
     _trie = trie();
+    _cache = cache();
+
     _rIndex = {};
     _store = { 
       index: 0,
@@ -83,11 +91,12 @@ const indexEngine = function (option) {
       return;
     }
 
-    phrase = phrase.toLowerCase().trim();
+    phrase = phrase.trim();
     if (_store.dict.hasOwnProperty(phrase)) {
       return;
     }
     
+    _cache.clear();
     const token = scopeToken || _option.token || ' ';
     const tokens = phrase.split(token);
     
@@ -258,9 +267,9 @@ const indexEngine = function (option) {
     }
 
     output.matches = docsArr.map(docIdx => {
-      let source = _store.shelves[docIdx];
       return {
-        source,
+        key: docIdx,
+        source: _store.shelves[docIdx],
         matchCount: docs[docIdx].match,
       }
     })
@@ -293,5 +302,3 @@ const indexEngine = function (option) {
     _debug,
   }
 }
-
-exports.indexEngine = indexEngine;
