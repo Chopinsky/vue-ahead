@@ -96,17 +96,21 @@ exports.indexEngine = option => {
       return;
     }
     
-    _cache.clear();
     const token = scopeToken || _option.token || ' ';
-    const tokens = phrase.split(token);
-    
-    const key = _store.index++;
-    _store.shelves[key] = phrase;
-    _store.dict[phrase] = key;
+    const tokens = phrase
+      .split(token)
+      .filter(val => val)
+      .map(val => val.toLowerCase());
 
     if (!Array.isArray(tokens) || !tokens.length) {
       return;
     }
+
+    _cache.clear();
+    
+    const key = _store.index++;
+    _store.shelves[key] = phrase;
+    _store.dict[phrase] = key;
 
     for (let i = 0; i < tokens.length; i++) {
       let word = tokens[i];
@@ -130,6 +134,8 @@ exports.indexEngine = option => {
     }
   };
 
+  /** Below are obsolete code but serve as baseline for a functional token search algo 
+   *  =================================================================================
   const findKeywords = tokens => {
     if (!Array.isArray(tokens) || !tokens.length) {
       return null;
@@ -241,6 +247,70 @@ exports.indexEngine = option => {
     }
     
     return matched;
+  }
+  */
+
+  const findDocs = tokens => {
+    if (!Array.isArray(tokens) || !tokens.length) {
+      return null;
+    }
+
+    let curr = null;
+
+    for (let i = 0; i < tokens.length; i++) {
+      //TODO: add caching calls here ....
+
+      let { found, matches } = _trie.find(tokens[i]) || {};
+      
+      if (!found && !_option.allowMissedMatch) {
+        return null;
+      }
+
+      let keywords = Object.keys(matches);
+      if ((!keywords || !keywords.length) && !_option.allowMissedMatch) {
+        return null;
+      }
+      
+      // get all docs from this token
+      let next = {};
+      let matched = false;
+
+      for (let j = 0; j < keywords.length; j++) {
+        const docList = _rIndex[keywords[j]];
+        if (!docList || !docList.length) {
+          continue;
+        }
+        
+        for (let k = 0; k < docList.length; k++) {
+          const { doc, index } = docList[k];
+
+          // if 1) this is the 1st token, 
+          // or 2) last token has the doc, and it's index is before the current doc index,
+          // or 3) we allow last term to be missed,
+          // then we say the doc is valid to be added.
+          const isValid = !curr || (curr.hasOwnProperty(doc) && curr[doc] < index) || _option.allowMissedMatch;
+          
+          if (isValid && (!next.hasOwnProperty(doc) || next[doc] > index)) {
+            next[doc] = index;
+            matched = true;
+          }
+        }
+      }
+
+      if (!matched && !_option.allowMissedMatch) {
+        return null;
+      }
+
+      // try merge and verify the token with the docs from the last term
+      if (curr && _option.allowMissedMatch) {
+        // override current with the valid docs, docs from last searches that won't match this token will be kept
+        next = Object.assign(curr, next);
+      }
+
+      curr = next;
+    }
+
+    return curr;
   }
 
   const find = target => {
