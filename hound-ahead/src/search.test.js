@@ -23,6 +23,19 @@ describe('index search engine tests', () => {
     expect(matches[1].source).toBe('how that be an application, in the constitution ...');
   });
 
+  test('continuous matching', () => {
+    let matches = e.find('th app').matches;
+    
+    expect(matches.length).toBe(2);
+    expect(matches[0].source).toBe('what about the apple?');
+    expect(matches[1].source).toBe('how that be an application, in the constitution ...');
+
+    matches = e.find('th ap in con').matches;
+
+    expect(matches.length).toBe(1);
+    expect(matches[0].source).toBe('how that be an application, in the constitution ...');
+  });
+
   test('mismatch', () => {
     let { matches } = e.find('th in app') || {};
     expect(matches).toBeNull();

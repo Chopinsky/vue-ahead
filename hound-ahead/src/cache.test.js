@@ -23,7 +23,19 @@ describe('cache engine tests', () => {
   });
 
   test('miss', () => {
-    
-  })
+    let result = c.hit('fg');
+    expect(result).toBeNull();
+  });
 
+  test('drop on capacity', () => {
+    c.insert('fg', 5);
+
+    // now in the cache (in this order): ['fg', 'cd', 'de', 'bc']
+    let result = c.hit('ab');
+    expect(result).toBeNull();
+
+    // now in the cache (in this order): ['bc', 'fg', 'cd', 'de']
+    result = c.hit('bc');
+    expect(result).toBe(2);
+  });
 });

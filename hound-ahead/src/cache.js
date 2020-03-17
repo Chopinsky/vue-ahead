@@ -29,14 +29,14 @@ exports.cache = options => {
     target = target.toLowerCase();
     if (_nodeMap.hasOwnProperty(target)) {
       // if the token is already in the cache, move it to the head
-      let node = touch(target) || { docs: null };
-      return node.docs;
+      let node = touch(target) || { data: null };
+      return node.data;
     }
 
     return null;
   };
 
-  const insert = (target, docs) => {
+  const insert = (target, data) => {
     if (typeof target !== 'string') {
       return;
     }
@@ -49,7 +49,7 @@ exports.cache = options => {
     target = target.toLowerCase();
     if (_nodeMap.hasOwnProperty(target)) {
       let node = touch(target);
-      node.docs = docs;
+      node.data = data;
       return;
     }
 
@@ -58,7 +58,7 @@ exports.cache = options => {
       previous: null,
       next: null,
       token: target,
-      docs,
+      data,
     };
 
     _nodeMap[target] = targetNode;
@@ -73,14 +73,12 @@ exports.cache = options => {
 
     // pop tails if exceeding the cache capacity
     while (_count > _options.capacity) {
-      let key = remove(_tail.previous).token;
-      delete _nodeMap[key];
-
+      drop(_tail.previous);
       _count--;
     }
   }
 
-  const remove = node => {
+  const drop = node => {
     if (node.next) {
       node.next['previous'] = node.previous;
     }
@@ -104,7 +102,7 @@ exports.cache = options => {
     }
 
     if (node.previous !== _head) {
-      // remove self from the current link    
+      // drop self from the current link    
       if (node.next) {
         node.next['previous'] = node.previous;
       }
