@@ -256,61 +256,94 @@ exports.indexEngine = option => {
     }
 
     let curr = null;
+    let matchedTokens = [];
 
     for (let i = 0; i < tokens.length; i++) {
       //TODO: add caching calls here ....
+      let next = _cache.hit(tokens[i]);
+      let token = tokens[i];
 
-      let { found, matches } = _trie.find(tokens[i]) || {};
-      
-      if (!found && !_option.allowMissedMatch) {
-        return null;
-      }
-
-      let keywords = Object.keys(matches);
-      if ((!keywords || !keywords.length) && !_option.allowMissedMatch) {
-        return null;
-      }
-      
-      // get all docs from this token
-      let next = {};
-      let matched = false;
-
-      for (let j = 0; j < keywords.length; j++) {
-        const docList = _rIndex[keywords[j]];
-        if (!docList || !docList.length) {
-          continue;
+      if (!next) {
+        let { found, keyword, matches } = _trie.find(tokens[i]) || {};
+        if (!found && !_option.allowPartialMatching) {
+          return null;
         }
-        
-        for (let k = 0; k < docList.length; k++) {
-          const { doc, index } = docList[k];
 
-          // if 1) this is the 1st token, 
-          // or 2) last token has the doc, and it's index is before the current doc index,
-          // or 3) we allow last term to be missed,
-          // then we say the doc is valid to be added.
-          const isValid = !curr || (curr.hasOwnProperty(doc) && curr[doc] < index) || _option.allowMissedMatch;
-          
-          if (isValid && (!next.hasOwnProperty(doc) || next[doc] > index)) {
-            next[doc] = index;
-            matched = true;
+        let keywords = Object.keys(matches);
+        if (!keywords || !keywords.length) {
+          return null;
+        }
+
+        // get all docs from this token
+        next = {};
+        token = keyword;
+
+        // transforming the keywords list into doc+position list
+        for (let j = 0; j < keywords.length; j++) {
+          const docList = _rIndex[keywords[j]];
+          if (!docList || !docList.length) {
+            continue;
+          }
+
+          for (let k = 0; k < docList.length; k++) {
+            const { doc, index } = docList[k];
+
+            if (!next.hasOwnProperty(doc)) {
+              next[doc] = [index];
+            } else if (next[doc] > index) {
+              next[doc].push(index);
+            }
           }
         }
+
+        _cache.insert(tokens[i], next);
       }
 
-      if (!matched && !_option.allowMissedMatch) {
+      const docIDs = Object.keys(next);
+      if (!docIDs || !docIDs.length) {
         return null;
       }
 
-      // try merge and verify the token with the docs from the last term
-      if (curr && _option.allowMissedMatch) {
-        // override current with the valid docs, docs from last searches that won't match this token will be kept
-        next = Object.assign(curr, next);
+      // now merge the current docs with the last one to generate new position
+      let remainder = docIDs.length;
+      for (let j = 0; j < docIDs.length; j++) {
+        const docID = docIDs[j];
+        const positions = next[docID];
+
+        // if the doc doesn't not exist in the previous search, or if it does not
+        // contain any content, remore it and skip to the next doc
+        if ((curr && !curr.hasOwnProperty(docID)) || !positions || !positions.length) {
+          delete next[docID];
+          remainder--;
+
+          continue;
+        }
+
+        let best = -1;
+        let last = curr ? curr[docID] : -1;
+
+        positions.forEach(pos => {
+          if (pos > last && (best === -1 || pos < best)) {
+            best = pos;
+          }
+        });
+
+        if (best >= 0) {
+          next[docID] = best;
+        } else {
+          remainder--;
+          delete next[docID];
+        }
       }
 
       curr = next;
+      matchedTokens.push(token);
     }
 
-    return curr;
+    return { 
+      docs: curr, 
+      matchedTokens,
+    };
   }
 
   const find = target => {
@@ -322,16 +355,19 @@ exports.indexEngine = option => {
     }
 
     target = target.toLowerCase().trim();
-    const tokens = target.split(_option.token || ' ').filter(token => token);
 
-    const docs = findDocs(tokens) || {};
-    const docsArr = Object.keys(docs);
+    const tokens = target
+      .split(_option.token || ' ')
+      .filter(token => token);
+
+    const { docs, matchedTokens } = findDocs(tokens) || {};
 
     const output = {
       matches: null,
-      tokens,
-    }
+      tokens: matchedTokens || tokens,
+    };
 
+    const docsArr = Object.keys(docs || {});
     if (!Array.isArray(docsArr) || !docsArr.length) {
       return output;
     }
@@ -340,9 +376,8 @@ exports.indexEngine = option => {
       return {
         key: docIdx,
         source: _store.shelves[docIdx],
-        matchCount: docs[docIdx].match,
       }
-    })
+    });
 
     return output;
   }

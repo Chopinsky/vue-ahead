@@ -18,12 +18,12 @@ exports.cache = options => {
 
   const hit = target => {
     if (typeof target !== 'string') {
-      return;
+      return null;
     }
 
     target = target.trim();
     if (!target) {
-      return;
+      return null;
     }
 
     target = target.toLowerCase();
@@ -91,6 +91,8 @@ exports.cache = options => {
 
     node.next = null;
     node.previous = null;
+
+    delete _nodeMap[node.token];
 
     return node;
   }
