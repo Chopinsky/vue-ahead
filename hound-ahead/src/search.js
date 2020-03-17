@@ -1,6 +1,6 @@
 const { cache } = require('./cache');
 
-const trie = function () {
+const trie = () => {
   const _root = {
     children: {},
     dict: {},
@@ -70,13 +70,15 @@ const trie = function () {
   };
 };
 
-exports.indexEngine = option => {
-  let _option = option || {};
+exports.indexEngine = options => {
+  let _options = options || {};
   let _trie, _rIndex, _store, _cache;
   
   const reset = () => {
     _trie = trie();
-    _cache = cache();
+    _cache = cache({
+      capacity: _options.cacheCapacity || 16,
+    });
 
     _rIndex = {};
     _store = { 
@@ -86,7 +88,7 @@ exports.indexEngine = option => {
     };
   };
 
-  const add = (phrase, scopeToken) => {
+  const add = (phrase, scopeToken, extraData) => {
     if (!phrase) {
       return;
     }
@@ -96,11 +98,11 @@ exports.indexEngine = option => {
       return;
     }
     
-    const token = scopeToken || _option.token || ' ';
+    const token = scopeToken || _options.token || ' ';
     const tokens = phrase
       .split(token)
       .filter(val => val)
-      .map(val => val.toLowerCase());
+      .map(val => val.trim().toLowerCase());
 
     if (!Array.isArray(tokens) || !tokens.length) {
       return;
@@ -108,9 +110,9 @@ exports.indexEngine = option => {
 
     _cache.clear();
     
-    const key = _store.index++;
-    _store.shelves[key] = phrase;
-    _store.dict[phrase] = key;
+    const docID = _store.index++;
+    _store.shelves[docID] = { source: phrase, extraData };
+    _store.dict[phrase] = docID;
 
     for (let i = 0; i < tokens.length; i++) {
       let word = tokens[i];
@@ -123,9 +125,9 @@ exports.indexEngine = option => {
       }
 
       if (_rIndex.hasOwnProperty(word)) {
-        _rIndex[word].push({ doc: key, index: i });
+        _rIndex[word].push({ docID, position: i });
       } else {
-        _rIndex[word] = [{ doc: key, index: i }];
+        _rIndex[word] = [{ docID, position: i }];
       }
 
       _rIndex[word].sort(function(a, b) {
@@ -133,122 +135,6 @@ exports.indexEngine = option => {
       });
     }
   };
-
-  /** Below are obsolete code but serve as baseline for a functional token search algo 
-   *  =================================================================================
-  const findKeywords = tokens => {
-    if (!Array.isArray(tokens) || !tokens.length) {
-      return null;
-    }
-
-    let items = [];
-
-    for (let i = 0; i < tokens.length; i++) {
-      if (!tokens[i]) {
-        continue;
-      }
-
-      let { found, matches } = _trie.find(tokens[i]) || {};
-      
-      if (!found) {
-        if (!_option.allowMissedMatch) {
-          return null;
-        }
-
-        items.push({});
-        continue
-      }
-
-      items.push(matches);
-    }
-
-    return items;
-  };
-
-  const findDocs = tokens => {
-    const keywords = findKeywords(tokens);
-    if (!keywords || !keywords.length) {
-      return null;
-    }
-
-    let matched = {};
-    let init = true;
-
-    for (let i = 0; i < keywords.length; i++) {
-      const wordsBag = Object.keys(keywords[i]);
-
-      if (!wordsBag || !wordsBag.length) {
-        if (!_option.allowMissedMatch) {
-          return null;
-        }
-
-        continue;
-      }
-
-      let next = {};
-      let hasMatches = false;
-
-      for (let j = 0; j < wordsBag.length; j++) {
-        const docs = _rIndex[wordsBag[j]];
-
-        if (!docs || !docs.length) {
-          continue;
-        }
-
-        for (let k = 0; k < docs.length; k++) {
-          const { doc, index } = docs[k];
-
-          // the doc is in the current bag, check if we can improve it
-          // this also implies that regardless of the last doc status, the current doc is legit to be updated
-          // hence this logic block must come before the validation check block below
-          if (next.hasOwnProperty(doc)) {
-            if (next[doc].pos > index) {
-              next[doc].pos = index;
-            }
-
-            continue;
-          }
-
-          // if the doc is not in the last bag, the doc is likely to be dropped from further consideration,
-          // however we must consider if this is a initial run (i.e. no previous matches), or if we allow the 
-          // doc to miss the term in its source
-          if (!matched.hasOwnProperty(doc)) {
-            if (init || _option.allowMissedMatch) {
-              // create new entry if: 1) we're in the init process, or 2) we allow skipping missing terms
-              next[doc] = { pos: index, match: 1 };
-              hasMatches = true;
-            }
-
-            continue;
-          }
-
-          // update the doc matches and the position
-          if (matched[doc].pos < index) {
-            next[doc] = { pos: index, match: matched[doc].match + 1 };
-            hasMatches = true;
-          }
-        }
-      }
-
-      // if allowing doc to miss matching for this term, add all the docs.  
-      if (_option.allowMissedMatch) {
-        next = Object.assign(matched, next);
-        if (!hasMatches) {
-          hasMatches = (Object.keys(next) || []).length > 0;
-        }
-      }
-
-      if (!hasMatches && !_option.allowMissedMatch) {
-        return null;
-      }
-      
-      init = false;
-      matched = next;
-    }
-    
-    return matched;
-  }
-  */
 
   const findDocs = tokens => {
     if (!Array.isArray(tokens) || !tokens.length) {
@@ -272,7 +158,7 @@ exports.indexEngine = option => {
 
       // if not found, we will have at most partial matching, and we shall return null 
       // if this type of matching is not allowed
-      if (!found && !_option.allowPartialMatching) {
+      if (!found && !_options.allowPartialMatching) {
         return null;
       }
 
@@ -294,11 +180,11 @@ exports.indexEngine = option => {
         }
 
         for (let k = 0; k < docList.length; k++) {
-          const { doc, index } = docList[k];
-          const isValid = !docs || (docs.hasOwnProperty(doc) && docs[doc] < index);
+          const { docID, position } = docList[k];
+          const isValid = !docs || (docs.hasOwnProperty(docID) && docs[docID] < position);
 
-          if (isValid && (!next.hasOwnProperty(doc) || next[doc] > index)) {
-            next[doc] = index;
+          if (isValid && (!next.hasOwnProperty(docID) || next[docID] > position)) {
+            next[docID] = position;
             hasDoc = true;
           }
         }
@@ -333,7 +219,7 @@ exports.indexEngine = option => {
     }
 
     const tokens = target
-      .split(_option.token || ' ')
+      .split(_options.token || ' ')
       .filter(token => token)
       .map(token => token.trim().toLowerCase());
 
@@ -352,7 +238,7 @@ exports.indexEngine = option => {
     output.matches = docsArr.map(docIdx => {
       return {
         key: docIdx,
-        source: _store.shelves[docIdx],
+        ..._store.shelves[docIdx],   // source: <source phrase>, extraData: <any extra data being given>
       }
     });
 
@@ -360,12 +246,12 @@ exports.indexEngine = option => {
   }
 
   const replaceOptions = (options) => {
-    _option = options;
+    _options = options;
     _cache.clear();
   };
 
   const setOption = (name, value) => {
-    _option[name] = value;
+    _options[name] = value;
 
     if (name === 'allowPartialMatching') {
       _cache.clear();
