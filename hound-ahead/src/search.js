@@ -76,11 +76,13 @@ exports.indexEngine = options => {
   
   const reset = () => {
     _trie = trie();
+
     _cache = cache({
       capacity: _options.cacheCapacity || 16,
     });
 
     _rIndex = {};
+    
     _store = { 
       index: 0,
       shelves: {},
