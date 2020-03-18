@@ -138,14 +138,17 @@ exports.cache = options => {
   }
 
   const _debug = () => {
-    console.log(Object.keys(_nodeMap));
+    console.info("Node keys:", Object.keys(_nodeMap));
 
-    console.log(_count);
+    console.info("Cache item counts:", _count);
 
     let node = _head.next;
-    while (node.next !== null) {
-      console.log(node.token);
+    let count = 0;
+
+    while (node.next !== _tail) {
+      console.info(`item ${count}:`, node.token);
       node = node.next;
+      count++;
     }
 
     return;

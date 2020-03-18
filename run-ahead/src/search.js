@@ -76,6 +76,11 @@ const trie = () => {
 exports.indexEngine = options => {
   let _options = options || {};
   let _trie, _rIndex, _store, _cache;
+
+  if (_options.tokenType === "regex" && typeof _options.token !== "object") {
+    // convert the token to regex for split
+    _options.token = new RegExp(_options.token);
+  }
   
   const reset = () => {
     _trie = trie();
@@ -104,7 +109,12 @@ exports.indexEngine = options => {
       return;
     }
 
-    const token = scopeToken || _options.token || " ";
+    let token = scopeToken || _options.token || " ";
+    if (_options.tokenType === 'regex' && typeof token !== 'object') {
+      // converting the token to regex for split
+      token = new RegExp(token);
+    }
+
     const tokens = phrase
       .split(token)
       .filter(val => val)
@@ -280,7 +290,7 @@ exports.indexEngine = options => {
 
   const _debug = () => {
     Object.keys(_rIndex)
-      .forEach(key => console.log(key));
+      .forEach(key => console.info(key));
   };
 
   // must initialize the `this` context before returning.

@@ -10,9 +10,11 @@
     "console": "node ./console/search.js"
   },
   "keywords": [
-    "trie",
-    "engine",
-    "query"
+    "node",
+    "cli",
+    "in memory",
+    "search",
+    "fuzzy matching"
   ],
   "engines": {
     "node": ">=8",

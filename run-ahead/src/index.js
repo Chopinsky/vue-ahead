@@ -1,7 +1,7 @@
 const axios = require('axios').default;
 const { indexEngine } = require('./search');
 
-exports.houndAhead = function (options, data) {
+exports.runahead = function (options, data) {
   if (data && !Array.isArray(data)) {
     throw new Error('the source data provided to the search engine must be an array, but got:', typeof data);
   }
@@ -98,7 +98,7 @@ exports.houndAhead = function (options, data) {
 
       const provider = (transport && typeof transport.then === 'function') || axios;
 
-      return provider(req)
+      provider(req)
         .then(resp => {
           // format data if a formatter is passed
           let data =

@@ -1,13 +1,18 @@
 "use strict";
 
 const path = require("path");
+const fs = require("fs");
 const engine = require(path.resolve(__dirname, "../src/index"));
-const query = process.argv[2];
+const input = process.argv.splice(2);
 
-if (!query) {
-  console.log('no search term is found ... ');
+if (!Array.isArray(input) || !input.length) {
+  console.error("no search term is found ... ");
   return;
 }
+
+const searchTerm = input[0];
+const configPath = input[1];
+const dataPath = input[2];
 
 const dataParser = data => {
   if (!Array.isArray(data) || !data.length) {
@@ -23,25 +28,33 @@ const dataParser = data => {
   });
 };
 
-const e = engine.houndAhead({
-  token: /[ `'"$!=><{}?,.:;/|\[\]\(\)\\]/,
-  remote: {
-    url: "/search",
-    baseURL: "https://typeahead-js-twitter-api-proxy.herokuapp.com/demo",
-    timeout: 1000,  // timeout in 1000 ms
-  },
+const config = JSON.parse(
+  fs.readFileSync(
+    path.resolve(__dirname, configPath || "./examples/config.json")
+  ) || {}
+);
+
+const { data } = JSON.parse(
+  fs.readFileSync(
+    path.resolve(__dirname, dataPath || "./examples/data.json")
+  ) || { data: null }
+);
+
+// convert the string into RegExp
+if (config.tokenType === 'regex') {
+  config.token = new RegExp(config.token);  
+}
+
+const e = engine.runahead({
+  ...config,
   dataParser,
 });
 
-e.add({
-  source: 'Rubinstein (Chopinsky999)',
-  label: 'ru',
-  extraData: null,
-});
+e.add(data);
 
-e.query(query, function(output, _data) {
+e.query(searchTerm, function(output, _data) {
   if (!Array.isArray(output.matches)) {
-    console.error('no matches is found for:', query);
+    console.error("no matches is found for:", query);
     return;
   }
 
@@ -50,7 +63,7 @@ e.query(query, function(output, _data) {
   };
 
   output.matches.forEach(item => {
-    const loc = (item.extra && item.extra.location) || '';
+    const loc = (item.extra && item.extra.location) || "";
     const { source } = item;
 
     if (!loc) {
@@ -64,6 +77,5 @@ e.query(query, function(output, _data) {
 
   console.log("count:", output.matches.length);
   console.log("labels:", labels);
-
-  return;
+  console.log("tokens:", output.tokens);
 });

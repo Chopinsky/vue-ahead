@@ -1,0 +1,9 @@
+{
+  "token": "[ .,;:+=?_\\-\\\\(\\)\\[\\]]",
+  "tokenType": "regex",
+  "remote": {
+    "url": "/search",
+    "baseURL": "https://typeahead-js-twitter-api-proxy.herokuapp.com/demo",
+    "timeout": 1000
+  }
+}
