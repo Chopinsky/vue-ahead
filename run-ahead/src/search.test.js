@@ -34,6 +34,13 @@ describe('index search engine tests', () => {
 
     expect(matches.length).toBe(1);
     expect(matches[0].source).toBe('how that be an application, in the constitution ...');
+
+    matches = e.find("th ap in const").matches;
+
+    expect(matches.length).toBe(1);
+    expect(matches[0].source).toBe(
+      "how that be an application, in the constitution ..."
+    );
   });
 
   test('mismatch', () => {
@@ -57,7 +64,7 @@ describe('global token vs. scoped token', () => {
     e.setOption('token', /[ ?,.]/g);
 
     // base dict set to test with, scoped token will override the global token 
-    e.add('what/about/the/apple/?', '/');
+    e.add('what/about/the/apple/?', null, '/');
 
     // if no override, use the global token set
     e.add('how that be an application, in the constitution ...');

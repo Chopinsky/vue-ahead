@@ -33,10 +33,23 @@ exports.cache = options => {
       return node.data;
     }
 
+    if (_options.hitOnPrefix) {
+      let node = _head.next;
+
+      while (node !== _tail) {
+        if (target.startsWith(node.token)) {
+          touch(node);
+          return node.data;  
+        }
+
+        node = node.next;
+      }
+    }
+
     return null;
   };
 
-  const insert = (target, data) => {
+  const push = (target, data) => {
     if (typeof target !== 'string') {
       return;
     }
@@ -96,7 +109,8 @@ exports.cache = options => {
   }
 
   const touch = target => {
-    let node = _nodeMap[target];
+    let node = typeof target === 'string' ? _nodeMap[target] : target;
+
     if (!node) {
       return null;
     }
@@ -124,7 +138,7 @@ exports.cache = options => {
   }
 
   const _debug = () => {
-    console.log(_nodeMap);
+    console.log(Object.keys(_nodeMap));
 
     console.log(_count);
 
@@ -151,9 +165,9 @@ exports.cache = options => {
   return {
     clear,
     hit,
-    insert,
+    push,
     setOption,
     replaceOptions,
-    _debug,
-  }
+    _debug
+  };
 }

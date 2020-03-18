@@ -1,13 +1,13 @@
 {
-  "name": "hound-ahead",
+  "name": "run-ahead",
   "version": "0.1.0",
-  "description": "default engine that drive query and search",
+  "description": "an optimized in-memory search engine that does fuzzy matching",
   "main": "dist/index.js",
   "module": "src/index.js",
   "scripts": {
-    "build": "babel src -d dist",
+    "build": "babel src -d dist --ignore **/*.test.js",
     "test": "jest",
-    "console": "node ./console/main.js"
+    "console": "node ./console/search.js"
   },
   "keywords": [
     "trie",

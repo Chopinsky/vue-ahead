@@ -7,10 +7,10 @@ const c = require('./cache').cache({ capacity: 4 });
  */
 describe('cache engine tests', () => {
   beforeAll(() => {
-    c.insert('ab', 1);
-    c.insert('bc', 2);
-    c.insert('cd', 3);
-    c.insert('de', 4);
+    c.push('ab', 1);
+    c.push('bc', 2);
+    c.push('cd', 3);
+    c.push('de', 4);
   });
 
   afterAll(() => {
@@ -28,7 +28,7 @@ describe('cache engine tests', () => {
   });
 
   test('drop on capacity', () => {
-    c.insert('fg', 5);
+    c.push('fg', 5);
 
     // now in the cache (in this order): ['fg', 'cd', 'de', 'bc']
     let result = c.hit('ab');

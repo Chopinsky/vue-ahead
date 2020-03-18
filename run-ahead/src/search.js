@@ -1,5 +1,8 @@
 const { cache } = require('./cache');
 
+const delimiter = String.fromCharCode(1);
+const defaultCacheHit = { docs: null, start: 0 };
+
 const trie = () => {
   const _root = {
     children: {},
@@ -79,6 +82,7 @@ exports.indexEngine = options => {
 
     _cache = cache({
       capacity: _options.cacheCapacity || 16,
+      hitOnPrefix: true,
     });
 
     _rIndex = {};
@@ -90,17 +94,17 @@ exports.indexEngine = options => {
     };
   };
 
-  const add = (phrase, scopeToken, extraData) => {
+  const add = (phrase, extraData, scopeToken) => {
+    phrase = phrase.trim();
     if (!phrase) {
       return;
     }
 
-    phrase = phrase.trim();
     if (_store.dict.hasOwnProperty(phrase)) {
       return;
     }
-    
-    const token = scopeToken || _options.token || ' ';
+
+    const token = scopeToken || _options.token || " ";
     const tokens = phrase
       .split(token)
       .filter(val => val)
@@ -111,7 +115,7 @@ exports.indexEngine = options => {
     }
 
     _cache.clear();
-    
+
     const docID = _store.index++;
     _store.shelves[docID] = { source: phrase, extraData };
     _store.dict[phrase] = docID;
@@ -121,7 +125,7 @@ exports.indexEngine = options => {
       if (!word || !word.length) {
         continue;
       }
-      
+
       for (let j = word.length - 1; j >= 0; j--) {
         _trie.insert(word.substring(j), word);
       }
@@ -143,15 +147,16 @@ exports.indexEngine = options => {
       return null;
     }
 
-    let start = 0;
     let matchedTokens = [];
 
-    let cacheKey = tokens.length > 1 ? tokens.slice(0, -1).join(',') : tokens[0];
-    let docs = _cache.hit(cacheKey);
-      
+    let cacheKey =
+      tokens.length > 1 ? tokens.slice(0, -1).join(delimiter) : tokens[0];
+
+    let { docs, start } = _cache.hit(cacheKey) || defaultCacheHit;
+    
     // if we can locate a prefix previously being searched, use it as the start point
-    if (docs) {
-      start = tokens.length - 1;
+    if (docs && start >= tokens.length) {
+      return docs;
     }
 
     for (let i = start; i < tokens.length; i++) {
@@ -198,8 +203,12 @@ exports.indexEngine = options => {
       }
 
       // found a valid prefix to the search term, cache the result by far
-      if (i == tokens.length - 1 && cacheKey) {
-        _cache.insert(cacheKey, docs);
+      if (i === tokens.length - 1 && cacheKey) {
+        if (i > start) {
+          _cache.push(cacheKey, { docs, start: i, });          
+        } else if (i === 0) {
+          _cache.push(cacheKey, { docs: next, start: 1, });
+        }
       }
 
       docs = next;
@@ -212,8 +221,13 @@ exports.indexEngine = options => {
     };
   }
 
+  /**
+   * 
+   * @param {string} target 
+   * the string to search with 
+   */
   const find = target => {
-    if (!target) {
+    if (!target || typeof target !== 'string') {
       return {
         matches: null,
         tokens: null,
@@ -237,10 +251,14 @@ exports.indexEngine = options => {
       return output;
     }
 
-    output.matches = docsArr.map(docIdx => {
+    output.matches = docsArr.map(docID => {
+      const { source, extraData } = _store.shelves[docID];
+
       return {
-        key: docIdx,
-        ..._store.shelves[docIdx],   // source: <source phrase>, extraData: <any extra data being given>
+        key: docID,
+        label: (extraData && extraData['label']) || '',
+        source,
+        extra: extraData ? extraData : null,
       }
     });
 

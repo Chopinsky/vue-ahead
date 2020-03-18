@@ -11,7 +11,7 @@ const rl = readline.createInterface({
 });
 
 const e = engine.indexEngine({
-    token: /[ `'"$!=><{}?,.:;/|\[\]\(\)\\]/,
+  token: /[ `'"$!=><{}?,.:;/|\[\]\(\)\\]/,
 });
 
 const addEntries = () => {
