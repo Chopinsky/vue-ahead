@@ -1,0 +1,42 @@
+{
+  "parser": "babel-eslint",
+  "extends": [
+    "standard",
+    "standard-react"
+  ],
+  "env": {
+    "es6": true
+  },
+  "plugins": [
+    "react"
+  ],
+  "parserOptions": {
+    "sourceType": "module"
+  },
+  "globals": {
+    "fetch": false
+  },
+  "rules": {
+    // don't force es6 functions to include space before paren
+    "space-before-function-paren": 0,
+
+    // allow specifying true explicitly for boolean props
+    "react/jsx-boolean-value": 0,
+
+    // require line end semi-colon
+    "semi": [2, "always"],
+
+    // don't leave any write to log debugging code in the commit, now it's
+    // a warning, since there are legitment use cases.
+    "no-console": 1,
+
+    // don't allow React component that doesn't have propTypes defined,
+    // or missing properties in the propTypes definitions.
+    "react/prop-types": [2, { "ignore": ["children", "className"] }],
+
+    // disable the check where updating the state after a component update
+    // will by default trigger a second render() call and can lead to property/layout
+    // thrashing.
+    "react/no-did-update-set-state": 0
+  }
+}
