@@ -22,7 +22,6 @@ const dataParser = data => {
   return data.map(user => {
     return {
       source: `${user["name"]} (${user["screen_name"]})`,
-      label: user["location"] || "en",
       extraData: { ...user },
     };
   });
@@ -52,7 +51,7 @@ const e = engine.runahead({
 
 e.add(data);
 
-e.query(searchTerm, function(output, _data) {
+let res = e.query(searchTerm, function(output, _data) {
   if (!Array.isArray(output.matches)) {
     console.error("no matches is found for:", query);
     return;
@@ -75,7 +74,10 @@ e.query(searchTerm, function(output, _data) {
     }
   });
 
+  console.log("================\nremote search result:")
   console.log("count:", output.matches.length);
   console.log("labels:", labels);
   console.log("tokens:", output.tokens);
 });
+
+console.log("================\nlocal search result: ", res.matches);

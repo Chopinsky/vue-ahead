@@ -99,6 +99,19 @@ exports.indexEngine = options => {
     };
   };
 
+  const tokenize = (phrase, scopeToken) => {
+    let delimiter = scopeToken || _options.token || " ";
+    if (_options.tokenType === "regex" && typeof delimiter !== "object") {
+      // converting the token to regex for split
+      delimiter = new RegExp(delimiter);
+    }
+
+    return phrase
+      .split(delimiter)
+      .filter(val => val)
+      .map(val => val.trim().toLowerCase());
+  }
+
   const add = (phrase, extraData, scopeToken) => {
     phrase = phrase.trim();
     if (!phrase) {
@@ -109,17 +122,7 @@ exports.indexEngine = options => {
       return;
     }
 
-    let token = scopeToken || _options.token || " ";
-    if (_options.tokenType === 'regex' && typeof token !== 'object') {
-      // converting the token to regex for split
-      token = new RegExp(token);
-    }
-
-    const tokens = phrase
-      .split(token)
-      .filter(val => val)
-      .map(val => val.trim().toLowerCase());
-
+    const tokens = tokenize(phrase, scopeToken);
     if (!Array.isArray(tokens) || !tokens.length) {
       return;
     }
@@ -236,7 +239,7 @@ exports.indexEngine = options => {
    * @param {string} target 
    * the string to search with 
    */
-  const find = target => {
+  const find = (target, scopeToken) => {
     if (!target || typeof target !== 'string') {
       return {
         matches: null,
@@ -244,11 +247,7 @@ exports.indexEngine = options => {
       };
     }
 
-    const tokens = target
-      .split(_options.token || ' ')
-      .filter(token => token)
-      .map(token => token.trim().toLowerCase());
-
+    const tokens = tokenize(target, scopeToken);
     const { docs, matchedTokens } = findDocs(tokens) || {};
 
     const output = {
@@ -266,7 +265,6 @@ exports.indexEngine = options => {
 
       return {
         key: docID,
-        label: (extraData && extraData['label']) || '',
         source,
         extra: extraData ? extraData : null,
       }

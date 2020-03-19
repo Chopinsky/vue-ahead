@@ -12,6 +12,8 @@ exports.runahead = function (options, data) {
 
   let _engine = indexEngine({
     token: options.token,
+    tokenType: options.tokenType,
+    cacheCapacity: options.cacheCapacity,
   });
   
   let _createdItems = [];
@@ -30,20 +32,14 @@ exports.runahead = function (options, data) {
       }
 
       dataToAdd.forEach(item => {
-        _engine.add(item['source'], { 
-          label: item['label'] || '', 
-          ...item['extraData'], 
-        });
+        _engine.add(item['source'], item['extraData']);
       });
 
       return;
     }
     
     // if a sole object, only add this single entry
-    _engine.add(dataToAdd["source"], {
-      label: dataToAdd["label"] || '',
-      ...dataToAdd["extraData"]
-    });
+    _engine.add(dataToAdd["source"], dataToAdd["extraData"]);
   };
 
   /**
@@ -56,7 +52,7 @@ exports.runahead = function (options, data) {
    *  - if found generate returned data in the following format;
    *    {
    *      matches: [
-   *        { key: <required|string>, label: <optional|string>, source: <required|string>, extraData: <optional|object> }, 
+   *        { key: <required|string>, source: <required|string>, extraData: <optional|object> }, 
    *        ...,
    *      ],
    *      tokens: [
@@ -77,9 +73,6 @@ exports.runahead = function (options, data) {
     }
 
     if (typeof remoteCallback === "function" && _options.remote) {
-      //todo: 
-      // 1. use callback to add query results, then search again
-      // 2. call callbacks on the query data
       const { remote, queryBuilder, dataParser, transport } = _options; 
 
       let params = {
@@ -118,8 +111,8 @@ exports.runahead = function (options, data) {
     // {
     //    matches: [
     //      { key: <required|string>, label: <optional|string>, source: <required|string>, extraData: <optional|object> }, 
-    //        ...
-    //      ],
+    //      { ... },
+    //    ],
     //    tokens: [
     //      token1: <string>, 
     //      token2: <string>, 
@@ -140,10 +133,27 @@ exports.runahead = function (options, data) {
 
   const replaceOptions = options => {
     _options = options;
+
+    _engine.replaceOptions({
+      token: options.token,
+      tokenType: options.tokenType,
+      cacheCapacity: options.cacheCapacity,
+    });
   };
 
   const setOption = (name, value) => {
     _options[name] = value;
+
+    switch (name) {
+      case 'token':
+      case 'tokenType':
+      case 'cacheCapacity':
+        _engine.setOption(name, value);
+        break;
+    
+      default:
+        break;
+    }
   };
 
   // add data to the search engine
