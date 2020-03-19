@@ -1,0 +1,70 @@
+#!/bin/bash
+
+cat <<\EOF
+
+  ++++++++++++++++++++++++++++++++++++++++++++
+  Running eslint checker ...
+
+EOF
+
+run_linter() {
+  printf "  >> verifying application @ %s ...\n\n" "$(pwd)"
+
+  # output the message
+  if [ "$(command -v yarn | wc -l | awk '{print $1}')" -gt 0 ]
+  then
+    linter=$(yarn lint)
+  else
+    linter=$(npm run lint)
+  fi
+
+  # check how many errors do we have, this will omit the warnings
+  done=$(echo "$linter" | grep -wc "error" | awk '{print $1}')
+
+  # echo "$done"
+
+  if [ "$done" -gt 0 ]
+  then
+    cat <<\EOF
+
+  ++++++++++++++++++++++++++++++++++++++++++++
+  Git push aborted ...
+  There are lint errors, as shown below ...
+
+EOF
+
+    echo "$linter"
+
+    cat <<\EOF
+
+  ++++++++++++++++++++++++++++++++++++++++++++
+  You need to fix these errors, commit the updates, and try `git push` again ...
+
+EOF
+
+    exit 1
+  fi
+}
+
+branch=$(git rev-parse --abbrev-ref HEAD)
+client_changed=$(git diff --name-only "$branch" origin/"$branch" | awk '/.(js|jsx|ts|tsx)$/ { count++ } END { printf "%d", count }')
+
+if [ "$client_changed" == 0 ]
+then
+
+  cat <<\EOF
+  ++++++++++++++++++++++++++++++++++++++++++++
+  No library logic updates detected ... Skipping linter checks ...
+
+EOF
+
+  exit 0
+fi
+
+run_linter
+
+cat <<\EOF
+  ++++++++++++++++++++++++++++++++++++++++++++
+  All linter checks are passed, ready to push to remote ...
+
+EOF
