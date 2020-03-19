@@ -12,10 +12,6 @@
     "UI",
     "engine"
   ],
-  "workspaces": [
-    "react-ahead",
-    "react-hound"
-  ],
   "author": "Jacob Zuo <chopinsky@live.com>",
   "license": "MIT"
 }
