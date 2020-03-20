@@ -1,6 +1,6 @@
 {
   "name": "run-ahead",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "An in-memory text search engine that does fuzzy matching on entries.",
   "main": "dist/index.js",
   "module": "src/index.js",
@@ -38,8 +38,8 @@
     "jest": "^25.1.0"
   },
   "jest": {
-    "testPathIgnorePatterns" : [
-      "/dist" 
+    "testPathIgnorePatterns": [
+      "/dist"
     ]
   },
   "author": "Jacob Zuo <chopinsky@live.com>",
