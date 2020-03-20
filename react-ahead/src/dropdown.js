@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 export default class Dropdown extends React.Component {
-  propTypes = {
+  static propTypes = {
 
   };
 

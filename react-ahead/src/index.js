@@ -1,7 +1,10 @@
 import React from 'react';
 import Input from './input';
 import Dropdown from './dropdown';
-import Selection from "./selection";
+import Selection from './selection';
+import styles from "./shared.css";
+
+const defaultClass = "react-ahead__control-wrapper";
 
 export default class ReactAhead extends React.Component {
   state = {
@@ -23,8 +26,10 @@ export default class ReactAhead extends React.Component {
   };
 
   render() {
+    const styleClass = styles[defaultClass] || defaultClass;
+
     return (
-      <div>
+      <div className={this.props.className + " " + styleClass}>
         {this.renderPlaceholder()}
         <Selection
           multiSelection={this.props.multiSelection}

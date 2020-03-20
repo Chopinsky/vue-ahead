@@ -1,0 +1,23 @@
+.react-ahead__control-wrapper {
+  padding: 2px 4px;
+  align-items: center;
+  background-color: rgb(255, 255, 255);
+  cursor: default;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  min-height: 38px;
+  position: relative;
+  box-sizing: border-box;
+  transition: all 100ms ease 0s;
+  outline: 0px !important
+}
+
+.react-ahead__input-wrapper {  
+  padding: 2px;
+  overflow: hidden;
+  visibility: visible;
+  color: rgb(51, 51, 51);
+  box-sizing: border-box;
+  width: 100%;
+}

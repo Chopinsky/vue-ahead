@@ -51,7 +51,7 @@ const e = engine.runahead({
 
 e.add(data);
 
-let res = e.query(searchTerm, function(output, _data) {
+let res = e.query(searchTerm, function(_data, output) {
   if (!Array.isArray(output.matches)) {
     console.error("no matches is found for:", query);
     return;
@@ -74,7 +74,7 @@ let res = e.query(searchTerm, function(output, _data) {
     }
   });
 
-  console.log("================\nremote search result:")
+  console.log("================\nremote search result:");
   console.log("count:", output.matches.length);
   console.log("labels:", labels);
   console.log("tokens:", output.tokens);

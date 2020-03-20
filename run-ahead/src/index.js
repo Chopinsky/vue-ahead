@@ -35,6 +35,46 @@ exports.runahead = (options, data, initDataType) => {
   let _createdItems = {};
   let _options = options;
 
+  const send = (remote, type, callback) => {
+    const { transport, dataParser } = _options;
+
+    const provider =
+      (transport && typeof transport.then === "function") || axios;
+
+    provider(remote)
+      .then(resp => {
+        // format data if a formatter is passed
+        let data =
+          typeof dataParser === "function"
+            ? dataParser(resp.data, remoteType.query)
+            : resp.data;
+
+        // now add newly obtained data to the index search engine
+        if (data) {
+          if (type === remoteType.query) {
+            add(data["query"] || data, dataType.remote);
+          }
+
+          if (_createdItems && Array.isArray(data["created"])) {
+            for (let i = 0; i < data["created"].length; i++) {
+              delete _createdItems[data["created"][i]];
+            }
+          }
+        }
+
+        let extra = null;
+        if (type === remoteType.query) {
+          const target = (remote["params"] && remote["params"]["q"]) || "";
+          extra = _engine.find(target);
+        }
+
+        callback(data, extra);
+      })
+      .catch(err => {
+        console.error("[error]", err);
+      });
+  };
+
   const add = (dataToAdd, type) => {
     // only accepting objects
     if (typeof dataToAdd !== 'object' || !dataToAdd) {
@@ -101,8 +141,6 @@ exports.runahead = (options, data, initDataType) => {
         remote, 
         queryBuilder, 
         dataBuilder, 
-        dataParser,
-        transport 
       } = _options; 
 
       remote["params"] = {
@@ -124,32 +162,7 @@ exports.runahead = (options, data, initDataType) => {
         remote["transformRequest"] = [dataBuilder];
       }
 
-      const provider = (transport && typeof transport.then === 'function') || axios;
-
-      provider(remote)
-        .then(resp => {
-          // format data if a formatter is passed
-          let data =
-            typeof dataParser === "function"
-              ? dataParser(resp.data, remoteType.query)
-              : resp.data;
-
-          // now add newly obtained data to the index search engine
-          if (data) {
-            add(data, dataType.remote);
-
-            if (_createdItems && Array.isArray(data["created"])) {
-              for (let i = 0; i < data["created"].length; i++) {
-                delete _createdItems[data["created"][i]];
-              }
-            }
-          }
-
-          remoteCallback(_engine.find(target), data);
-        })
-        .catch(err => {
-          console.error("[error]", err);
-        });
+      send(remote, remoteType.query, remoteCallback);
     }
 
     // returned data format:
@@ -169,7 +182,6 @@ exports.runahead = (options, data, initDataType) => {
 
   const sink = (remote, extraData, sinkCallback) => {
     const {
-      transport,
       queryBuilder,
     } = _options;
 
@@ -182,29 +194,7 @@ exports.runahead = (options, data, initDataType) => {
       remote["params"] = queryBuilder(params, remoteType.sink);
     }
 
-    const provider =
-      (transport && typeof transport.then === "function") || axios;
-
-    provider(remote)
-      .then(resp => {
-        // format data if a formatter is passed
-        let data =
-          typeof dataParser === "function"
-            ? dataParser(resp.data, remoteType.sink)
-            : resp.data;
-
-        // now add newly obtained data to the index search engine
-        if (data && _createdItems && Array.isArray(data["created"])) {
-          for (let i = 0; i < data["created"].length; i++) {
-            delete _createdItems[data["created"][i]];
-          }
-        }
-
-        sinkCallback(data);
-      })
-      .catch(err => {
-        console.error("[error]", err);
-      });
+    send(remote, remoteType.sink, sinkCallback);
   }
 
   const reset = () => {
