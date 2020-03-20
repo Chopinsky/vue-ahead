@@ -1,13 +1,13 @@
 {
   "name": "run-ahead",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "An in-memory text search engine that does fuzzy matching on entries.",
   "main": "dist/index.js",
   "module": "src/index.js",
   "scripts": {
     "build": "babel src -d dist --ignore **/*.test.js",
     "test": "jest",
-    "console": "node ./console/search.js"
+    "console": "node ./console/engine.js"
   },
   "keywords": [
     "node",

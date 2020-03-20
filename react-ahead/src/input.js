@@ -13,14 +13,14 @@ export default class Input extends React.Component {
       <div
         class={"react-ahead__input-wrapper"}
         style={{
-          // display: "inline-block"
+          display: "inline-block"
         }}
       >
         <input
           type="text"
           style={{
-            // width: "fit-content",
-            // outline: "none"
+            width: "fit-content",
+            outline: "none"
           }}
           value={this.state.value}
         />

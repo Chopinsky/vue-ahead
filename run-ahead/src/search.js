@@ -94,7 +94,7 @@ exports.indexEngine = options => {
     
     _store = { 
       index: 0,
-      shelves: {},
+      shelf: {},
       dict: {},
     };
   };
@@ -124,14 +124,19 @@ exports.indexEngine = options => {
 
     const tokens = tokenize(phrase, scopeToken);
     if (!Array.isArray(tokens) || !tokens.length) {
-      return;
+      return null;
     }
 
     _cache.clear();
 
     const docID = _store.index++;
-    _store.shelves[docID] = { source: phrase, extraData };
+    const data = {
+      source: phrase,
+      extraData
+    };
+
     _store.dict[phrase] = docID;
+    _store.shelf[docID] = data;
 
     for (let i = 0; i < tokens.length; i++) {
       let word = tokens[i];
@@ -153,6 +158,8 @@ exports.indexEngine = options => {
         return a.index - b.index;
       });
     }
+
+    return { key: docID, data };
   };
 
   const findDocs = tokens => {
@@ -261,7 +268,7 @@ exports.indexEngine = options => {
     }
 
     output.matches = docsArr.map(docID => {
-      const { source, extraData } = _store.shelves[docID];
+      const { source, extraData } = _store.shelf[docID];
 
       return {
         key: docID,

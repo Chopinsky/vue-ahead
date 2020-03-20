@@ -1,7 +1,23 @@
 const axios = require('axios').default;
 const { indexEngine } = require('./search');
 
-exports.runahead = function (options, data) {
+const dataType = {
+  unknown: 0,
+  local: 1,
+  remote: 2,
+  created: 3
+};
+
+exports.dataType = dataType;
+
+const remoteType = {
+  query: "query",
+  sink: "sink",
+}
+
+exports.remoteType = remoteType;
+
+exports.runahead = (options, data, initDataType) => {
   if (data && !Array.isArray(data)) {
     throw new Error('the source data provided to the search engine must be an array, but got:', typeof data);
   }
@@ -16,10 +32,10 @@ exports.runahead = function (options, data) {
     cacheCapacity: options.cacheCapacity,
   });
   
-  let _createdItems = [];
+  let _createdItems = {};
   let _options = options;
 
-  const add = dataToAdd => {
+  const add = (dataToAdd, type) => {
     // only accepting objects
     if (typeof dataToAdd !== 'object' || !dataToAdd) {
       return;
@@ -32,14 +48,22 @@ exports.runahead = function (options, data) {
       }
 
       dataToAdd.forEach(item => {
-        _engine.add(item['source'], item['extraData']);
+        let d = _engine.add(item['source'], item['extraData']);
+        
+        if (type === dataType.created && d && d.key) {
+          _createdItems[d.key] = d.data;
+        }
       });
 
       return;
     }
     
     // if a sole object, only add this single entry
-    _engine.add(dataToAdd["source"], dataToAdd["extraData"]);
+    let d = _engine.add(dataToAdd['source'], source, dataToAdd['extraData']);
+
+    if (type === dataType.created && d && d.key) {
+      _createdItems[d.key] = d.data;
+    }
   };
 
   /**
@@ -72,45 +96,66 @@ exports.runahead = function (options, data) {
       return null;
     }
 
-    if (typeof remoteCallback === "function" && _options.remote) {
-      const { remote, queryBuilder, dataParser, transport } = _options; 
+    if (typeof remoteCallback === 'function' && _options.remote) {
+      const { 
+        remote, 
+        queryBuilder, 
+        dataBuilder, 
+        dataParser,
+        transport 
+      } = _options; 
 
-      let params = {
-        ...remote.params,
+      remote["params"] = {
+        ...remote["params"],
         q: target
       };
 
       if (typeof queryBuilder === 'function') {
-        params = queryBuilder(params);
+        remote["params"] = queryBuilder(remote["params"], remoteType.query);
+      }
+      
+      if (remote.syncCreated && Object.keys(_createdItems).length) {
+        remote["data"] = {
+          created: _createdItems,
+        };        
       }
 
-      let req = {
-        ...remote,
-        params,
+      if (typeof dataBuilder === 'function') {
+        remote["transformRequest"] = [dataBuilder];
       }
 
       const provider = (transport && typeof transport.then === 'function') || axios;
 
-      provider(req)
+      provider(remote)
         .then(resp => {
           // format data if a formatter is passed
           let data =
-            typeof dataParser === "function" ? dataParser(resp.data) : resp.data;
+            typeof dataParser === "function"
+              ? dataParser(resp.data, remoteType.query)
+              : resp.data;
 
           // now add newly obtained data to the index search engine
-          add(data);
+          if (data) {
+            add(data, dataType.remote);
+
+            if (_createdItems && Array.isArray(data["created"])) {
+              for (let i = 0; i < data["created"].length; i++) {
+                delete _createdItems[data["created"][i]];
+              }
+            }
+          }
 
           remoteCallback(_engine.find(target), data);
         })
         .catch(err => {
-          console.error('[error]', err);
+          console.error("[error]", err);
         });
     }
 
     // returned data format:
     // {
     //    matches: [
-    //      { key: <required|string>, label: <optional|string>, source: <required|string>, extraData: <optional|object> }, 
+    //      { key: <required|string>, source: <required|string>, extraData: <optional|object> }, 
     //      { ... },
     //    ],
     //    tokens: [
@@ -121,6 +166,46 @@ exports.runahead = function (options, data) {
     // }
     return _engine.find(target);
   };
+
+  const sink = (remote, extraData, sinkCallback) => {
+    const {
+      transport,
+      queryBuilder,
+    } = _options;
+
+    remote["data"] = {
+      created: _createdItems,
+      extraData,
+    };      
+    
+    if (typeof queryBuilder === "function") {
+      remote["params"] = queryBuilder(params, remoteType.sink);
+    }
+
+    const provider =
+      (transport && typeof transport.then === "function") || axios;
+
+    provider(remote)
+      .then(resp => {
+        // format data if a formatter is passed
+        let data =
+          typeof dataParser === "function"
+            ? dataParser(resp.data, remoteType.sink)
+            : resp.data;
+
+        // now add newly obtained data to the index search engine
+        if (data && _createdItems && Array.isArray(data["created"])) {
+          for (let i = 0; i < data["created"].length; i++) {
+            delete _createdItems[data["created"][i]];
+          }
+        }
+
+        sinkCallback(data);
+      })
+      .catch(err => {
+        console.error("[error]", err);
+      });
+  }
 
   const reset = () => {
     let created = _createdItems;
@@ -157,11 +242,16 @@ exports.runahead = function (options, data) {
   };
 
   // add data to the search engine
-  add(data);
+  if (!dataType.hasOwnProperty(initDataType)) {
+    initDataType = dataType.local;
+  }
+
+  add(data, initDataType);
 
   return {
     add,
     query,
+    sink,
     reset,
     replaceOptions,
     setOption,
