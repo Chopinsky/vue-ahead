@@ -1,29 +1,39 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import style from "./shared.css";
+
+const containerClass = "react-ahead__selection-container";
 
 export default class Selection extends React.Component {
+  static propTypes = {
+    onSelectionRemoval: PropTypes.func.isRequired,
+  };
+
   render() {
     if (!this.props.selection || !this.props.selection.length) {
       return null;
     }
 
+    const containerStyle = style[containerClass] || containerClass;
+
     return (
-      <div
-        style={{
-          color: "rgb(51, 51, 51)",
-          marginLeft: "2px",
-          marginRight: "2px",
-          maxWidth: "calc(100% - 8px)",
-          position: "absolute",
-          textOverflow: "ellipsis",
-          whiteSpace: "nowrap",
-          top: "50%",
-          transform: "translateY(-50%)",
-          boxSizing: "border-box",
-          overflow: "hidden",
-        }}
-      >
-      </div>
+      <>
+        {
+          this.props.selection.map(item => {
+            return (
+              <div 
+                style={{
+                  overflow: hidden, 
+                  whiteSpace: "nowrap",
+                }}
+              >
+                <div className={containerStyle}>
+                </div>
+              </div>
+            );
+          })
+        }
+      </>
     );
   }
 }

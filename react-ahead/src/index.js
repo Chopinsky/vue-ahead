@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import Input from './input';
 import Dropdown from './dropdown';
 import Selection from './selection';
@@ -9,9 +10,16 @@ const placeholderClass = "react-ahead__placeholder";
 const inputWrapperClass = "react-ahead__input-wrapper";
 
 export default class ReactAhead extends React.Component {
+  static propTypes = {
+    isMulti: PropTypes.bool,
+    initOptions: PropTypes.arrayOf(PropTypes.object),
+  };
+
   state = {
+    cursorIndex: 0,
     dropdownOpen: false,
     hasFocus: false,
+    options: [],
     selection: [],
     value: ''
   };
@@ -21,6 +29,10 @@ export default class ReactAhead extends React.Component {
 
     this._oldVal = '';
     this._input = React.createRef();
+
+    if (Array.isArray(props.initOptions) && props.initOptions.length > 0) {
+      this.state.options = props.initOptions;
+    }
   }
 
   handleEntryChanged = (_evt, value) => {
@@ -30,7 +42,24 @@ export default class ReactAhead extends React.Component {
   };
 
   handleSelectionMove = (evt, side) => {
+    let { cursorIndex } = this.state;
 
+    if (side === 'up' && cursorIndex >= 0) {
+      cursorIndex--;
+    } else if (side === 'down') {
+      if (cursorIndex === this.state.options.length - 1) {
+        //todo: send query for more options, then add them to the list
+        
+      } else {
+        cursorIndex--;
+      }
+    }
+
+    if (cursorIndex !== this.state.cursorIndex) {
+      this.setState({
+        cursorIndex,
+      });
+    }
   };
 
   handleSelectionChoice = (val) => {
@@ -85,7 +114,11 @@ export default class ReactAhead extends React.Component {
       hasFocus: false,
       dropdownOpen: false,
     });
-  }
+  };
+
+  handleSelectionRemoval = val => {
+
+  };
 
   renderPlaceholder = () => {
     if (this.props.placeholder && this.state.selection.length === 0 && !this.state.value) {
@@ -113,15 +146,16 @@ export default class ReactAhead extends React.Component {
         onFocus={this.handleGetFocus}
         onBlur={this.handleLoseFocus}
       >
-        <Selection
-          multiSelection={this.props.multiSelection}
-          selection={this.state.selection}
-        />
         <div 
           className={inputStyleClass}
           onClick={this.handleFocusMove}
         >
           {this.renderPlaceholder()}
+          <Selection
+            isMulti={this.props.isMulti}
+            selection={this.state.selection}
+            onSelectionRemoval={this.handleSelectionRemoval}
+          />
           <Input
             ref={this._input}
             onEntryChange={this.handleEntryChanged}
@@ -130,7 +164,8 @@ export default class ReactAhead extends React.Component {
           />
         </div>
         <Dropdown 
-          values={this.props.options}
+          options={this.props.options}
+          cursorIndex={this.state.cursorIndex}
           onSelection={this.handleSelectionChoice}
         />
       </div>
