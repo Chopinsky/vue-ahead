@@ -13,6 +13,7 @@ exports.dataType = dataType;
 const remoteType = {
   query: "query",
   sink: "sink",
+  prefetch: "prefetch",
 }
 
 exports.remoteType = remoteType;
@@ -51,7 +52,7 @@ exports.runahead = (options, data, initDataType) => {
 
         // now add newly obtained data to the index search engine
         if (data) {
-          if (type === remoteType.query) {
+          if (type === remoteType.query || type === remoteType.prefetch) {
             add(data["query"] || data, dataType.remote);
           }
 
@@ -180,19 +181,50 @@ exports.runahead = (options, data, initDataType) => {
     return _engine.find(target);
   };
 
-  const sink = (remote, extraData, sinkCallback) => {
+  const prefetch = (remote, extraData, prefetchCallback) => {
+    if (!remote) {
+      remote = _options.remote;
+    }
+
     const {
       queryBuilder,
     } = _options;
 
+    if (typeof queryBuilder === "function") {
+      remote["params"] = queryBuilder(params, remoteType.sink);
+    }
+
+    if (extraData) {
+      remote["data"] = {
+        ...remote["data"],
+        extraData,
+      };
+    }
+
+    send(remote, remoteType.prefetch, prefetchCallback);
+  };
+
+  const sink = (remote, extraData, sinkCallback) => {
+    if (!remote) {
+      remote = _options.remote;
+    }
+
     remote["data"] = {
-      created: _createdItems,
-      extraData,
+      ...remote["data"],
+      created: _createdItems || [],
     };      
+
+    if (extraData) {
+      remote["data"]["extraData"] = extraData;
+    }
     
     if (typeof queryBuilder === "function") {
       remote["params"] = queryBuilder(params, remoteType.sink);
     }
+
+    const {
+      queryBuilder,
+    } = _options;
 
     send(remote, remoteType.sink, sinkCallback);
   }

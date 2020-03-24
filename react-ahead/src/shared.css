@@ -21,3 +21,19 @@
   box-sizing: border-box;
   width: 100%;
 }
+
+.react-ahead__placeholder {
+  position: absolute;
+  top: 50%;
+  color: rgb(128, 128, 128);
+  margin-left: 2px;
+  margin-right: 2px;
+  transform: translateY(-50%);
+  box-sizing: border-box;
+  /* color: gray; */
+}
+
+.react-ahead__input-wrapper {  
+  cursor: text;
+  width: 100%;
+}
