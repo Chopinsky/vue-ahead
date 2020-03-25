@@ -5,9 +5,11 @@ import Dropdown from './dropdown';
 import Selection from './selection';
 import styles from "./shared.css";
 
+const containerClass = "react-ahead__control-container";
 const wrapperClass = "react-ahead__control-wrapper";
 const placeholderClass = "react-ahead__placeholder";
 const inputWrapperClass = "react-ahead__input-wrapper";
+const dropdownClass = "react-ahead__dropdown-wrapper";
 
 export default class ReactAhead extends React.Component {
   static propTypes = {
@@ -136,34 +138,58 @@ export default class ReactAhead extends React.Component {
     return null;
   };
 
-  render() {
-    const styleClass = styles[wrapperClass] || wrapperClass;
-    const inputStyleClass = styles[inputWrapperClass] || inputWrapperClass;
+  renderInput = () => {
+    const inputStyle = styles[inputWrapperClass] || inputWrapperClass;
 
     return (
       <div
-        className={this.props.className + " " + styleClass}
-        onFocus={this.handleGetFocus}
-        onBlur={this.handleLoseFocus}
+        className={inputStyle}
+        onClick={this.handleFocusMove}
       >
-        <div 
-          className={inputStyleClass}
-          onClick={this.handleFocusMove}
+        {this.renderPlaceholder()}
+        <Selection
+          isMulti={this.props.isMulti}
+          selection={this.state.selection}
+          onSelectionRemoval={this.handleSelectionRemoval}
+        />
+        <Input
+          ref={this._input}
+          onEntryChange={this.handleEntryChanged}
+          onSelectionMove={this.handleSelectionMove}
+          value={this.state.value}
+        />
+      </div>
+    );
+  };
+
+  //todo: move this to a function component
+  renderDropdownIcon = () => {
+    const dropdownWrapperStyle = styles[dropdownClass] || dropdownClass;
+
+    return (
+      <div className={dropdownWrapperStyle}>
+        <div className={""} aria-hidden="true"></div>
+        <span className={""}></span>
+        <div className={""} aria-hidden="true"></div>
+      </div>
+    );
+  };
+
+  render() {
+    const containerStyle = styles[containerClass] || containerClass;
+    const wrapperStyle = styles[wrapperClass] || wrapperClass;
+
+    return (
+      <div className={this.props.containerClassName + " " + containerStyle}>
+        <div
+          className={this.props.className + " " + wrapperStyle}
+          onFocus={this.handleGetFocus}
+          onBlur={this.handleLoseFocus}
         >
-          {this.renderPlaceholder()}
-          <Selection
-            isMulti={this.props.isMulti}
-            selection={this.state.selection}
-            onSelectionRemoval={this.handleSelectionRemoval}
-          />
-          <Input
-            ref={this._input}
-            onEntryChange={this.handleEntryChanged}
-            onSelectionMove={this.handleSelectionMove}
-            value={this.state.value}
-          />
+          {this.renderInput()}
+          {this.renderDropdownIcon()}
         </div>
-        <Dropdown 
+        <Dropdown
           options={this.props.options}
           cursorIndex={this.state.cursorIndex}
           onSelection={this.handleSelectionChoice}

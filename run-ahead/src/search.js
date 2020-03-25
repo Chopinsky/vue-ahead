@@ -278,7 +278,15 @@ exports.indexEngine = options => {
     });
 
     return output;
-  }
+  };
+
+  const remove = source => {
+
+  };
+
+  const update = (source, data) => {
+
+  };
 
   const replaceOptions = (options) => {
     _options = options;
@@ -291,7 +299,7 @@ exports.indexEngine = options => {
     if (name === 'allowPartialMatching') {
       _cache.clear();
     }
-  }
+  };
 
   const _debug = () => {
     Object.keys(_rIndex)
@@ -306,7 +314,9 @@ exports.indexEngine = options => {
     reset,
     find,
     replaceOptions,
+    remove,
     setOption,
+    update,
     _debug,
   }
 }

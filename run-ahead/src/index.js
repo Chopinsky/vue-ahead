@@ -229,6 +229,14 @@ exports.runahead = (options, data, initDataType) => {
     send(remote, remoteType.sink, sinkCallback);
   }
 
+  const remove = source => {
+
+  };
+
+  const update = (source, data) => {
+
+  };
+
   const reset = () => {
     let created = _createdItems;
     
@@ -274,9 +282,12 @@ exports.runahead = (options, data, initDataType) => {
     add,
     query,
     sink,
+    prefetch,
+    remove,
     reset,
     replaceOptions,
     setOption,
+    update,
   };
 };
 
