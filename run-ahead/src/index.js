@@ -89,7 +89,7 @@ exports.runahead = (options, data, initDataType) => {
       }
 
       dataToAdd.forEach(item => {
-        let d = _engine.add(item['source'], item['extraData']);
+        const d = _engine.add(item['source'], item['extraData']);
         
         if (type === dataType.created && d && d.key) {
           _createdItems[d.key] = d.data;
@@ -100,11 +100,22 @@ exports.runahead = (options, data, initDataType) => {
     }
     
     // if a sole object, only add this single entry
-    let d = _engine.add(dataToAdd['source'], source, dataToAdd['extraData']);
+    const d = _engine.add(dataToAdd['source'], source, dataToAdd['extraData']);
 
     if (type === dataType.created && d && d.key) {
       _createdItems[d.key] = d.data;
     }
+  };
+
+  const remove = source => {
+    const { key } = _engine.remove(source) || {};
+    if (key && _createdItems.hasOwnProperty(key)) {
+      delete _createdItems[key];
+    }
+  };
+
+  const update = (source, data) => {
+    _engine.update(source, data);
   };
 
   /**
@@ -227,14 +238,6 @@ exports.runahead = (options, data, initDataType) => {
     } = _options;
 
     send(remote, remoteType.sink, sinkCallback);
-  }
-
-  const remove = source => {
-
-  };
-
-  const update = (source, data) => {
-
   };
 
   const reset = () => {

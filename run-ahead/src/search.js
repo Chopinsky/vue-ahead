@@ -132,14 +132,15 @@ exports.indexEngine = options => {
     const docID = _store.index++;
     const data = {
       source: phrase,
-      extraData
+      extraData,
+      token: scopeToken,
     };
 
     _store.dict[phrase] = docID;
     _store.shelf[docID] = data;
 
     for (let i = 0; i < tokens.length; i++) {
-      let word = tokens[i];
+      const word = tokens[i];
       if (!word || !word.length) {
         continue;
       }
@@ -153,10 +154,6 @@ exports.indexEngine = options => {
       } else {
         _rIndex[word] = [{ docID, position: i }];
       }
-
-      _rIndex[word].sort(function(a, b) {
-        return a.index - b.index;
-      });
     }
 
     return { key: docID, data };
@@ -281,11 +278,69 @@ exports.indexEngine = options => {
   };
 
   const remove = source => {
+    if (!_store.dict.hasOwnProperty(source)) {
+      return null;
+    }
 
+    const docID = _store.dict[source];
+    const data = _store.shelf[docID];
+
+    const { token } = data || {};
+    const tokens = tokenize(source, token);
+
+    if (Array.isArray(tokens) && tokens.length > 0) {
+      for (let i = 0; i < tokens.length; i++) {
+        const word = tokens[i];
+        if (!word || !word.length) {
+          continue;
+        }
+
+        if (_rIndex.hasOwnProperty(word) && Array.isArray(_rIndex[word])) {
+          _rIndex[word] = 
+            Array.prototype.filter.call(
+              _rIndex[word],
+              item => item.docID !== docID
+            );
+        }
+      }
+    }
+
+    _cache.clear();
+
+    delete _store.dict[source];
+    delete _store.shelf[docID];
+
+    let last = _store.index;
+    while (!_store.shelf.hasOwnProperty(last - 1)) {
+      // find the last index that's still occupied
+      last--;
+    }
+
+    if (_store.index !== last) {
+      _store.index = last;
+    }
+
+    return {
+      key: docID,
+      data,
+    }
   };
 
   const update = (source, data) => {
+    if (!_store.dict.hasOwnProperty(source)) {
+      add(source, data);
+      return null;
+    }
 
+    let docID = _store.dict[source];
+    let oldData;
+
+    if (_store.shelf.hasOwnProperty(docID)) {
+      oldData = _store.shelf[docID]['extraData'];
+      _store.shelf[docID]['extraData'] = data;
+    }
+
+    return oldData;
   };
 
   const replaceOptions = (options) => {
@@ -319,4 +374,4 @@ exports.indexEngine = options => {
     update,
     _debug,
   }
-}
+};

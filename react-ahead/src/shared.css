@@ -6,7 +6,8 @@
 .react-ahead__control-wrapper {
   -webkit-box-align: center;
   -webkit-box-pack: justify;
-  padding: 0 6px;
+  padding-left: 6px;
+  padding-right: 2px;
   min-height: 38px;
   align-items: center;
   background-color: rgb(255, 255, 255);
@@ -64,5 +65,35 @@
   align-self: stretch;
   display: flex;
   flex-shrink: 0;
+  box-sizing: border-box;
+}
+
+.react-ahead__dropdown-icon-wrapper {
+  color: rgb(204, 204, 204);
+  display: flex;
+  box-sizing: border-box;
+  padding: 10px 6px;
+  transition: color 150ms ease 0s;
+}
+
+.react-ahead__dropdown-icon-wrapper:hover {
+  cursor: pointer;
+  color: rgb(153, 153, 153);
+}
+
+.react-ahead__dropdown-icon {
+  display: inline-block;
+  fill: currentcolor;
+  line-height: 1;
+  stroke: currentcolor;
+  stroke-width: 0;
+}
+
+.react-ahead__dropdown-separator {
+  align-self: stretch;
+  background-color: rgb(204, 204, 204);
+  margin-bottom: 8px;
+  margin-top: 8px;
+  width: 1px;
   box-sizing: border-box;
 }

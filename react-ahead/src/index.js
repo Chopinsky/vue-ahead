@@ -2,14 +2,14 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Input from './input';
 import Dropdown from './dropdown';
+import Placeholder from './placeholder';
 import Selection from './selection';
+import DropdownIcon from './icon';
 import styles from "./shared.css";
 
 const containerClass = "react-ahead__control-container";
 const wrapperClass = "react-ahead__control-wrapper";
-const placeholderClass = "react-ahead__placeholder";
 const inputWrapperClass = "react-ahead__input-wrapper";
-const dropdownClass = "react-ahead__dropdown-wrapper";
 
 export default class ReactAhead extends React.Component {
   static propTypes = {
@@ -122,21 +122,20 @@ export default class ReactAhead extends React.Component {
 
   };
 
-  renderPlaceholder = () => {
-    if (this.props.placeholder && this.state.selection.length === 0 && !this.state.value) {
-      const styleClass = styles[placeholderClass] || placeholderClass;
+  handleClear = () => {
+    this.handleFocusMove();
 
-      return (
-        <div
-          className={styleClass}
-        >
-          {this.props.placeholder}
-        </div>
-      );
-    }
+    this._oldVal = '';
 
-    return null;
+    this.setState({
+      value: '',
+      selection: [],
+    })
   };
+
+  handleDropdownOpen = () => {
+    this.handleFocusMove();
+  }
 
   renderInput = () => {
     const inputStyle = styles[inputWrapperClass] || inputWrapperClass;
@@ -146,7 +145,10 @@ export default class ReactAhead extends React.Component {
         className={inputStyle}
         onClick={this.handleFocusMove}
       >
-        {this.renderPlaceholder()}
+        <Placeholder 
+          show={this.props.placeholder && this.state.selection.length === 0 && !this.state.value} 
+          text={this.props.placeholder}
+        />
         <Selection
           isMulti={this.props.isMulti}
           selection={this.state.selection}
@@ -158,19 +160,6 @@ export default class ReactAhead extends React.Component {
           onSelectionMove={this.handleSelectionMove}
           value={this.state.value}
         />
-      </div>
-    );
-  };
-
-  //todo: move this to a function component
-  renderDropdownIcon = () => {
-    const dropdownWrapperStyle = styles[dropdownClass] || dropdownClass;
-
-    return (
-      <div className={dropdownWrapperStyle}>
-        <div className={""} aria-hidden="true"></div>
-        <span className={""}></span>
-        <div className={""} aria-hidden="true"></div>
       </div>
     );
   };
@@ -187,7 +176,10 @@ export default class ReactAhead extends React.Component {
           onBlur={this.handleLoseFocus}
         >
           {this.renderInput()}
-          {this.renderDropdownIcon()}
+          <DropdownIcon
+            onClear={this.handleClear}
+            onDropdown={this.handleDropdownOpen}
+          />
         </div>
         <Dropdown
           options={this.props.options}
