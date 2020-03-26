@@ -8,7 +8,7 @@ export default class Input extends React.Component {
   static propTypes = {
     onEntryChange: PropTypes.func,
     onSelectionMove: PropTypes.func,
-    value: PropTypes.value,
+    value: PropTypes.string,
   };
 
   state = {
@@ -64,15 +64,36 @@ export default class Input extends React.Component {
 
     const { keyCode } = evt;
 
-    if (keyCode === 38 || keyCode === 40) {
-      evt.preventDefault();
+    console.log(keyCode);
+    
+    switch (keyCode) {
+      case 9:
+        if (this.props.value && !evt.shiftKey) {
+          // selection
+          evt.preventDefault();
+        }
+        
+        break;
 
-      if (typeof this.props.onSelectionMove === 'function') {
-        this.props.onSelectionMove(evt, keyCode === 38 ? "up" : "down");
-      }
+      case 13:
+        // selection
+        break;
+        
+      case 38:
+      case 40:
+        if (keyCode === 38 || keyCode === 40) {
+          evt.preventDefault();
+
+          if (typeof this.props.onSelectionMove === 'function') {
+            this.props.onSelectionMove(evt, keyCode === 38 ? "up" : "down");
+          }
+        }
+
+        break;
+    
+      default:
+        break;
     }
-
-    return;
   };
 
   render() {

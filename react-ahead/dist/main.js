@@ -704,16 +704,36 @@ class input_Input extends external_commonjs_react_commonjs2_react_amd_React_root
       const {
         keyCode
       } = evt;
+      console.log(keyCode);
 
-      if (keyCode === 38 || keyCode === 40) {
-        evt.preventDefault();
+      switch (keyCode) {
+        case 9:
+          if (this.props.value && !evt.shiftKey) {
+            // selection
+            evt.preventDefault();
+          }
 
-        if (typeof this.props.onSelectionMove === 'function') {
-          this.props.onSelectionMove(evt, keyCode === 38 ? "up" : "down");
-        }
+          break;
+
+        case 13:
+          // selection
+          break;
+
+        case 38:
+        case 40:
+          if (keyCode === 38 || keyCode === 40) {
+            evt.preventDefault();
+
+            if (typeof this.props.onSelectionMove === 'function') {
+              this.props.onSelectionMove(evt, keyCode === 38 ? "up" : "down");
+            }
+          }
+
+          break;
+
+        default:
+          break;
       }
-
-      return;
     });
 
     this._div = external_commonjs_react_commonjs2_react_amd_React_root_React_default.a.createRef();
@@ -784,7 +804,7 @@ class input_Input extends external_commonjs_react_commonjs2_react_amd_React_root
 _defineProperty(input_Input, "propTypes", {
   onEntryChange: prop_types_default.a.func,
   onSelectionMove: prop_types_default.a.func,
-  value: prop_types_default.a.value
+  value: prop_types_default.a.string
 });
 // CONCATENATED MODULE: ./src/dropdown.js
 function dropdown_defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
@@ -804,6 +824,7 @@ class dropdown_Dropdown extends external_commonjs_react_commonjs2_react_amd_Reac
   render() {
     if (this.props.open) {
       return external_commonjs_react_commonjs2_react_amd_React_root_React_default.a.createElement("div", {
+        onClick: this.props.onClick,
         className: this._wrapperClass + " " + this.props.className,
         style: {
           height: "100px"
@@ -987,14 +1008,9 @@ class src_ReactAhead extends external_commonjs_react_commonjs2_react_amd_React_r
     src_defineProperty(this, "handleEntryChanged", (_evt, value) => {
       let targetState = {
         value
-      };
+      }; //todo: do the search with the vlaue
 
-      if (!this.state.dropdownOpen) {
-        // the dropdown shall remain open even if all text are cleared
-        targetState.dropdownOpen = true;
-      } //todo: do the search with the vlaue
-
-
+      this._lastVal = value;
       this.setState(targetState);
     });
 
@@ -1027,14 +1043,16 @@ class src_ReactAhead extends external_commonjs_react_commonjs2_react_amd_React_r
       let {
         selection
       } = this.state;
+      this._lastVal = '';
+      console.log('selection, reset last value:', this._lastVal);
 
       if (this.props.multiSel) {
         selection.push(val);
       } else {
         selection = [val];
-      }
+      } // this.handleControlFocus(null);
 
-      this.handleFocusMove(null);
+
       this.setState({
         selection,
         value: ''
@@ -1042,31 +1060,61 @@ class src_ReactAhead extends external_commonjs_react_commonjs2_react_amd_React_r
     });
 
     src_defineProperty(this, "handleKeepFocus", evt => {
-      console.log("keep focus...");
       this._focusType = 2;
+      this._initDropdownState = this.state.dropdownOpen;
     });
 
-    src_defineProperty(this, "handleFocusMove", evt => {
+    src_defineProperty(this, "handleControlFocus", evt => {
       if (this._input && this._input.current) {
         this._input.current.focus();
       }
     });
 
     src_defineProperty(this, "handleGetFocus", evt => {
-      if (this._focusType !== 1) {
-        this._focusType = 1; //todo: do the search on opening the dropdown menu  
+      console.log('get focus ... ', this._focusType);
+      let {
+        value
+      } = this.state;
 
-        this.setState({
-          dropdownOpen: true // open with full values
+      switch (this._focusType) {
+        case 0:
+        case 2:
+          this._focusType = 1;
+          value = this._lastVal; //todo: do the search on opening the dropdown menu  
 
-        });
+          this.setState({
+            value,
+            dropdownOpen: true // open with full values
+
+          });
+          break;
+
+        case 3:
+          //reset focus only
+          this._focusType = 1;
+          return;
+
+        case 1:
+          this.setState({
+            dropdownOpen: true // open with full values
+
+          });
+          return;
+
+        default:
+          break;
       }
     });
 
     src_defineProperty(this, "handleLoseFocus", evt => {
+      console.log('lose focus ... ', this._focusType);
+
       if (this._focusType === 2) {
         // the focus type will remain
         this._focusType = 1;
+      } else if (this._focusType === 3) {
+        this._focusType = 1;
+        this.handleControlFocus(evt);
       } else {
         this._focusType = 0;
         this.setState({
@@ -1076,10 +1124,18 @@ class src_ReactAhead extends external_commonjs_react_commonjs2_react_amd_React_r
       }
     });
 
+    src_defineProperty(this, "handleDropdownSelection", evt => {
+      console.log('dropdown clicked ... ', this._focusType);
+      this._focusType = 3;
+      this.handleControlFocus(evt);
+    });
+
     src_defineProperty(this, "handleSelectionRemoval", val => {});
 
     src_defineProperty(this, "handleClear", () => {
+      console.log('clear ... ');
       this._focusType = 2;
+      this._lastVal = '';
 
       if (this._input && this._input.current) {
         this._input.current.handleTextChange(null, {
@@ -1094,10 +1150,16 @@ class src_ReactAhead extends external_commonjs_react_commonjs2_react_amd_React_r
     });
 
     src_defineProperty(this, "handleDropdownOpen", () => {
-      this._focusType = 2;
-      this.setState({
-        dropdownOpen: true
-      });
+      if (this._initDropdownState) {
+        let lastVal = this.state.value;
+        setTimeout(() => {
+          this._lastVal = lastVal;
+          this.setState({
+            value: '',
+            dropdownOpen: false
+          });
+        }, 0);
+      }
     });
 
     src_defineProperty(this, "renderInput", () => {
@@ -1122,6 +1184,8 @@ class src_ReactAhead extends external_commonjs_react_commonjs2_react_amd_React_r
 
     this._input = external_commonjs_react_commonjs2_react_amd_React_root_React_default.a.createRef();
     this._focusType = 0;
+    this._lastVal = '';
+    this._initDropdownState = false;
 
     if (Array.isArray(props.initOptions) && props.initOptions.length > 0) {
       this.state.options = props.initOptions;
@@ -1145,11 +1209,11 @@ class src_ReactAhead extends external_commonjs_react_commonjs2_react_amd_React_r
       dropdownOpen
     } = this.state;
     return external_commonjs_react_commonjs2_react_amd_React_root_React_default.a.createElement("div", {
-      className: (className || '') + " " + this._classNames.container
+      className: (className || '') + " " + this._classNames.container,
+      onMouseDown: this.handleKeepFocus
     }, external_commonjs_react_commonjs2_react_amd_React_root_React_default.a.createElement("div", {
       className: (customClassNames.input || '') + " " + this._classNames.wrapper,
-      onMouseDown: this.handleKeepFocus,
-      onClick: this.handleFocusMove,
+      onClick: this.handleControlFocus,
       onFocus: this.handleGetFocus,
       onBlur: this.handleLoseFocus
     }, this.renderInput(), external_commonjs_react_commonjs2_react_amd_React_root_React_default.a.createElement(icon, {
@@ -1160,7 +1224,8 @@ class src_ReactAhead extends external_commonjs_react_commonjs2_react_amd_React_r
       open: dropdownOpen,
       options: options,
       cursorIndex: cursorIndex,
-      onSelection: this.handleSelectionChoice
+      onSelection: this.handleSelectionChoice,
+      onMouseDown: this.handleDropdownSelection
     }));
   }
 

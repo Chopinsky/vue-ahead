@@ -21,7 +21,8 @@ export default class Dropdown extends React.Component {
 
     if (this.props.open) {
       return (
-        <div 
+        <div
+          onClick={this.props.onClick}
           className={this._wrapperClass + " " + this.props.className}
           style={{ height: "100px" }}
         >
