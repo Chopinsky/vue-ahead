@@ -2,10 +2,14 @@ import React from "react";
 import PropTypes from "prop-types";
 import styles from "./shared.css";
 
-const defaultClass = "react-ahead__input-inner-wrapper";
+const inputClass = "react-ahead__input-inner-wrapper";
 
 export default class Input extends React.Component {
-  static propTypes = {};
+  static propTypes = {
+    onEntryChange: PropTypes.func,
+    onSelectionMove: PropTypes.func,
+    value: PropTypes.value,
+  };
 
   state = {
     width: 0,
@@ -16,9 +20,18 @@ export default class Input extends React.Component {
 
     this._div = React.createRef();
     this._input = React.createRef();
+
+    this._inputStyle = styles[inputClass] || inputClass;
   }
 
-  componentDidMount() {}
+  componentDidUpdate(prevProps, _prevState, _snapshot) {
+    // if (prevProps.value !== this.props.value) {
+    //   if (this._div && this._div.current) {
+    //     this._div.current.innerText = val;
+    //     width = this._div.current.offsetWidth;
+    //   }
+    // }
+  }
 
   focus = () => {
     if (this._input && this._input.current) {
@@ -26,8 +39,8 @@ export default class Input extends React.Component {
     }
   };
 
-  handleTextChange = evt => {
-    const val = evt.target.value;
+  handleTextChange = (evt, forceUpdate) => {
+    const val = (evt && evt.target && evt.target.value) || (forceUpdate && forceUpdate.value) || '';
     let { width } = this.state;
 
     if (this._div && this._div.current) {
@@ -35,7 +48,7 @@ export default class Input extends React.Component {
       width = this._div.current.offsetWidth;
     }
 
-    if (typeof this.props.onEntryChange === 'function') {
+    if (!forceUpdate && this.props.onEntryChange) {
       this.props.onEntryChange(evt, val);
     }
 
@@ -50,7 +63,6 @@ export default class Input extends React.Component {
     }
 
     const { keyCode } = evt;
-    console.log(keyCode);
 
     if (keyCode === 38 || keyCode === 40) {
       evt.preventDefault();
@@ -69,7 +81,7 @@ export default class Input extends React.Component {
         style={{
           display: "inline-block",
         }}
-        className={styles[defaultClass] || defaultClass}
+        className={this._inputStyle}
       >
         <input
           autoCapitalize="none"
@@ -92,6 +104,7 @@ export default class Input extends React.Component {
           }}
           onChange={this.handleTextChange}
           onKeyDown={this.handleKeydown}
+          // onBlur={evt => evt.stopPropagation()}
           value={this.props.value}
         />
         <div

@@ -9,12 +9,16 @@ export default class Selection extends React.Component {
     onSelectionRemoval: PropTypes.func.isRequired,
   };
 
+  constructor(props) {
+    super(props);
+    
+    this._containerStyle = style[containerClass] || containerClass;
+  }
+
   render() {
     if (!this.props.selection || !this.props.selection.length) {
       return null;
     }
-
-    const containerStyle = style[containerClass] || containerClass;
 
     return (
       <>
@@ -27,7 +31,7 @@ export default class Selection extends React.Component {
                   whiteSpace: "nowrap",
                 }}
               >
-                <div className={containerStyle}>
+                <div className={this._containerStyle}>
                 </div>
               </div>
             );

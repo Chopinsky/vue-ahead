@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import Input from './input';
 import Dropdown from './dropdown';
@@ -15,12 +15,19 @@ export default class ReactAhead extends React.Component {
   static propTypes = {
     isMulti: PropTypes.bool,
     initOptions: PropTypes.arrayOf(PropTypes.object),
+    customClassNames: PropTypes.object,
+  };
+
+  static defaultProps = {
+    customClassNames: {
+      input: '',
+      dropdown: '',
+    }
   };
 
   state = {
     cursorIndex: 0,
     dropdownOpen: false,
-    hasFocus: false,
     options: [],
     selection: [],
     value: ''
@@ -29,21 +36,34 @@ export default class ReactAhead extends React.Component {
   constructor(props) {
     super(props);
 
-    this._oldVal = '';
     this._input = React.createRef();
+    this._focusType = 0;
 
     if (Array.isArray(props.initOptions) && props.initOptions.length > 0) {
       this.state.options = props.initOptions;
     }
+
+    this._classNames = {
+      container: styles[containerClass] || containerClass,
+      wrapper: styles[wrapperClass] || wrapperClass,
+      inputWrapper: styles[inputWrapperClass] || inputWrapperClass,
+    }
   }
 
   handleEntryChanged = (_evt, value) => {
-    this.setState({
-      value: value,
-    });
+    let targetState = { value };
+
+    if (!this.state.dropdownOpen) {
+       // the dropdown shall remain open even if all text are cleared
+      targetState.dropdownOpen = true;
+    }
+
+    //todo: do the search with the vlaue
+
+    this.setState(targetState);
   };
 
-  handleSelectionMove = (evt, side) => {
+  handleSelectionMove = (_evt, side) => {
     let { cursorIndex } = this.state;
 
     if (side === 'up' && cursorIndex >= 0) {
@@ -77,13 +97,18 @@ export default class ReactAhead extends React.Component {
       selection = [val];
     }
 
-    this._oldVal = this.state.value;
+    this.handleFocusMove(null);
 
     this.setState({
       selection,
       value: '',
     });
   };
+
+  handleKeepFocus = evt => {
+    console.log("keep focus...");
+    this._focusType = 2;
+  }
 
   handleFocusMove = evt => {
     if (this._input && this._input.current) {
@@ -92,30 +117,29 @@ export default class ReactAhead extends React.Component {
   };
 
   handleGetFocus = evt => {
-    let value = this.state.value;
+    if (this._focusType !== 1) {
+      this._focusType = 1;
 
-    if (this._oldVal) {
-      value = this._oldVal;
+      //todo: do the search on opening the dropdown menu  
 
-      //todo: do the search
-
+      this.setState({
+        dropdownOpen: true,  // open with full values
+      });
     }
-
-    this.setState({
-      value,
-      hasFocus: true,
-      dropdownOpen: true,
-    });
   };
 
   handleLoseFocus = evt => {
-    this._oldVal = this.state.value;
+    if (this._focusType === 2) {
+      // the focus type will remain
+      this._focusType = 1;
+    } else {
+      this._focusType = 0;
 
-    this.setState({
-      value: '',
-      hasFocus: false,
-      dropdownOpen: false,
-    });
+      this.setState({
+        value: '',
+        dropdownOpen: false,
+      });
+    }
   };
 
   handleSelectionRemoval = val => {
@@ -123,31 +147,38 @@ export default class ReactAhead extends React.Component {
   };
 
   handleClear = () => {
-    this.handleFocusMove();
+    this._focusType = 2;
 
-    this._oldVal = '';
+    if (this._input && this._input.current) {
+      this._input.current.handleTextChange(null, { value: '' });
+    }
 
     this.setState({
       value: '',
       selection: [],
-    })
+    });
   };
 
   handleDropdownOpen = () => {
-    this.handleFocusMove();
-  }
+    this._focusType = 2;
+
+    this.setState({
+      dropdownOpen: true,
+    })
+  };
 
   renderInput = () => {
-    const inputStyle = styles[inputWrapperClass] || inputWrapperClass;
+    const singleSelDone = !this.props.isMulti && this.state.selection.length === 1;
 
     return (
-      <div
-        className={inputStyle}
-        onClick={this.handleFocusMove}
-      >
+      <div className={this._classNames.inputWrapper}>
         <Placeholder 
-          show={this.props.placeholder && this.state.selection.length === 0 && !this.state.value} 
-          text={this.props.placeholder}
+          show={
+            (this.props.placeholder && this.state.selection.length === 0 && !this.state.value)
+            || (singleSelDone && !this.state.value)
+          } 
+          text={singleSelDone ? this.state.selection[0] : this.props.placeholder}
+          valueDisplayMode={singleSelDone}
         />
         <Selection
           isMulti={this.props.isMulti}
@@ -165,13 +196,23 @@ export default class ReactAhead extends React.Component {
   };
 
   render() {
-    const containerStyle = styles[containerClass] || containerClass;
-    const wrapperStyle = styles[wrapperClass] || wrapperClass;
+    const {
+      className,
+      customClassNames,
+      options,
+    } = this.props;
+
+    const {
+      cursorIndex,
+      dropdownOpen,
+    } = this.state;
 
     return (
-      <div className={this.props.containerClassName + " " + containerStyle}>
+      <div className={(className || '') + " " + this._classNames.container}>
         <div
-          className={this.props.className + " " + wrapperStyle}
+          className={(customClassNames.input || '') + " " + this._classNames.wrapper}
+          onMouseDown={this.handleKeepFocus}
+          onClick={this.handleFocusMove}
           onFocus={this.handleGetFocus}
           onBlur={this.handleLoseFocus}
         >
@@ -182,8 +223,10 @@ export default class ReactAhead extends React.Component {
           />
         </div>
         <Dropdown
-          options={this.props.options}
-          cursorIndex={this.state.cursorIndex}
+          className={customClassNames.dropdown}
+          open={dropdownOpen}
+          options={options}
+          cursorIndex={cursorIndex}
           onSelection={this.handleSelectionChoice}
         />
       </div>

@@ -1,6 +1,15 @@
-.app-input {
-  width: 360px;
+.app-control {
+  width: 400px;
+}
+
+div.app-control-input {
   border: 2px solid black;
+  border-radius: 0;
+}
+
+div.app-control-dropdown {
+  border: 2px solid black;
+  border-radius: 0;
 }
 
 .app-wrapper {

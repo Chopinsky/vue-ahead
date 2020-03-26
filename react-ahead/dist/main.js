@@ -517,18 +517,21 @@ module.exports = function (list, options) {
 var ___CSS_LOADER_API_IMPORT___ = __webpack_require__(7);
 exports = ___CSS_LOADER_API_IMPORT___(false);
 // Module
-exports.push([module.i, "._2dH7OUMw0ESmltDd0ovClD {\r\n  position: relative;\r\n  box-sizing: border-box;\r\n}\r\n\r\n.Axrtb5jaHtP98cGxAqRLV {\r\n  -webkit-box-align: center;\r\n  -webkit-box-pack: justify;\r\n  padding-left: 6px;\r\n  padding-right: 2px;\r\n  min-height: 38px;\r\n  align-items: center;\r\n  background-color: rgb(255, 255, 255);\r\n  cursor: default;\r\n  position: relative;\r\n  box-sizing: border-box;\r\n  display: flex;\r\n  flex-wrap: wrap;\r\n  justify-content: space-between;\r\n  transition: all 100ms ease 0s;\r\n  outline: 0px !important;\r\n}\r\n\r\n._1Vnmg2rKay_EA99qawmFda {\r\n  padding: 2px;\r\n  color: rgb(51, 51, 51);\r\n  position: relative;\r\n  display: flex;\r\n  flex: 1 1 0%;\r\n  flex-wrap: wrap;\r\n  box-sizing: border-box;\r\n  overflow: hidden;\r\n  visibility: visible;\r\n  box-sizing: border-box;\r\n  width: 100%;\r\n}\r\n\r\n._2CD9QkPe0_ZMyoTQxtKBm7 {\r\n  position: absolute;\r\n  top: 50%;\r\n  color: rgb(128, 128, 128);\r\n  margin: 0;\r\n  transform: translateY(-50%);\r\n  box-sizing: border-box;\r\n  /* color: gray; */\r\n}\r\n\r\n._1Vnmg2rKay_EA99qawmFda {  \r\n  cursor: text;\r\n  width: 100%;\r\n}\r\n\r\n._2eDYrfCE1goL3V_2ogtQtz {\r\n  background-color: rgb(230, 230, 230);\r\n  display: flex;\r\n  min-width: 0px;\r\n  box-sizing: border-box;\r\n  border-radius: 2px;\r\n  margin: 2px;\r\n}\r\n\r\n.f3JQilMsEX8OORf4P64Je {\r\n  -webkit-box-align: center;\r\n  align-items: center;\r\n  align-self: stretch;\r\n  display: flex;\r\n  flex-shrink: 0;\r\n  box-sizing: border-box;\r\n}\r\n\r\n.VCVVJzKJ2WKTbtqdDC8bs {\r\n  color: rgb(204, 204, 204);\r\n  display: flex;\r\n  box-sizing: border-box;\r\n  padding: 10px 6px;\r\n  transition: color 150ms ease 0s;\r\n}\r\n\r\n.VCVVJzKJ2WKTbtqdDC8bs:hover {\r\n  cursor: pointer;\r\n  color: rgb(153, 153, 153);\r\n}\r\n\r\n._1CVLtK-SeWREdFbtMfsFr6 {\r\n  display: inline-block;\r\n  fill: currentcolor;\r\n  line-height: 1;\r\n  stroke: currentcolor;\r\n  stroke-width: 0;\r\n}\r\n\r\n.siGZdSGJ2DsmuVUPdLj1S {\r\n  align-self: stretch;\r\n  background-color: rgb(204, 204, 204);\r\n  margin-bottom: 8px;\r\n  margin-top: 8px;\r\n  width: 1px;\r\n  box-sizing: border-box;\r\n}\r\n", ""]);
+exports.push([module.i, "._2dH7OUMw0ESmltDd0ovClD {\r\n  position: relative;\r\n  box-sizing: border-box;\r\n}\r\n\r\n.Axrtb5jaHtP98cGxAqRLV {\r\n  -webkit-box-align: center;\r\n  -webkit-box-pack: justify;\r\n  padding-left: 6px;\r\n  padding-right: 2px;\r\n  min-height: 38px;\r\n  align-items: center;\r\n  background-color: rgb(255, 255, 255);\r\n  border-radius: 2px;\r\n  border: 1px solid rgb(204, 204, 204);\r\n  cursor: default;\r\n  position: relative;\r\n  box-sizing: border-box;\r\n  display: flex;\r\n  flex-wrap: wrap;\r\n  justify-content: space-between;\r\n  transition: all 100ms ease 0s;\r\n  outline: 0px !important;\r\n}\r\n\r\n._1Vnmg2rKay_EA99qawmFda {\r\n  padding: 2px;\r\n  color: rgb(51, 51, 51);\r\n  position: relative;\r\n  display: flex;\r\n  flex: 1 1 0%;\r\n  flex-wrap: wrap;\r\n  box-sizing: border-box;\r\n  overflow: hidden;\r\n  visibility: visible;\r\n  box-sizing: border-box;\r\n  width: 100%;\r\n}\r\n\r\n._2CD9QkPe0_ZMyoTQxtKBm7 {\r\n  position: absolute;\r\n  top: 50%;\r\n  color: rgb(128, 128, 128);\r\n  margin: 0;\r\n  transform: translateY(-50%);\r\n  box-sizing: border-box;\r\n}\r\n\r\n.xLIYtwgLVzX9AyYwVcgLt {\r\n  color: inherit;\r\n}\r\n\r\n._1Vnmg2rKay_EA99qawmFda {  \r\n  cursor: text;\r\n  width: 100%;\r\n}\r\n\r\n._2eDYrfCE1goL3V_2ogtQtz {\r\n  background-color: rgb(230, 230, 230);\r\n  display: flex;\r\n  min-width: 0px;\r\n  box-sizing: border-box;\r\n  border-radius: 2px;\r\n  margin: 2px;\r\n}\r\n\r\n.f3JQilMsEX8OORf4P64Je {\r\n  -webkit-box-align: center;\r\n  align-items: center;\r\n  align-self: stretch;\r\n  display: flex;\r\n  flex-shrink: 0;\r\n  box-sizing: border-box;\r\n}\r\n\r\n.VCVVJzKJ2WKTbtqdDC8bs {\r\n  color: rgb(204, 204, 204);\r\n  display: flex;\r\n  box-sizing: border-box;\r\n  padding: 10px 6px;\r\n  transition: color 150ms ease 0s;\r\n}\r\n\r\n.VCVVJzKJ2WKTbtqdDC8bs:hover {\r\n  cursor: pointer;\r\n  color: rgb(153, 153, 153);\r\n}\r\n\r\n.VCVVJzKJ2WKTbtqdDC8bs:focus {\r\n  color: rgb(153, 153, 153);\r\n  outline: 0px solid transparent;\r\n}\r\n\r\n._1CVLtK-SeWREdFbtMfsFr6 {\r\n  display: inline-block;\r\n  fill: currentcolor;\r\n  line-height: 1;\r\n  stroke: currentcolor;\r\n  stroke-width: 0;\r\n}\r\n\r\n.siGZdSGJ2DsmuVUPdLj1S {\r\n  align-self: stretch;\r\n  background-color: rgb(204, 204, 204);\r\n  margin-bottom: 8px;\r\n  margin-top: 8px;\r\n  width: 1px;\r\n  box-sizing: border-box;\r\n}\r\n\r\n._3etkCiSEHj9rBdr3HP7hoI {\r\n  top: 100%;\r\n  background-color: rgb(255, 255, 255);\r\n  box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 0px 1px, rgba(0, 0, 0, 0.1) 0px 4px 11px;\r\n  margin-bottom: 8px;\r\n  margin-top: 8px;\r\n  position: absolute;\r\n  width: 100%;\r\n  z-index: 1;\r\n  box-sizing: border-box;\r\n  border-radius: 2px;\r\n}\r\n\r\n._2BZ6P2ChebiTM94M-OMhZD {\r\n  max-height: 300px;\r\n  overflow-y: auto;\r\n  padding-bottom: 4px;\r\n  padding-top: 4px;\r\n  position: relative;\r\n  box-sizing: border-box;\r\n}\r\n", ""]);
 // Exports
 exports.locals = {
 	"react-ahead__control-container": "_2dH7OUMw0ESmltDd0ovClD",
 	"react-ahead__control-wrapper": "Axrtb5jaHtP98cGxAqRLV",
 	"react-ahead__input-wrapper": "_1Vnmg2rKay_EA99qawmFda",
 	"react-ahead__placeholder": "_2CD9QkPe0_ZMyoTQxtKBm7",
+	"react-ahead__placeholder-value-mode": "xLIYtwgLVzX9AyYwVcgLt",
 	"react-ahead__selection-container": "_2eDYrfCE1goL3V_2ogtQtz",
 	"react-ahead__dropdown-wrapper": "f3JQilMsEX8OORf4P64Je",
 	"react-ahead__dropdown-icon-wrapper": "VCVVJzKJ2WKTbtqdDC8bs",
 	"react-ahead__dropdown-icon": "_1CVLtK-SeWREdFbtMfsFr6",
-	"react-ahead__dropdown-separator": "siGZdSGJ2DsmuVUPdLj1S"
+	"react-ahead__dropdown-separator": "siGZdSGJ2DsmuVUPdLj1S",
+	"react-ahead__menu-wrapper": "_3etkCiSEHj9rBdr3HP7hoI",
+	"react-ahead__menu-content": "_2BZ6P2ChebiTM94M-OMhZD"
 };
 module.exports = exports;
 
@@ -658,7 +661,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 
 
-const defaultClass = "react-ahead__input-inner-wrapper";
+const inputClass = "react-ahead__input-inner-wrapper";
 class input_Input extends external_commonjs_react_commonjs2_react_amd_React_root_React_default.a.Component {
   constructor(props) {
     super(props);
@@ -673,8 +676,8 @@ class input_Input extends external_commonjs_react_commonjs2_react_amd_React_root
       }
     });
 
-    _defineProperty(this, "handleTextChange", evt => {
-      const val = evt.target.value;
+    _defineProperty(this, "handleTextChange", (evt, forceUpdate) => {
+      const val = evt && evt.target && evt.target.value || forceUpdate && forceUpdate.value || '';
       let {
         width
       } = this.state;
@@ -684,7 +687,7 @@ class input_Input extends external_commonjs_react_commonjs2_react_amd_React_root
         width = this._div.current.offsetWidth;
       }
 
-      if (typeof this.props.onEntryChange === 'function') {
+      if (!forceUpdate && this.props.onEntryChange) {
         this.props.onEntryChange(evt, val);
       }
 
@@ -701,7 +704,6 @@ class input_Input extends external_commonjs_react_commonjs2_react_amd_React_root
       const {
         keyCode
       } = evt;
-      console.log(keyCode);
 
       if (keyCode === 38 || keyCode === 40) {
         evt.preventDefault();
@@ -716,16 +718,23 @@ class input_Input extends external_commonjs_react_commonjs2_react_amd_React_root
 
     this._div = external_commonjs_react_commonjs2_react_amd_React_root_React_default.a.createRef();
     this._input = external_commonjs_react_commonjs2_react_amd_React_root_React_default.a.createRef();
+    this._inputStyle = shared_default.a[inputClass] || inputClass;
   }
 
-  componentDidMount() {}
+  componentDidUpdate(prevProps, _prevState, _snapshot) {// if (prevProps.value !== this.props.value) {
+    //   if (this._div && this._div.current) {
+    //     this._div.current.innerText = val;
+    //     width = this._div.current.offsetWidth;
+    //   }
+    // }
+  }
 
   render() {
     return external_commonjs_react_commonjs2_react_amd_React_root_React_default.a.createElement("div", {
       style: {
         display: "inline-block"
       },
-      className: shared_default.a[defaultClass] || defaultClass
+      className: this._inputStyle
     }, external_commonjs_react_commonjs2_react_amd_React_root_React_default.a.createElement("input", {
       autoCapitalize: "none",
       autoComplete: "off",
@@ -746,7 +755,8 @@ class input_Input extends external_commonjs_react_commonjs2_react_amd_React_root
         border: 0
       },
       onChange: this.handleTextChange,
-      onKeyDown: this.handleKeydown,
+      onKeyDown: this.handleKeydown // onBlur={evt => evt.stopPropagation()}
+      ,
       value: this.props.value
     }), external_commonjs_react_commonjs2_react_amd_React_root_React_default.a.createElement("div", {
       ref: this._div,
@@ -771,16 +781,36 @@ class input_Input extends external_commonjs_react_commonjs2_react_amd_React_root
 
 }
 
-_defineProperty(input_Input, "propTypes", {});
+_defineProperty(input_Input, "propTypes", {
+  onEntryChange: prop_types_default.a.func,
+  onSelectionMove: prop_types_default.a.func,
+  value: prop_types_default.a.value
+});
 // CONCATENATED MODULE: ./src/dropdown.js
 function dropdown_defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 
 
+
+const menuWrapperClass = "react-ahead__menu-wrapper";
+const menuContentClass = "react-ahead__menu-content";
 class dropdown_Dropdown extends external_commonjs_react_commonjs2_react_amd_React_root_React_default.a.Component {
+  constructor(props) {
+    super(props);
+    this._wrapperClass = shared_default.a[menuWrapperClass] || menuWrapperClass;
+    this._contentClass = shared_default.a[menuContentClass] || menuContentClass;
+  }
+
   render() {
     if (this.props.open) {
-      return external_commonjs_react_commonjs2_react_amd_React_root_React_default.a.createElement("div", null);
+      return external_commonjs_react_commonjs2_react_amd_React_root_React_default.a.createElement("div", {
+        className: this._wrapperClass + " " + this.props.className,
+        style: {
+          height: "100px"
+        }
+      }, external_commonjs_react_commonjs2_react_amd_React_root_React_default.a.createElement("div", {
+        className: this._contentClass
+      }));
     }
 
     return null;
@@ -793,14 +823,21 @@ dropdown_defineProperty(dropdown_Dropdown, "propTypes", {});
 
 
 const placeholderClass = "react-ahead__placeholder";
+const valueModeClass = "react-ahead__placeholder-value-mode";
 
 const Placeholder = props => {
   if (!props.show || !props.text) {
     return null;
   }
 
+  let wrapperStyle = shared_default.a[placeholderClass] || placeholderClass;
+
+  if (props.valueDisplayMode) {
+    wrapperStyle += " " + (shared_default.a[valueModeClass] || valueModeClass);
+  }
+
   return external_commonjs_react_commonjs2_react_amd_React_root_React_default.a.createElement("div", {
-    className: shared_default.a[placeholderClass] || placeholderClass
+    className: wrapperStyle
   }, props.text);
 };
 
@@ -813,12 +850,16 @@ function selection_defineProperty(obj, key, value) { if (key in obj) { Object.de
 
 const containerClass = "react-ahead__selection-container";
 class selection_Selection extends external_commonjs_react_commonjs2_react_amd_React_root_React_default.a.Component {
+  constructor(props) {
+    super(props);
+    this._containerStyle = shared_default.a[containerClass] || containerClass;
+  }
+
   render() {
     if (!this.props.selection || !this.props.selection.length) {
       return null;
     }
 
-    const containerStyle = shared_default.a[containerClass] || containerClass;
     return external_commonjs_react_commonjs2_react_amd_React_root_React_default.a.createElement(external_commonjs_react_commonjs2_react_amd_React_root_React_default.a.Fragment, null, this.props.selection.map(item => {
       return external_commonjs_react_commonjs2_react_amd_React_root_React_default.a.createElement("div", {
         style: {
@@ -826,7 +867,7 @@ class selection_Selection extends external_commonjs_react_commonjs2_react_amd_Re
           whiteSpace: "nowrap"
         }
       }, external_commonjs_react_commonjs2_react_amd_React_root_React_default.a.createElement("div", {
-        className: containerStyle
+        className: this._containerStyle
       }));
     }));
   }
@@ -899,13 +940,15 @@ const DropdownIcon = props => {
   }, external_commonjs_react_commonjs2_react_amd_React_root_React_default.a.createElement("div", {
     className: iconWrapperStyle,
     "aria-hidden": "true",
-    onClick: props.onClear
+    onClick: props.onClear,
+    tabIndex: 0
   }, external_commonjs_react_commonjs2_react_amd_React_root_React_default.a.createElement(clear, null)), external_commonjs_react_commonjs2_react_amd_React_root_React_default.a.createElement("span", {
     className: separatorStyle
   }), external_commonjs_react_commonjs2_react_amd_React_root_React_default.a.createElement("div", {
     className: iconWrapperStyle,
     "aria-hidden": "true",
-    onClick: props.onDropdown
+    onClick: props.onDropdown,
+    tabIndex: 0
   }, external_commonjs_react_commonjs2_react_amd_React_root_React_default.a.createElement(drop, null)));
 };
 
@@ -936,19 +979,26 @@ class src_ReactAhead extends external_commonjs_react_commonjs2_react_amd_React_r
     src_defineProperty(this, "state", {
       cursorIndex: 0,
       dropdownOpen: false,
-      hasFocus: false,
       options: [],
       selection: [],
       value: ''
     });
 
     src_defineProperty(this, "handleEntryChanged", (_evt, value) => {
-      this.setState({
-        value: value
-      });
+      let targetState = {
+        value
+      };
+
+      if (!this.state.dropdownOpen) {
+        // the dropdown shall remain open even if all text are cleared
+        targetState.dropdownOpen = true;
+      } //todo: do the search with the vlaue
+
+
+      this.setState(targetState);
     });
 
-    src_defineProperty(this, "handleSelectionMove", (evt, side) => {
+    src_defineProperty(this, "handleSelectionMove", (_evt, side) => {
       let {
         cursorIndex
       } = this.state;
@@ -984,11 +1034,16 @@ class src_ReactAhead extends external_commonjs_react_commonjs2_react_amd_React_r
         selection = [val];
       }
 
-      this._oldVal = this.state.value;
+      this.handleFocusMove(null);
       this.setState({
         selection,
         value: ''
       });
+    });
+
+    src_defineProperty(this, "handleKeepFocus", evt => {
+      console.log("keep focus...");
+      this._focusType = 2;
     });
 
     src_defineProperty(this, "handleFocusMove", evt => {
@@ -998,33 +1053,40 @@ class src_ReactAhead extends external_commonjs_react_commonjs2_react_amd_React_r
     });
 
     src_defineProperty(this, "handleGetFocus", evt => {
-      let value = this.state.value;
+      if (this._focusType !== 1) {
+        this._focusType = 1; //todo: do the search on opening the dropdown menu  
 
-      if (this._oldVal) {
-        value = this._oldVal; //todo: do the search
+        this.setState({
+          dropdownOpen: true // open with full values
+
+        });
       }
-
-      this.setState({
-        value,
-        hasFocus: true,
-        dropdownOpen: true
-      });
     });
 
     src_defineProperty(this, "handleLoseFocus", evt => {
-      this._oldVal = this.state.value;
-      this.setState({
-        value: '',
-        hasFocus: false,
-        dropdownOpen: false
-      });
+      if (this._focusType === 2) {
+        // the focus type will remain
+        this._focusType = 1;
+      } else {
+        this._focusType = 0;
+        this.setState({
+          value: '',
+          dropdownOpen: false
+        });
+      }
     });
 
     src_defineProperty(this, "handleSelectionRemoval", val => {});
 
     src_defineProperty(this, "handleClear", () => {
-      this.handleFocusMove();
-      this._oldVal = '';
+      this._focusType = 2;
+
+      if (this._input && this._input.current) {
+        this._input.current.handleTextChange(null, {
+          value: ''
+        });
+      }
+
       this.setState({
         value: '',
         selection: []
@@ -1032,17 +1094,20 @@ class src_ReactAhead extends external_commonjs_react_commonjs2_react_amd_React_r
     });
 
     src_defineProperty(this, "handleDropdownOpen", () => {
-      this.handleFocusMove();
+      this._focusType = 2;
+      this.setState({
+        dropdownOpen: true
+      });
     });
 
     src_defineProperty(this, "renderInput", () => {
-      const inputStyle = shared_default.a[inputWrapperClass] || inputWrapperClass;
+      const singleSelDone = !this.props.isMulti && this.state.selection.length === 1;
       return external_commonjs_react_commonjs2_react_amd_React_root_React_default.a.createElement("div", {
-        className: inputStyle,
-        onClick: this.handleFocusMove
+        className: this._classNames.inputWrapper
       }, external_commonjs_react_commonjs2_react_amd_React_root_React_default.a.createElement(placeholder, {
-        show: this.props.placeholder && this.state.selection.length === 0 && !this.state.value,
-        text: this.props.placeholder
+        show: this.props.placeholder && this.state.selection.length === 0 && !this.state.value || singleSelDone && !this.state.value,
+        text: singleSelDone ? this.state.selection[0] : this.props.placeholder,
+        valueDisplayMode: singleSelDone
       }), external_commonjs_react_commonjs2_react_amd_React_root_React_default.a.createElement(selection_Selection, {
         isMulti: this.props.isMulti,
         selection: this.state.selection,
@@ -1055,29 +1120,46 @@ class src_ReactAhead extends external_commonjs_react_commonjs2_react_amd_React_r
       }));
     });
 
-    this._oldVal = '';
     this._input = external_commonjs_react_commonjs2_react_amd_React_root_React_default.a.createRef();
+    this._focusType = 0;
 
     if (Array.isArray(props.initOptions) && props.initOptions.length > 0) {
       this.state.options = props.initOptions;
     }
+
+    this._classNames = {
+      container: shared_default.a[src_containerClass] || src_containerClass,
+      wrapper: shared_default.a[wrapperClass] || wrapperClass,
+      inputWrapper: shared_default.a[inputWrapperClass] || inputWrapperClass
+    };
   }
 
   render() {
-    const containerStyle = shared_default.a[src_containerClass] || src_containerClass;
-    const wrapperStyle = shared_default.a[wrapperClass] || wrapperClass;
+    const {
+      className,
+      customClassNames,
+      options
+    } = this.props;
+    const {
+      cursorIndex,
+      dropdownOpen
+    } = this.state;
     return external_commonjs_react_commonjs2_react_amd_React_root_React_default.a.createElement("div", {
-      className: this.props.containerClassName + " " + containerStyle
+      className: (className || '') + " " + this._classNames.container
     }, external_commonjs_react_commonjs2_react_amd_React_root_React_default.a.createElement("div", {
-      className: this.props.className + " " + wrapperStyle,
+      className: (customClassNames.input || '') + " " + this._classNames.wrapper,
+      onMouseDown: this.handleKeepFocus,
+      onClick: this.handleFocusMove,
       onFocus: this.handleGetFocus,
       onBlur: this.handleLoseFocus
     }, this.renderInput(), external_commonjs_react_commonjs2_react_amd_React_root_React_default.a.createElement(icon, {
       onClear: this.handleClear,
       onDropdown: this.handleDropdownOpen
     })), external_commonjs_react_commonjs2_react_amd_React_root_React_default.a.createElement(dropdown_Dropdown, {
-      options: this.props.options,
-      cursorIndex: this.state.cursorIndex,
+      className: customClassNames.dropdown,
+      open: dropdownOpen,
+      options: options,
+      cursorIndex: cursorIndex,
       onSelection: this.handleSelectionChoice
     }));
   }
@@ -1086,7 +1168,15 @@ class src_ReactAhead extends external_commonjs_react_commonjs2_react_amd_React_r
 
 src_defineProperty(src_ReactAhead, "propTypes", {
   isMulti: prop_types_default.a.bool,
-  initOptions: prop_types_default.a.arrayOf(prop_types_default.a.object)
+  initOptions: prop_types_default.a.arrayOf(prop_types_default.a.object),
+  customClassNames: prop_types_default.a.object
+});
+
+src_defineProperty(src_ReactAhead, "defaultProps", {
+  customClassNames: {
+    input: '',
+    dropdown: ''
+  }
 });
 
 /***/ })

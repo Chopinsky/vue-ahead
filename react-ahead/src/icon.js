@@ -19,6 +19,7 @@ const DropdownIcon = props => {
         className={iconWrapperStyle} 
         aria-hidden="true"
         onClick={props.onClear}
+        tabIndex={0}
       >
         <ClearIcon />
       </div>
@@ -27,6 +28,7 @@ const DropdownIcon = props => {
         className={iconWrapperStyle} 
         aria-hidden="true"
         onClick={props.onDropdown}
+        tabIndex={0}
       >
         <DropIcon />
       </div>
