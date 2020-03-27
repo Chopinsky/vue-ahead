@@ -3,30 +3,33 @@ import PropTypes from 'prop-types';
 import Input from './input';
 import Dropdown from './dropdown';
 import Placeholder from './placeholder';
-import Selection from './selection';
+import MultiSelection from './selection';
 import DropdownIcon from './icon';
 import styles from "./shared.css";
 
 const containerClass = "react-ahead__control-container";
 const wrapperClass = "react-ahead__control-wrapper";
+const activeClass = "react-ahead__control-active";
 const inputWrapperClass = "react-ahead__input-wrapper";
 
 export default class ReactAhead extends React.Component {
   static propTypes = {
+    customClassNames: PropTypes.object,
+    displayFormatter: PropTypes.func,
+    isCreateable: PropTypes.bool,
     isMulti: PropTypes.bool,
     initOptions: PropTypes.arrayOf(PropTypes.object),
-    customClassNames: PropTypes.object,
   };
 
   static defaultProps = {
     customClassNames: {
       input: '',
       dropdown: '',
+      active: '',
     }
   };
 
   state = {
-    cursorIndex: 0,
     dropdownOpen: false,
     options: [],
     selection: [],
@@ -37,9 +40,12 @@ export default class ReactAhead extends React.Component {
     super(props);
 
     this._input = React.createRef();
+    this._dropdown = React.createRef();
+
     this._focusType = 0;
     this._lastVal = '';
     this._initDropdownState = false;
+    this._selKeys = {};
 
     if (Array.isArray(props.initOptions) && props.initOptions.length > 0) {
       this.state.options = props.initOptions;
@@ -48,58 +54,72 @@ export default class ReactAhead extends React.Component {
     this._classNames = {
       container: styles[containerClass] || containerClass,
       wrapper: styles[wrapperClass] || wrapperClass,
+      active: styles[activeClass] || activeClass,
       inputWrapper: styles[inputWrapperClass] || inputWrapperClass,
     }
   }
 
   handleEntryChanged = (_evt, value) => {
-    let targetState = { value };
-
     //todo: do the search with the vlaue
 
     this._lastVal = value;
-    this.setState(targetState);
+    this.setState({
+      value,
+      dropdownOpen: true,
+    });
   };
 
   handleSelectionMove = (_evt, side) => {
-    let { cursorIndex } = this.state;
-
-    if (side === 'up' && cursorIndex >= 0) {
-      cursorIndex--;
-    } else if (side === 'down') {
-      if (cursorIndex === this.state.options.length - 1) {
-        //todo: send query for more options, then add them to the list
-        
-      } else {
-        cursorIndex--;
-      }
+    if (!this.state.dropdownOpen) {
+      return;
     }
 
-    if (cursorIndex !== this.state.cursorIndex) {
-      this.setState({
-        cursorIndex,
-      });
-    }
+    this._dropdown 
+    && this._dropdown.current 
+    && this._dropdown.current.handleCursorMove(side);
   };
 
-  handleSelectionChoice = (val) => {
-    if (!val) {
+  handleSelectionChoice = (evt, key, val) => {
+    if (!key || this._selKeys.hasOwnProperty(key)) {
       return;
     }
 
     let { selection } = this.state;
     this._lastVal = '';
-    console.log('selection, reset last value:', this._lastVal);
 
-    if (this.props.multiSel) {
+    // add the selection to the list
+    if (this.props.isMulti) {
       selection.push(val);
+      this._selKeys[key] = null;
     } else {
       selection = [val];
+      
+      this._selKeys = {};
+      this._selKeys[key] = null;
     }
 
-    // this.handleControlFocus(null);
+    // filter out selected items
+    const options = this.props.initOptions.filter(item => {
+      if (typeof item === 'object') {
+        return !this._selKeys.hasOwnProperty(item['source']);
+      }
+
+      return !this._selKeys.hasOwnProperty(item);
+    });
+
+    // set focus type to prepare for transferring the focus
+    this._focusType = 1;
+    this.handleControlFocus(evt);
+
+    // close the dropdown for now
+    setTimeout(() => {
+      this.setState({
+        dropdownOpen: false,
+      });
+    }, 0);
 
     this.setState({
+      options,
       selection,
       value: '',
     });
@@ -111,20 +131,18 @@ export default class ReactAhead extends React.Component {
   }
 
   handleControlFocus = evt => {
-    if (this._input && this._input.current) {
-      this._input.current.focus();
-    }
+    // console.log('focus input ...');
+    this._input && this._input.current && this._input.current.focus();
   };
 
   handleGetFocus = evt => {
-    console.log('get focus ... ', this._focusType);
-    let { value } = this.state;
+    // console.log('get focus ... ', this._focusType);
 
     switch (this._focusType) {
       case 0:
       case 2:
         this._focusType = 1;
-        value = this._lastVal;
+        let value = this._lastVal;
 
         //todo: do the search on opening the dropdown menu  
 
@@ -141,6 +159,7 @@ export default class ReactAhead extends React.Component {
         return;
 
       case 1:
+        // really losing focus
         this.setState({
           dropdownOpen: true,  // open with full values
         });
@@ -153,39 +172,40 @@ export default class ReactAhead extends React.Component {
   };
 
   handleLoseFocus = evt => {
-    console.log('lose focus ... ', this._focusType);
+    // console.log(this._focusType);
 
-    if (this._focusType === 2) {
-      // the focus type will remain
-      this._focusType = 1;
-    } else if (this._focusType === 3) {
-      this._focusType = 1;
-      this.handleControlFocus(evt);
-    } else {
-      this._focusType = 0;
+    switch (this._focusType) {
+      case 2:
+        // clicked within the control, the focus type will remain
+        this._focusType = 1;        
+        break;
 
-      this.setState({
-        value: '',
-        dropdownOpen: false,
-      });
+      case 3:
+        // clicked within the dropdown menu, make sure the focus will move back
+        this._focusType = 1;
+        this.handleControlFocus(evt);
+        break;
+    
+      default:
+        this._focusType = 0;
+
+        this.setState({
+          value: '',
+          dropdownOpen: false,
+        });
+
+        break;
     }
   };
-
-  handleDropdownSelection = evt => {
-    console.log('dropdown clicked ... ', this._focusType);
-    this._focusType = 3;
-    this.handleControlFocus(evt);
-  }
 
   handleSelectionRemoval = val => {
 
   };
 
   handleClear = () => {
-    console.log('clear ... ');
-
     this._focusType = 2;
     this._lastVal = '';
+    this._selKeys = {};
 
     if (this._input && this._input.current) {
       this._input.current.handleTextChange(null, { value: '' });
@@ -194,6 +214,7 @@ export default class ReactAhead extends React.Component {
     this.setState({
       value: '',
       selection: [],
+      options: this.props.initOptions,
     });
   };
 
@@ -212,24 +233,51 @@ export default class ReactAhead extends React.Component {
     }
   };
 
+  handleLoadMore = () => {
+
+  };
+
   renderInput = () => {
-    const singleSelDone = !this.props.isMulti && this.state.selection.length === 1;
+    const {
+      isMulti,
+      placeholder,
+    } = this.props;
+
+    const singleSelDone = !isMulti && this.state.selection.length === 1;
+    
+    let text;
+    if (singleSelDone) {
+      text = this.state.selection[0];
+
+      if (typeof text === 'object') {
+        text = text['source'] || '<No display>';
+      } else {
+        text = text.toString();
+      }
+    } else {
+      text = placeholder;
+    }
 
     return (
       <div className={this._classNames.inputWrapper}>
         <Placeholder 
           show={
-            (this.props.placeholder && this.state.selection.length === 0 && !this.state.value)
+            (placeholder && this.state.selection.length === 0 && !this.state.value)
             || (singleSelDone && !this.state.value)
           } 
-          text={singleSelDone ? this.state.selection[0] : this.props.placeholder}
+          text={text}
           valueDisplayMode={singleSelDone}
         />
-        <Selection
-          isMulti={this.props.isMulti}
-          selection={this.state.selection}
-          onSelectionRemoval={this.handleSelectionRemoval}
-        />
+        {
+          isMulti
+            ?
+            <MultiSelection
+              selection={this.state.selection}
+              onSelectionRemoval={this.handleSelectionRemoval}
+            />
+            :
+            null
+        }
         <Input
           ref={this._input}
           onEntryChange={this.handleEntryChanged}
@@ -244,21 +292,47 @@ export default class ReactAhead extends React.Component {
     const {
       className,
       customClassNames,
-      options,
+      displayFormatter,
+      isCreateable,
     } = this.props;
 
     const {
-      cursorIndex,
       dropdownOpen,
     } = this.state;
 
+    let options;
+    if (isCreateable && this.state.value) {
+      options = [...this.state.options];
+      // don't add the createable if there're exact matches
+      let exactMatch = false;
+      for (let i = 0; i < options.length; i++) {
+        //todo: use display funciton to get the display value??
+        if (this.state.value === options[i].source) {
+          exactMatch = true;
+          break; 
+        }
+      }
+
+      if (!exactMatch) {
+        options.push({ source: `Create ${this.state.value}` });
+      }
+    } else {
+      options = this.state.options;
+    }
+
+    let wrapperClassName = (className || '') + " " + this._classNames.container;
+    let inputClassName = (customClassNames.input || '') + " " + this._classNames.wrapper;
+    if (this._focusType !== 0) {
+      inputClassName = (customClassNames.active || this._classNames.active) + " " + inputClassName;
+    }
+
     return (
       <div 
-        className={(className || '') + " " + this._classNames.container}
+        className={wrapperClassName}
         onMouseDown={this.handleKeepFocus}
       >
         <div
-          className={(customClassNames.input || '') + " " + this._classNames.wrapper}
+          className={inputClassName}
           onClick={this.handleControlFocus}
           onFocus={this.handleGetFocus}
           onBlur={this.handleLoseFocus}
@@ -270,12 +344,13 @@ export default class ReactAhead extends React.Component {
           />
         </div>
         <Dropdown
+          ref={this._dropdown}
           className={customClassNames.dropdown}
+          display={displayFormatter}
           open={dropdownOpen}
           options={options}
-          cursorIndex={cursorIndex}
           onSelection={this.handleSelectionChoice}
-          onMouseDown={this.handleDropdownSelection}
+          onLoadMore={this.handleLoadMore}
         />
       </div>
     );

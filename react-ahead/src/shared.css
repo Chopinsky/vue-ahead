@@ -23,6 +23,10 @@
   outline: 0px !important;
 }
 
+.react-ahead__control-active {
+  border: 1px solid blue;
+}
+
 .react-ahead__input-wrapper {
   padding: 2px;
   color: rgb(51, 51, 51);
@@ -88,7 +92,7 @@
 
 .react-ahead__dropdown-icon-wrapper:focus {
   color: rgb(153, 153, 153);
-  outline: 0px solid transparent;
+  outline: 2px dotted gray;
 }
 
 .react-ahead__dropdown-icon {
@@ -128,4 +132,27 @@
   padding-top: 4px;
   position: relative;
   box-sizing: border-box;
+}
+
+.react-ahead__menu-no-option {
+  color: rgb(153, 153, 153);
+  text-align: center;
+  box-sizing: border-box;
+  padding: 8px 12px;
+}
+
+.react-ahead__menu-option {
+  background-color: transparent;
+  color: inherit;
+  cursor: default;
+  display: block;
+  font-size: inherit;
+  width: 100%;
+  user-select: none;
+  box-sizing: border-box;
+  padding: 8px 12px;
+}
+
+.react-head__menu-active-option {
+  background-color: rgb(222, 235, 255);
 }

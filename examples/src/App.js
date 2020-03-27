@@ -10,10 +10,18 @@ function App() {
         customClassNames={{
           input: "app-control-input",
           dropdown: "app-control-dropdown",
+          active: "app-control-active",
         }}
         placeholder={"Search terms ... "}
-        options={[1, 2, 3, 4, 5]}
+        initOptions={[{source: 1}, {source: 2}, {source: 3}, {source: 4}, {source: 5}]}
       />
+      <div className={"app-control"}>
+        <input 
+          type="text"
+          placeholder="Enter values ..."
+          className={"app-control-input"}
+        />
+      </div>
     </div>
   );
 }

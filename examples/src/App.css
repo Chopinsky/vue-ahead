@@ -7,6 +7,26 @@ div.app-control-input {
   border-radius: 0;
 }
 
+div.app-control-active {
+  border: 2px solid blue;
+}
+
+input.app-control-input {
+  width: 380px;
+  height: 30px;
+  margin: 8px 0;
+  padding: 2px 8px;
+  border: 2px solid black;
+  border-radius: 0;
+  font-family: inherit;
+  font-size: inherit;
+}
+
+input.app-control-input:focus {
+  border: 2px solid blue;
+  outline: none;
+}
+
 div.app-control-dropdown {
   border: 2px solid black;
   border-radius: 0;

@@ -34,10 +34,12 @@ export default class Input extends React.Component {
   }
 
   focus = () => {
-    if (this._input && this._input.current) {
-      this._input.current.focus();
-    }
+    this._input && this._input.current && this._input.current.focus();
   };
+
+  blur = () => {
+    this._input && this._input.current && this._input.current.blur();
+  }
 
   handleTextChange = (evt, forceUpdate) => {
     const val = (evt && evt.target && evt.target.value) || (forceUpdate && forceUpdate.value) || '';
@@ -64,13 +66,13 @@ export default class Input extends React.Component {
 
     const { keyCode } = evt;
 
-    console.log(keyCode);
+    console.log('key pressed:', keyCode);
     
     switch (keyCode) {
       case 9:
         if (this.props.value && !evt.shiftKey) {
           // selection
-          evt.preventDefault();
+          // evt.preventDefault();
         }
         
         break;
