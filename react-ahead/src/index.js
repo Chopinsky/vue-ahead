@@ -1,5 +1,6 @@
 import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
+import Engine from './engine';
 import Input from './input';
 import Dropdown from './dropdown';
 import Placeholder from './placeholder';
@@ -33,6 +34,7 @@ export default class ReactAhead extends React.Component {
     dropdownOpen: false,
     options: [],
     selection: [],
+    shield: false,
     value: ''
   };
 
@@ -43,12 +45,15 @@ export default class ReactAhead extends React.Component {
     this._dropdown = React.createRef();
 
     this._focusType = 0;
-    this._lastVal = '';
+    this._lastVal = null;
     this._initDropdownState = false;
     this._selKeys = {};
 
+    this._engine = new Engine();
+
     if (Array.isArray(props.initOptions) && props.initOptions.length > 0) {
       this.state.options = props.initOptions;
+      this._engine.add(props.initOptions);
     }
 
     this._classNames = {
@@ -60,12 +65,22 @@ export default class ReactAhead extends React.Component {
   }
 
   handleEntryChanged = (_evt, value) => {
-    //todo: do the search with the vlaue
+    this._engine.find(value, options => {
+      this._lastVal = {
+        value,
+        options,
+      };
 
-    this._lastVal = value;
+      this.setState({
+        options,
+        shield: false,
+      });
+    });
+
     this.setState({
       value,
       dropdownOpen: true,
+      shield: true,
     });
   };
 
@@ -79,13 +94,21 @@ export default class ReactAhead extends React.Component {
     && this._dropdown.current.handleCursorMove(side);
   };
 
+  handleKeyChoice = evt => {
+    if (!this._dropdown || !this._dropdown.current) {
+      return;
+    }
+
+    this._dropdown.current.select();
+  };
+
   handleSelectionChoice = (evt, key, val) => {
     if (!key || this._selKeys.hasOwnProperty(key)) {
       return;
     }
 
     let { selection } = this.state;
-    this._lastVal = '';
+    this._lastVal = null;
 
     // add the selection to the list
     if (this.props.isMulti) {
@@ -128,35 +151,57 @@ export default class ReactAhead extends React.Component {
   handleKeepFocus = evt => {
     this._focusType = 2;
     this._initDropdownState = this.state.dropdownOpen;
-  }
+  };
 
   handleControlFocus = evt => {
     // console.log('focus input ...');
     this._input && this._input.current && this._input.current.focus();
   };
 
+  handleKeyAction = (key, info) => {
+    switch (key) {
+      case 'tab':
+        this._focusType = 4;
+        break;
+
+      case 'move':
+        this.handleControlFocus();
+
+        if (this.state.dropdownOpen) {
+          // only respect the cursor move if the dropdown is still open
+          setTimeout(() => this.handleSelectionMove(info ? 'up' : 'down'), 0)          
+        }
+
+        break;
+    
+      default:
+        break;
+    }
+  };
+
   handleGetFocus = evt => {
-    // console.log('get focus ... ', this._focusType);
+    console.log('get focus ... ', this._focusType);
 
     switch (this._focusType) {
       case 0:
       case 2:
         this._focusType = 1;
-        let value = this._lastVal;
+        let value, options = this.state.options;
+
+        if (this._lastVal) {
+          value = this._lastVal['value'];
+          options = this._lastVal['options'];
+        }
 
         //todo: do the search on opening the dropdown menu  
 
         this.setState({
           value,
+          options,
           dropdownOpen: true,  // open with full values
         });
         
         break;
-    
-      case 3:
-        //reset focus only
-        this._focusType = 1;
-        return;
 
       case 1:
         // really losing focus
@@ -166,13 +211,19 @@ export default class ReactAhead extends React.Component {
 
         return;
 
+      case 3:
+      case 4:
+        //reset focus only
+        this._focusType = 1;
+        return;
+
       default:
         break;
     }
   };
 
   handleLoseFocus = evt => {
-    // console.log(this._focusType);
+    console.log('lose focus ... ', this._focusType);
 
     switch (this._focusType) {
       case 2:
@@ -184,6 +235,10 @@ export default class ReactAhead extends React.Component {
         // clicked within the dropdown menu, make sure the focus will move back
         this._focusType = 1;
         this.handleControlFocus(evt);
+        break;
+
+      case 4:
+        // moving focus between sub-components
         break;
     
       default:
@@ -204,12 +259,14 @@ export default class ReactAhead extends React.Component {
 
   handleClear = () => {
     this._focusType = 2;
-    this._lastVal = '';
+    this._lastVal = null;
     this._selKeys = {};
 
     if (this._input && this._input.current) {
       this._input.current.handleTextChange(null, { value: '' });
     }
+
+    this.handleControlFocus();
 
     this.setState({
       value: '',
@@ -218,12 +275,27 @@ export default class ReactAhead extends React.Component {
     });
   };
 
-  handleDropdownOpen = () => {
+  handleDropdownOpen = force => {
+    if (force) {
+      // only happens when clicking / typing on the dropdown menu button
+      const { dropdownOpen } = this.state;
+
+      this.setState({
+        dropdownOpen: !dropdownOpen,
+      });
+
+      return;
+    }
+
     if (this._initDropdownState) {
-      let lastVal = this.state.value;
+      let { value, options } = this.state.value;
+
 
       setTimeout(() => {
-        this._lastVal = lastVal;
+        this._lastVal = {
+          value,
+          options,
+        };
 
         this.setState({
           value: '',
@@ -281,6 +353,8 @@ export default class ReactAhead extends React.Component {
         <Input
           ref={this._input}
           onEntryChange={this.handleEntryChanged}
+          onKeyChoice={this.handleKeyChoice}
+          onSpecialKey={this.handleKeyAction}
           onSelectionMove={this.handleSelectionMove}
           value={this.state.value}
         />
@@ -298,11 +372,13 @@ export default class ReactAhead extends React.Component {
 
     const {
       dropdownOpen,
+      shield,
     } = this.state;
 
     let options;
     if (isCreateable && this.state.value) {
       options = [...this.state.options];
+
       // don't add the createable if there're exact matches
       let exactMatch = false;
       for (let i = 0; i < options.length; i++) {
@@ -317,7 +393,7 @@ export default class ReactAhead extends React.Component {
         options.push({ source: `Create ${this.state.value}` });
       }
     } else {
-      options = this.state.options;
+      options = this.state.options || [];
     }
 
     let wrapperClassName = (className || '') + " " + this._classNames.container;
@@ -341,6 +417,7 @@ export default class ReactAhead extends React.Component {
           <DropdownIcon
             onClear={this.handleClear}
             onDropdown={this.handleDropdownOpen}
+            onSpecialKey={this.handleKeyAction}
           />
         </div>
         <Dropdown
@@ -351,6 +428,7 @@ export default class ReactAhead extends React.Component {
           options={options}
           onSelection={this.handleSelectionChoice}
           onLoadMore={this.handleLoadMore}
+          shield={shield}
         />
       </div>
     );

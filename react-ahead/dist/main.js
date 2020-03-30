@@ -655,12 +655,95 @@ var external_commonjs_react_commonjs2_react_amd_React_root_React_default = /*#__
 var prop_types = __webpack_require__(2);
 var prop_types_default = /*#__PURE__*/__webpack_require__.n(prop_types);
 
+// CONCATENATED MODULE: ./src/engine.js
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+class NativeEngine {
+  constructor(props) {
+    _defineProperty(this, "add", data => {
+      if (!Array.isArray(data) || !data.length) {
+        return;
+      }
+
+      this._store.push(...data);
+    });
+
+    _defineProperty(this, "query", val => {
+      if (typeof val !== 'string') {
+        val = val.toString();
+      }
+
+      return this._store.filter(data => data.source && data.source.indexOf(val) >= 0);
+    });
+
+    this._props = props;
+    this._store = [];
+  }
+
+}
+
+class SearchEngine {
+  constructor(props) {
+    _defineProperty(this, "add", data => {
+      if (!data) {
+        return;
+      }
+
+      if (!Array.isArray(data)) {
+        data = [data];
+      }
+
+      let d = data.map(item => {
+        if (!item) {
+          return;
+        }
+
+        const type = typeof item;
+
+        if (type === 'number' || type === 'string') {
+          return {
+            source: item.toString()
+          };
+        }
+
+        return { ...item,
+          source: item['source'].toString()
+        };
+      });
+
+      this._engine.add(d);
+    });
+
+    _defineProperty(this, "find", (val, cb) => {
+      if (this._debounce) {
+        clearTimeout(this._debounce);
+        this._debounce = null;
+      }
+
+      this._debounce = setTimeout(() => {
+        clearTimeout(this._debounce);
+        this._debounce = null;
+        cb(this._engine.query(val));
+      }, 36);
+    });
+
+    this._engine = null;
+    this._debounce = null;
+
+    if (props && props.engine) {
+      this._engine = props.engine;
+    } else {
+      this._engine = new NativeEngine(props);
+    }
+  }
+
+}
 // EXTERNAL MODULE: ./src/shared.css
 var shared = __webpack_require__(1);
 var shared_default = /*#__PURE__*/__webpack_require__.n(shared);
 
 // CONCATENATED MODULE: ./src/input.js
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+function input_defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 
 
@@ -670,19 +753,19 @@ class input_Input extends external_commonjs_react_commonjs2_react_amd_React_root
   constructor(props) {
     super(props);
 
-    _defineProperty(this, "state", {
+    input_defineProperty(this, "state", {
       width: 0
     });
 
-    _defineProperty(this, "focus", () => {
+    input_defineProperty(this, "focus", () => {
       this._input && this._input.current && this._input.current.focus();
     });
 
-    _defineProperty(this, "blur", () => {
+    input_defineProperty(this, "blur", () => {
       this._input && this._input.current && this._input.current.blur();
     });
 
-    _defineProperty(this, "handleTextChange", (evt, forceUpdate) => {
+    input_defineProperty(this, "handleTextChange", (evt, forceUpdate) => {
       const val = evt && evt.target && evt.target.value || forceUpdate && forceUpdate.value || '';
       let {
         width
@@ -702,36 +785,36 @@ class input_Input extends external_commonjs_react_commonjs2_react_amd_React_root
       });
     });
 
-    _defineProperty(this, "handleKeydown", evt => {
+    input_defineProperty(this, "handleKeydown", evt => {
       if (!evt) {
         return;
       }
 
       const {
         keyCode
-      } = evt;
-      console.log('key pressed:', keyCode);
+      } = evt; // console.log('key pressed:', keyCode);
 
       switch (keyCode) {
         case 9:
-          if (this.props.value && !evt.shiftKey) {// selection
-            // evt.preventDefault();
-          }
-
+          this.props.onSpecialKey && this.props.onSpecialKey('tab');
           break;
 
         case 13:
           // selection
+          evt.preventDefault();
+
+          if (this.props.onKeyChoice) {
+            this.props.onKeyChoice(evt);
+          }
+
           break;
 
         case 38:
         case 40:
-          if (keyCode === 38 || keyCode === 40) {
-            evt.preventDefault();
+          evt.preventDefault();
 
-            if (typeof this.props.onSelectionMove === 'function') {
-              this.props.onSelectionMove(evt, keyCode === 38 ? "up" : "down");
-            }
+          if (this.props.onSelectionMove) {
+            this.props.onSelectionMove(evt, keyCode === 38 ? "up" : "down");
           }
 
           break;
@@ -746,13 +829,7 @@ class input_Input extends external_commonjs_react_commonjs2_react_amd_React_root
     this._inputStyle = shared_default.a[inputClass] || inputClass;
   }
 
-  componentDidUpdate(prevProps, _prevState, _snapshot) {// if (prevProps.value !== this.props.value) {
-    //   if (this._div && this._div.current) {
-    //     this._div.current.innerText = val;
-    //     width = this._div.current.offsetWidth;
-    //   }
-    // }
-  }
+  componentDidUpdate(prevProps, _prevState, _snapshot) {}
 
   render() {
     return external_commonjs_react_commonjs2_react_amd_React_root_React_default.a.createElement("div", {
@@ -806,9 +883,11 @@ class input_Input extends external_commonjs_react_commonjs2_react_amd_React_root
 
 }
 
-_defineProperty(input_Input, "propTypes", {
+input_defineProperty(input_Input, "propTypes", {
   onEntryChange: prop_types_default.a.func,
+  onKeyChoice: prop_types_default.a.func,
   onSelectionMove: prop_types_default.a.func,
+  onSpecialKey: prop_types_default.a.func,
   value: prop_types_default.a.string
 });
 // CONCATENATED MODULE: ./src/dropdown.js
@@ -830,8 +909,25 @@ class dropdown_Dropdown extends external_commonjs_react_commonjs2_react_amd_Reac
       activeIdx: 0
     });
 
+    dropdown_defineProperty(this, "select", evt => {
+      const {
+        options,
+        onSelection
+      } = this.props;
+      const {
+        activeIdx
+      } = this.state;
+
+      if (activeIdx >= options.length || !onSelection) {
+        return;
+      }
+
+      const item = options[activeIdx];
+      const source = typeof item === 'object' ? item['source'] : item.toString();
+      onSelection(evt, source, item);
+    });
+
     dropdown_defineProperty(this, "handleCursorMove", type => {
-      console.log(type);
       let {
         activeIdx
       } = this.state;
@@ -859,8 +955,6 @@ class dropdown_Dropdown extends external_commonjs_react_commonjs2_react_amd_Reac
       }
     });
 
-    dropdown_defineProperty(this, "chooseCurrent", () => {});
-
     dropdown_defineProperty(this, "handleHighlight", (evt, idx) => {
       if (evt) {
         evt.preventDefault();
@@ -872,9 +966,11 @@ class dropdown_Dropdown extends external_commonjs_react_commonjs2_react_amd_Reac
     });
 
     dropdown_defineProperty(this, "handleItemSelection", (evt, src, item) => {
-      if (this.props.onSelection) {
-        this.props.onSelection(evt, src, item);
+      if (!this.props.onSelection) {
+        return;
       }
+
+      this.props.onSelection(evt, src, item);
     });
 
     dropdown_defineProperty(this, "renderList", options => {
@@ -905,7 +1001,41 @@ class dropdown_Dropdown extends external_commonjs_react_commonjs2_react_amd_Reac
       option: shared_default.a[optionClass] || optionClass,
       active: shared_default.a[activeClass] && `${shared_default.a[activeClass]} ${shared_default.a[optionClass]}` || `${activeClass} ${optionClass}`
     };
-    console.log(this._classNames);
+  }
+
+  componentDidUpdate(prevProps, prevState, snapshot) {
+    let {
+      length
+    } = this.props.options;
+    let idx = -1;
+
+    if (prevProps.options.length !== length) {
+      const item = prevProps.options[prevState.activeIdx];
+
+      if (item) {
+        const lastSource = typeof item === 'object' ? item['source'] : item.toString();
+
+        for (let i = 0; i < length; i++) {
+          const nextItem = this.props.options[i];
+          const source = typeof inextItemtem === 'object' ? nextItem['source'] : nextItem.toString();
+
+          if (source === lastSource) {
+            idx = i;
+            break;
+          }
+        }
+      }
+    }
+
+    if (prevState.activeIdx >= length) {
+      idx = length - 1;
+    }
+
+    if (idx >= 0) {
+      this.setState({
+        activeIdx: idx
+      });
+    }
   }
 
   render() {
@@ -1068,12 +1198,51 @@ const DropdownIcon = props => {
   const dropdownWrapperStyle = shared_default.a[dropdownClass] || dropdownClass;
   const iconWrapperStyle = shared_default.a[iconWrapperClass] || iconWrapperClass;
   const separatorStyle = shared_default.a[separatorClass] || separatorClass;
+
+  const handleKeyDown = (evt, action) => {
+    const {
+      keyCode
+    } = evt || {};
+
+    if (!keyCode) {
+      return;
+    }
+
+    switch (keyCode) {
+      case 13:
+      case 32:
+        if (action === 'clear') {
+          props.onClear && props.onClear();
+        } else if (action === 'dropdown') {
+          props.onDropdown && props.onDropdown(true);
+        }
+
+        break;
+
+      case 38:
+      case 40:
+        props.onSpecialKey && props.onSpecialKey('move', keyCode === 38);
+        break;
+
+      case 9:
+        if (action !== 'dropdown' || evt.shiftKey) {
+          props.onSpecialKey && props.onSpecialKey('tab');
+        }
+
+        break;
+
+      default:
+        break;
+    }
+  };
+
   return external_commonjs_react_commonjs2_react_amd_React_root_React_default.a.createElement("div", {
     className: dropdownWrapperStyle
   }, external_commonjs_react_commonjs2_react_amd_React_root_React_default.a.createElement("div", {
     className: iconWrapperStyle,
     "aria-hidden": "true",
     onClick: props.onClear,
+    onKeyDown: evt => handleKeyDown(evt, 'clear'),
     tabIndex: 0
   }, external_commonjs_react_commonjs2_react_amd_React_root_React_default.a.createElement(clear, null)), external_commonjs_react_commonjs2_react_amd_React_root_React_default.a.createElement("span", {
     className: separatorStyle
@@ -1081,6 +1250,7 @@ const DropdownIcon = props => {
     className: iconWrapperStyle,
     "aria-hidden": "true",
     onClick: props.onDropdown,
+    onKeyDown: evt => handleKeyDown(evt, 'dropdown'),
     tabIndex: 0
   }, external_commonjs_react_commonjs2_react_amd_React_root_React_default.a.createElement(drop, null)));
 };
@@ -1102,6 +1272,7 @@ function src_defineProperty(obj, key, value) { if (key in obj) { Object.definePr
 
 
 
+
 const src_containerClass = "react-ahead__control-container";
 const src_wrapperClass = "react-ahead__control-wrapper";
 const src_activeClass = "react-ahead__control-active";
@@ -1114,15 +1285,26 @@ class src_ReactAhead extends external_commonjs_react_commonjs2_react_amd_React_r
       dropdownOpen: false,
       options: [],
       selection: [],
+      shield: false,
       value: ''
     });
 
     src_defineProperty(this, "handleEntryChanged", (_evt, value) => {
-      //todo: do the search with the vlaue
-      this._lastVal = value;
+      this._engine.find(value, options => {
+        this._lastVal = {
+          value,
+          options
+        };
+        this.setState({
+          options,
+          shield: false
+        });
+      });
+
       this.setState({
         value,
-        dropdownOpen: true
+        dropdownOpen: true,
+        shield: true
       });
     });
 
@@ -1134,6 +1316,14 @@ class src_ReactAhead extends external_commonjs_react_commonjs2_react_amd_React_r
       this._dropdown && this._dropdown.current && this._dropdown.current.handleCursorMove(side);
     });
 
+    src_defineProperty(this, "handleKeyChoice", evt => {
+      if (!this._dropdown || !this._dropdown.current) {
+        return;
+      }
+
+      this._dropdown.current.select();
+    });
+
     src_defineProperty(this, "handleSelectionChoice", (evt, key, val) => {
       if (!key || this._selKeys.hasOwnProperty(key)) {
         return;
@@ -1142,7 +1332,7 @@ class src_ReactAhead extends external_commonjs_react_commonjs2_react_amd_React_r
       let {
         selection
       } = this.state;
-      this._lastVal = ''; // add the selection to the list
+      this._lastVal = null; // add the selection to the list
 
       if (this.props.isMulti) {
         selection.push(val);
@@ -1187,25 +1377,50 @@ class src_ReactAhead extends external_commonjs_react_commonjs2_react_amd_React_r
       this._input && this._input.current && this._input.current.focus();
     });
 
+    src_defineProperty(this, "handleKeyAction", (key, info) => {
+      switch (key) {
+        case 'tab':
+          this._focusType = 4;
+          break;
+
+        case 'move':
+          this.handleControlFocus();
+
+          if (this.state.dropdownOpen) {
+            // only respect the cursor move if the dropdown is still open
+            setTimeout(() => this.handleSelectionMove(info ? 'up' : 'down'), 0);
+          }
+
+          break;
+
+        default:
+          break;
+      }
+    });
+
     src_defineProperty(this, "handleGetFocus", evt => {
-      // console.log('get focus ... ', this._focusType);
+      console.log('get focus ... ', this._focusType);
+
       switch (this._focusType) {
         case 0:
         case 2:
           this._focusType = 1;
-          let value = this._lastVal; //todo: do the search on opening the dropdown menu  
+          let value,
+              options = this.state.options;
+
+          if (this._lastVal) {
+            value = this._lastVal['value'];
+            options = this._lastVal['options'];
+          } //todo: do the search on opening the dropdown menu  
+
 
           this.setState({
             value,
+            options,
             dropdownOpen: true // open with full values
 
           });
           break;
-
-        case 3:
-          //reset focus only
-          this._focusType = 1;
-          return;
 
         case 1:
           // really losing focus
@@ -1215,13 +1430,20 @@ class src_ReactAhead extends external_commonjs_react_commonjs2_react_amd_React_r
           });
           return;
 
+        case 3:
+        case 4:
+          //reset focus only
+          this._focusType = 1;
+          return;
+
         default:
           break;
       }
     });
 
     src_defineProperty(this, "handleLoseFocus", evt => {
-      // console.log(this._focusType);
+      console.log('lose focus ... ', this._focusType);
+
       switch (this._focusType) {
         case 2:
           // clicked within the control, the focus type will remain
@@ -1232,6 +1454,10 @@ class src_ReactAhead extends external_commonjs_react_commonjs2_react_amd_React_r
           // clicked within the dropdown menu, make sure the focus will move back
           this._focusType = 1;
           this.handleControlFocus(evt);
+          break;
+
+        case 4:
+          // moving focus between sub-components
           break;
 
         default:
@@ -1248,7 +1474,7 @@ class src_ReactAhead extends external_commonjs_react_commonjs2_react_amd_React_r
 
     src_defineProperty(this, "handleClear", () => {
       this._focusType = 2;
-      this._lastVal = '';
+      this._lastVal = null;
       this._selKeys = {};
 
       if (this._input && this._input.current) {
@@ -1257,6 +1483,7 @@ class src_ReactAhead extends external_commonjs_react_commonjs2_react_amd_React_r
         });
       }
 
+      this.handleControlFocus();
       this.setState({
         value: '',
         selection: [],
@@ -1264,11 +1491,28 @@ class src_ReactAhead extends external_commonjs_react_commonjs2_react_amd_React_r
       });
     });
 
-    src_defineProperty(this, "handleDropdownOpen", () => {
+    src_defineProperty(this, "handleDropdownOpen", force => {
+      if (force) {
+        // only happens when clicking / typing on the dropdown menu button
+        const {
+          dropdownOpen
+        } = this.state;
+        this.setState({
+          dropdownOpen: !dropdownOpen
+        });
+        return;
+      }
+
       if (this._initDropdownState) {
-        let lastVal = this.state.value;
+        let {
+          value,
+          options
+        } = this.state.value;
         setTimeout(() => {
-          this._lastVal = lastVal;
+          this._lastVal = {
+            value,
+            options
+          };
           this.setState({
             value: '',
             dropdownOpen: false
@@ -1311,6 +1555,8 @@ class src_ReactAhead extends external_commonjs_react_commonjs2_react_amd_React_r
       }) : null, external_commonjs_react_commonjs2_react_amd_React_root_React_default.a.createElement(input_Input, {
         ref: this._input,
         onEntryChange: this.handleEntryChanged,
+        onKeyChoice: this.handleKeyChoice,
+        onSpecialKey: this.handleKeyAction,
         onSelectionMove: this.handleSelectionMove,
         value: this.state.value
       }));
@@ -1319,12 +1565,15 @@ class src_ReactAhead extends external_commonjs_react_commonjs2_react_amd_React_r
     this._input = external_commonjs_react_commonjs2_react_amd_React_root_React_default.a.createRef();
     this._dropdown = external_commonjs_react_commonjs2_react_amd_React_root_React_default.a.createRef();
     this._focusType = 0;
-    this._lastVal = '';
+    this._lastVal = null;
     this._initDropdownState = false;
     this._selKeys = {};
+    this._engine = new SearchEngine();
 
     if (Array.isArray(props.initOptions) && props.initOptions.length > 0) {
       this.state.options = props.initOptions;
+
+      this._engine.add(props.initOptions);
     }
 
     this._classNames = {
@@ -1343,7 +1592,8 @@ class src_ReactAhead extends external_commonjs_react_commonjs2_react_amd_React_r
       isCreateable
     } = this.props;
     const {
-      dropdownOpen
+      dropdownOpen,
+      shield
     } = this.state;
     let options;
 
@@ -1366,7 +1616,7 @@ class src_ReactAhead extends external_commonjs_react_commonjs2_react_amd_React_r
         });
       }
     } else {
-      options = this.state.options;
+      options = this.state.options || [];
     }
 
     let wrapperClassName = (className || '') + " " + this._classNames.container;
@@ -1386,7 +1636,8 @@ class src_ReactAhead extends external_commonjs_react_commonjs2_react_amd_React_r
       onBlur: this.handleLoseFocus
     }, this.renderInput(), external_commonjs_react_commonjs2_react_amd_React_root_React_default.a.createElement(icon, {
       onClear: this.handleClear,
-      onDropdown: this.handleDropdownOpen
+      onDropdown: this.handleDropdownOpen,
+      onSpecialKey: this.handleKeyAction
     })), external_commonjs_react_commonjs2_react_amd_React_root_React_default.a.createElement(dropdown_Dropdown, {
       ref: this._dropdown,
       className: customClassNames.dropdown,
@@ -1394,7 +1645,8 @@ class src_ReactAhead extends external_commonjs_react_commonjs2_react_amd_React_r
       open: dropdownOpen,
       options: options,
       onSelection: this.handleSelectionChoice,
-      onLoadMore: this.handleLoadMore
+      onLoadMore: this.handleLoadMore,
+      shield: shield
     }));
   }
 

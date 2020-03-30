@@ -34,12 +34,55 @@ export default class Dropdown extends React.Component {
       option: styles[optionClass] || optionClass,
       active: (styles[activeClass] && `${styles[activeClass]} ${styles[optionClass]}`) || `${activeClass} ${optionClass}`,
     };
-
-    console.log(this._classNames);
   }
 
+  componentDidUpdate(prevProps, prevState, snapshot) {
+    let { length } = this.props.options;
+    let idx = -1;
+
+    if (prevProps.options.length !== length) {
+      const item = prevProps.options[prevState.activeIdx];
+
+      if (item) {
+        const lastSource = typeof item === 'object' ? item['source'] : item.toString();
+
+        for (let i = 0; i < length; i++) {
+          const nextItem = this.props.options[i];
+          const source = typeof inextItemtem === 'object' ? nextItem['source'] : nextItem.toString();
+
+          if (source === lastSource) {
+            idx = i;
+            break;
+          }
+        }
+      }
+    }
+    
+    if (prevState.activeIdx >= length) {
+      idx = length - 1;
+    }
+
+    if (idx >= 0) {
+      this.setState({
+        activeIdx: idx,
+      });
+    }
+  }
+
+  select = evt => {
+    const { options, onSelection } = this.props;
+    const { activeIdx } = this.state;
+
+    if (activeIdx >= options.length || !onSelection) {
+      return;
+    }
+
+    const item = options[activeIdx];
+    const source = typeof item === 'object' ? item['source'] : item.toString();
+    onSelection(evt, source, item);
+  };
+
   handleCursorMove = (type) => {
-    console.log(type);
     let { activeIdx } = this.state;
 
     if (type === 'up') {
@@ -65,10 +108,6 @@ export default class Dropdown extends React.Component {
     }
   };
 
-  chooseCurrent = () => {
-
-  };
-
   handleHighlight = (evt, idx) => {
     if (evt) {
       evt.preventDefault();
@@ -80,9 +119,11 @@ export default class Dropdown extends React.Component {
   };
 
   handleItemSelection = (evt, src, item) => {
-    if (this.props.onSelection) {
-      this.props.onSelection(evt, src, item);
+    if (!this.props.onSelection) {
+      return;
     }
+
+    this.props.onSelection(evt, src, item);
   }
 
   renderList = options => {

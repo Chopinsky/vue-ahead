@@ -7,7 +7,9 @@ const inputClass = "react-ahead__input-inner-wrapper";
 export default class Input extends React.Component {
   static propTypes = {
     onEntryChange: PropTypes.func,
+    onKeyChoice: PropTypes.func,
     onSelectionMove: PropTypes.func,
+    onSpecialKey: PropTypes.func,
     value: PropTypes.string,
   };
 
@@ -24,14 +26,7 @@ export default class Input extends React.Component {
     this._inputStyle = styles[inputClass] || inputClass;
   }
 
-  componentDidUpdate(prevProps, _prevState, _snapshot) {
-    // if (prevProps.value !== this.props.value) {
-    //   if (this._div && this._div.current) {
-    //     this._div.current.innerText = val;
-    //     width = this._div.current.offsetWidth;
-    //   }
-    // }
-  }
+  componentDidUpdate(prevProps, _prevState, _snapshot) {}
 
   focus = () => {
     this._input && this._input.current && this._input.current.focus();
@@ -66,29 +61,29 @@ export default class Input extends React.Component {
 
     const { keyCode } = evt;
 
-    console.log('key pressed:', keyCode);
+    // console.log('key pressed:', keyCode);
     
     switch (keyCode) {
       case 9:
-        if (this.props.value && !evt.shiftKey) {
-          // selection
-          // evt.preventDefault();
-        }
-        
+        this.props.onSpecialKey && this.props.onSpecialKey('tab');        
         break;
 
       case 13:
         // selection
+        evt.preventDefault();
+
+        if (this.props.onKeyChoice) {
+          this.props.onKeyChoice(evt);
+        }
+
         break;
         
       case 38:
       case 40:
-        if (keyCode === 38 || keyCode === 40) {
-          evt.preventDefault();
+        evt.preventDefault();
 
-          if (typeof this.props.onSelectionMove === 'function') {
-            this.props.onSelectionMove(evt, keyCode === 38 ? "up" : "down");
-          }
+        if (this.props.onSelectionMove) {
+          this.props.onSelectionMove(evt, keyCode === 38 ? "up" : "down");
         }
 
         break;
