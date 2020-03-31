@@ -68,7 +68,7 @@ export default class Input extends React.Component {
 
     const { keyCode } = evt;
 
-    console.log('key pressed:', keyCode);
+    // console.log('key pressed:', keyCode);
     
     switch (keyCode) {
       case 9:

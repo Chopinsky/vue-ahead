@@ -29,13 +29,15 @@ function App() {
           active: "app-control-active",
         }}
         placeholder={"Pick a color ... "}
+        isMulti={true}
         initOptions={[
           { source: 'blue' },
           { source: 'green' },
           { source: 'orange' },
           { source: 'black' },
-          { source: 'white' }]
-        }
+          { source: 'white' },
+          { source: 'many-many-colors-that-have-no-names' }
+        ]}
       />
       <div className={"app-control"}>
         <input 

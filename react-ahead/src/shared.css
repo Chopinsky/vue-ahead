@@ -65,7 +65,29 @@
   min-width: 0px;
   box-sizing: border-box;
   border-radius: 2px;
-  margin: 2px;
+  margin: 2px 4px 2px 0;
+}
+
+.react-ahead__selection-content {
+  color: rgb(51, 51, 51);
+  font-size: 85%;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  box-sizing: border-box;
+  border-radius: 2px;
+  overflow: hidden;
+  padding: 2px 3px 4px 6px;
+}
+
+.react-ahead__selection-removal {
+  -webkit-box-align: center;
+  align-items: center;
+  cursor: pointer;
+  display: flex;
+  padding-left: 4px;
+  padding-right: 4px;
+  box-sizing: border-box;
+  border-radius: 2px;
 }
 
 .react-ahead__dropdown-wrapper {

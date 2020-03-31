@@ -517,7 +517,7 @@ module.exports = function (list, options) {
 var ___CSS_LOADER_API_IMPORT___ = __webpack_require__(7);
 exports = ___CSS_LOADER_API_IMPORT___(false);
 // Module
-exports.push([module.i, "._2dH7OUMw0ESmltDd0ovClD {\r\n  position: relative;\r\n  box-sizing: border-box;\r\n}\r\n\r\n.Axrtb5jaHtP98cGxAqRLV {\r\n  -webkit-box-align: center;\r\n  -webkit-box-pack: justify;\r\n  padding-left: 6px;\r\n  padding-right: 2px;\r\n  min-height: 38px;\r\n  align-items: center;\r\n  background-color: rgb(255, 255, 255);\r\n  border-radius: 2px;\r\n  border: 1px solid rgb(204, 204, 204);\r\n  cursor: default;\r\n  position: relative;\r\n  box-sizing: border-box;\r\n  display: flex;\r\n  flex-wrap: wrap;\r\n  justify-content: space-between;\r\n  transition: all 100ms ease 0s;\r\n  outline: 0px !important;\r\n}\r\n\r\n._2SUkorElgQ76JGjtyHk4de {\r\n  border: 1px solid blue;\r\n}\r\n\r\n._1Vnmg2rKay_EA99qawmFda {\r\n  padding: 2px;\r\n  color: rgb(51, 51, 51);\r\n  position: relative;\r\n  display: flex;\r\n  flex: 1 1 0%;\r\n  flex-wrap: wrap;\r\n  box-sizing: border-box;\r\n  overflow: hidden;\r\n  visibility: visible;\r\n  box-sizing: border-box;\r\n  width: 100%;\r\n}\r\n\r\n._2CD9QkPe0_ZMyoTQxtKBm7 {\r\n  position: absolute;\r\n  top: 50%;\r\n  color: rgb(128, 128, 128);\r\n  margin: 0;\r\n  transform: translateY(-50%);\r\n  box-sizing: border-box;\r\n}\r\n\r\n.xLIYtwgLVzX9AyYwVcgLt {\r\n  color: inherit;\r\n}\r\n\r\n._1Vnmg2rKay_EA99qawmFda {  \r\n  cursor: text;\r\n  width: 100%;\r\n}\r\n\r\n._2eDYrfCE1goL3V_2ogtQtz {\r\n  background-color: rgb(230, 230, 230);\r\n  display: flex;\r\n  min-width: 0px;\r\n  box-sizing: border-box;\r\n  border-radius: 2px;\r\n  margin: 2px;\r\n}\r\n\r\n.f3JQilMsEX8OORf4P64Je {\r\n  -webkit-box-align: center;\r\n  align-items: center;\r\n  align-self: stretch;\r\n  display: flex;\r\n  flex-shrink: 0;\r\n  box-sizing: border-box;\r\n}\r\n\r\n.VCVVJzKJ2WKTbtqdDC8bs {\r\n  color: rgb(204, 204, 204);\r\n  display: flex;\r\n  box-sizing: border-box;\r\n  padding: 10px 6px;\r\n  transition: color 150ms ease 0s;\r\n}\r\n\r\n.VCVVJzKJ2WKTbtqdDC8bs:hover {\r\n  cursor: pointer;\r\n  color: rgb(153, 153, 153);\r\n}\r\n\r\n.VCVVJzKJ2WKTbtqdDC8bs:focus {\r\n  color: rgb(153, 153, 153);\r\n  outline: 2px dotted gray;\r\n}\r\n\r\n._1CVLtK-SeWREdFbtMfsFr6 {\r\n  display: inline-block;\r\n  fill: currentcolor;\r\n  line-height: 1;\r\n  stroke: currentcolor;\r\n  stroke-width: 0;\r\n}\r\n\r\n.siGZdSGJ2DsmuVUPdLj1S {\r\n  align-self: stretch;\r\n  background-color: rgb(204, 204, 204);\r\n  margin-bottom: 8px;\r\n  margin-top: 8px;\r\n  width: 1px;\r\n  box-sizing: border-box;\r\n}\r\n\r\n._3etkCiSEHj9rBdr3HP7hoI {\r\n  top: 100%;\r\n  background-color: rgb(255, 255, 255);\r\n  box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 0px 1px, rgba(0, 0, 0, 0.1) 0px 4px 11px;\r\n  margin-bottom: 1px;\r\n  margin-top: 1px;\r\n  position: absolute;\r\n  width: 100%;\r\n  z-index: 1;\r\n  box-sizing: border-box;\r\n  border-radius: 2px;\r\n}\r\n\r\n._2BZ6P2ChebiTM94M-OMhZD {\r\n  max-height: 300px;\r\n  overflow-y: auto;\r\n  padding-bottom: 2px;\r\n  padding-top: 2px;\r\n  position: relative;\r\n  box-sizing: border-box;\r\n}\r\n\r\n._1V1IQxhU17EfSxmz_iTN5t {\r\n  color: rgb(153, 153, 153);\r\n  text-align: center;\r\n  box-sizing: border-box;\r\n  padding: 8px 12px;\r\n}\r\n\r\n._1D9Xo5PbA8nnizD0GLeBxM {\r\n  background-color: transparent;\r\n  color: inherit;\r\n  cursor: default;\r\n  display: block;\r\n  font-size: inherit;\r\n  width: 100%;\r\n  user-select: none;\r\n  box-sizing: border-box;\r\n  padding: 8px 12px;\r\n}\r\n\r\n._12tsaEmF9_7NK7pihcgxJw {\r\n  background-color: rgb(222, 235, 255);\r\n}\r\n", ""]);
+exports.push([module.i, "._2dH7OUMw0ESmltDd0ovClD {\r\n  position: relative;\r\n  box-sizing: border-box;\r\n}\r\n\r\n.Axrtb5jaHtP98cGxAqRLV {\r\n  -webkit-box-align: center;\r\n  -webkit-box-pack: justify;\r\n  padding-left: 6px;\r\n  padding-right: 2px;\r\n  min-height: 38px;\r\n  align-items: center;\r\n  background-color: rgb(255, 255, 255);\r\n  border-radius: 2px;\r\n  border: 1px solid rgb(204, 204, 204);\r\n  cursor: default;\r\n  position: relative;\r\n  box-sizing: border-box;\r\n  display: flex;\r\n  flex-wrap: wrap;\r\n  justify-content: space-between;\r\n  transition: all 100ms ease 0s;\r\n  outline: 0px !important;\r\n}\r\n\r\n._2SUkorElgQ76JGjtyHk4de {\r\n  border: 1px solid blue;\r\n}\r\n\r\n._1Vnmg2rKay_EA99qawmFda {\r\n  padding: 2px;\r\n  color: rgb(51, 51, 51);\r\n  position: relative;\r\n  display: flex;\r\n  flex: 1 1 0%;\r\n  flex-wrap: wrap;\r\n  box-sizing: border-box;\r\n  overflow: hidden;\r\n  visibility: visible;\r\n  box-sizing: border-box;\r\n  width: 100%;\r\n}\r\n\r\n._2CD9QkPe0_ZMyoTQxtKBm7 {\r\n  position: absolute;\r\n  top: 50%;\r\n  color: rgb(128, 128, 128);\r\n  margin: 0;\r\n  transform: translateY(-50%);\r\n  box-sizing: border-box;\r\n}\r\n\r\n.xLIYtwgLVzX9AyYwVcgLt {\r\n  color: inherit;\r\n}\r\n\r\n._1Vnmg2rKay_EA99qawmFda {  \r\n  cursor: text;\r\n  width: 100%;\r\n}\r\n\r\n._2eDYrfCE1goL3V_2ogtQtz {\r\n  background-color: rgb(230, 230, 230);\r\n  display: flex;\r\n  min-width: 0px;\r\n  box-sizing: border-box;\r\n  border-radius: 2px;\r\n  margin: 2px 4px 2px 0;\r\n}\r\n\r\n._1tWm_bFu71IXItBd0OXrpP {\r\n  color: rgb(51, 51, 51);\r\n  font-size: 85%;\r\n  text-overflow: ellipsis;\r\n  white-space: nowrap;\r\n  box-sizing: border-box;\r\n  border-radius: 2px;\r\n  overflow: hidden;\r\n  padding: 2px 3px 4px 6px;\r\n}\r\n\r\n._2jKHZpiKI_7YyEyQXA1yMk {\r\n  -webkit-box-align: center;\r\n  align-items: center;\r\n  cursor: pointer;\r\n  display: flex;\r\n  padding-left: 4px;\r\n  padding-right: 4px;\r\n  box-sizing: border-box;\r\n  border-radius: 2px;\r\n}\r\n\r\n.f3JQilMsEX8OORf4P64Je {\r\n  -webkit-box-align: center;\r\n  align-items: center;\r\n  align-self: stretch;\r\n  display: flex;\r\n  flex-shrink: 0;\r\n  box-sizing: border-box;\r\n}\r\n\r\n.VCVVJzKJ2WKTbtqdDC8bs {\r\n  color: rgb(204, 204, 204);\r\n  display: flex;\r\n  box-sizing: border-box;\r\n  padding: 10px 6px;\r\n  transition: color 150ms ease 0s;\r\n}\r\n\r\n.VCVVJzKJ2WKTbtqdDC8bs:hover {\r\n  cursor: pointer;\r\n  color: rgb(153, 153, 153);\r\n}\r\n\r\n.VCVVJzKJ2WKTbtqdDC8bs:focus {\r\n  color: rgb(153, 153, 153);\r\n  outline: 2px dotted gray;\r\n}\r\n\r\n._1CVLtK-SeWREdFbtMfsFr6 {\r\n  display: inline-block;\r\n  fill: currentcolor;\r\n  line-height: 1;\r\n  stroke: currentcolor;\r\n  stroke-width: 0;\r\n}\r\n\r\n.siGZdSGJ2DsmuVUPdLj1S {\r\n  align-self: stretch;\r\n  background-color: rgb(204, 204, 204);\r\n  margin-bottom: 8px;\r\n  margin-top: 8px;\r\n  width: 1px;\r\n  box-sizing: border-box;\r\n}\r\n\r\n._3etkCiSEHj9rBdr3HP7hoI {\r\n  top: 100%;\r\n  background-color: rgb(255, 255, 255);\r\n  box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 0px 1px, rgba(0, 0, 0, 0.1) 0px 4px 11px;\r\n  margin-bottom: 1px;\r\n  margin-top: 1px;\r\n  position: absolute;\r\n  width: 100%;\r\n  z-index: 1;\r\n  box-sizing: border-box;\r\n  border-radius: 2px;\r\n}\r\n\r\n._2BZ6P2ChebiTM94M-OMhZD {\r\n  max-height: 300px;\r\n  overflow-y: auto;\r\n  padding-bottom: 2px;\r\n  padding-top: 2px;\r\n  position: relative;\r\n  box-sizing: border-box;\r\n}\r\n\r\n._1V1IQxhU17EfSxmz_iTN5t {\r\n  color: rgb(153, 153, 153);\r\n  text-align: center;\r\n  box-sizing: border-box;\r\n  padding: 8px 12px;\r\n}\r\n\r\n._1D9Xo5PbA8nnizD0GLeBxM {\r\n  background-color: transparent;\r\n  color: inherit;\r\n  cursor: default;\r\n  display: block;\r\n  font-size: inherit;\r\n  width: 100%;\r\n  user-select: none;\r\n  box-sizing: border-box;\r\n  padding: 8px 12px;\r\n}\r\n\r\n._12tsaEmF9_7NK7pihcgxJw {\r\n  background-color: rgb(222, 235, 255);\r\n}\r\n", ""]);
 // Exports
 exports.locals = {
 	"react-ahead__control-container": "_2dH7OUMw0ESmltDd0ovClD",
@@ -527,6 +527,8 @@ exports.locals = {
 	"react-ahead__placeholder": "_2CD9QkPe0_ZMyoTQxtKBm7",
 	"react-ahead__placeholder-value-mode": "xLIYtwgLVzX9AyYwVcgLt",
 	"react-ahead__selection-container": "_2eDYrfCE1goL3V_2ogtQtz",
+	"react-ahead__selection-content": "_1tWm_bFu71IXItBd0OXrpP",
+	"react-ahead__selection-removal": "_2jKHZpiKI_7YyEyQXA1yMk",
 	"react-ahead__dropdown-wrapper": "f3JQilMsEX8OORf4P64Je",
 	"react-ahead__dropdown-icon-wrapper": "VCVVJzKJ2WKTbtqdDC8bs",
 	"react-ahead__dropdown-icon": "_1CVLtK-SeWREdFbtMfsFr6",
@@ -793,8 +795,7 @@ class input_Input extends external_commonjs_react_commonjs2_react_amd_React_root
 
       const {
         keyCode
-      } = evt;
-      console.log('key pressed:', keyCode);
+      } = evt; // console.log('key pressed:', keyCode);
 
       switch (keyCode) {
         case 9:
@@ -926,6 +927,7 @@ class dropdown_Dropdown extends external_commonjs_react_commonjs2_react_amd_Reac
       const {
         activeIdx
       } = this.state;
+      console.log('selection at', activeIdx);
 
       if (activeIdx >= options.length || !onSelection) {
         return;
@@ -1125,48 +1127,65 @@ const Placeholder = props => {
 };
 
 /* harmony default export */ var src_placeholder = (Placeholder);
-// CONCATENATED MODULE: ./src/selectionItem.js
-
-
-const SelectionItem = props => {
-  return external_commonjs_react_commonjs2_react_amd_React_root_React_default.a.createElement("div", null);
-};
-
-/* harmony default export */ var selectionItem = (SelectionItem);
 // CONCATENATED MODULE: ./src/selection.js
 function selection_defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 
 
 
-
 const containerClass = "react-ahead__selection-container";
+const selection_contentClass = "react-ahead__selection-content";
+const removalClass = "react-ahead__selection-removal";
 class selection_MultiSelection extends external_commonjs_react_commonjs2_react_amd_React_root_React_default.a.Component {
   constructor(props) {
     super(props);
+
+    selection_defineProperty(this, "renderItem", (item, idx) => {
+      const key = `sel_item_${idx}`;
+      const source = typeof item === 'object' ? item['source'] : item.toString();
+      let content = this.props.display ? this.props.display(item, 'display') : source;
+      let title = content;
+
+      if (typeof content === 'string' && content.length > 10) {
+        content = content.substr(0, 8) + '...';
+      }
+
+      return external_commonjs_react_commonjs2_react_amd_React_root_React_default.a.createElement("div", {
+        style: {
+          overflow: "hidden",
+          whiteSpace: "nowrap"
+        },
+        key: key
+      }, external_commonjs_react_commonjs2_react_amd_React_root_React_default.a.createElement("div", {
+        className: this._containerStyle
+      }, external_commonjs_react_commonjs2_react_amd_React_root_React_default.a.createElement("div", {
+        title: title,
+        className: this._contentStyle
+      }, content), external_commonjs_react_commonjs2_react_amd_React_root_React_default.a.createElement("div", {
+        className: this._removalStyle
+      }, "X")));
+    });
+
     this._containerStyle = shared_default.a[containerClass] || containerClass;
+    this._contentStyle = shared_default.a[selection_contentClass] || selection_contentClass;
+    this._removalStyle = shared_default.a[removalClass] || removalClass;
   }
 
   render() {
-    if (Array.isArray(this.props.selection) || !this.props.selection.length) {
+    if (!Array.isArray(this.props.selection) || !this.props.selection.length) {
       return null;
     }
 
-    return external_commonjs_react_commonjs2_react_amd_React_root_React_default.a.createElement(external_commonjs_react_commonjs2_react_amd_React_root_React_default.a.Fragment, null, this.props.selection.map(item => {
-      return external_commonjs_react_commonjs2_react_amd_React_root_React_default.a.createElement("div", {
-        style: {
-          overflow: hidden,
-          whiteSpace: "nowrap"
-        }
-      }, external_commonjs_react_commonjs2_react_amd_React_root_React_default.a.createElement("div", {
-        className: this._containerStyle
-      }));
+    return external_commonjs_react_commonjs2_react_amd_React_root_React_default.a.createElement(external_commonjs_react_commonjs2_react_amd_React_root_React_default.a.Fragment, null, this.props.selection.map((item, idx) => {
+      return this.renderItem(item, idx);
     }));
   }
 
 }
 
 selection_defineProperty(selection_MultiSelection, "propTypes", {
+  display: prop_types_default.a.func,
+  selection: prop_types_default.a.arrayOf(prop_types_default.a.any),
   onSelectionRemoval: prop_types_default.a.func.isRequired
 });
 // CONCATENATED MODULE: ./src/icons/clear.js
@@ -1323,6 +1342,24 @@ class src_ReactAhead extends external_commonjs_react_commonjs2_react_amd_React_r
       value: ''
     });
 
+    src_defineProperty(this, "getOptions", (options, selection) => {
+      if (!selection) {
+        selection = this.state.selection;
+      }
+
+      if (!selection || !selection.length) {
+        return options;
+      }
+
+      return options.filter(item => {
+        if (typeof item === 'object') {
+          return !this._selKeys.hasOwnProperty(item['source']);
+        }
+
+        return !this._selKeys.hasOwnProperty(item);
+      });
+    });
+
     src_defineProperty(this, "handleEntryChanged", (_evt, value, width) => {
       if (typeof value !== 'string') {
         value = value.toString();
@@ -1342,6 +1379,7 @@ class src_ReactAhead extends external_commonjs_react_commonjs2_react_amd_React_r
 
       if (value !== '') {
         this._engine.find(value, options => {
+          options = this.getOptions(options);
           this._lastVal = {
             value,
             options
@@ -1352,10 +1390,10 @@ class src_ReactAhead extends external_commonjs_react_commonjs2_react_amd_React_r
           });
         });
       } else {
-        state['options'] = this.props.initOptions;
+        state['options'] = this.getOptions(this.props.initOptions);
         this._lastVal = {
           value,
-          options: this.props.initOptions
+          options: state['options']
         };
       }
 
@@ -1395,27 +1433,14 @@ class src_ReactAhead extends external_commonjs_react_commonjs2_react_amd_React_r
         selection = [val];
         this._selKeys = {};
         this._selKeys[key] = null;
-      } // filter out selected items
+      } // set focus type to prepare for transferring the focus
 
-
-      const options = this.props.initOptions.filter(item => {
-        if (typeof item === 'object') {
-          return !this._selKeys.hasOwnProperty(item['source']);
-        }
-
-        return !this._selKeys.hasOwnProperty(item);
-      }); // set focus type to prepare for transferring the focus
 
       this._focusType = 1;
       this.handleControlFocus(evt); // close the dropdown for now
 
-      setTimeout(() => {
-        this.setState({
-          dropdownOpen: false
-        });
-      }, 0);
       this.setState({
-        options,
+        options: this.getOptions(this.props.initOptions, selection),
         selection,
         value: ''
       });

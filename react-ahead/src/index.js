@@ -125,6 +125,24 @@ export default class ReactAhead extends React.Component {
     }
   }
 
+  getOptions = (options, selection) => {
+    if (!selection) {
+      selection = this.state.selection;
+    }
+
+    if (!selection || !selection.length) {
+      return options;
+    }
+
+    return options.filter(item => {
+      if (typeof item === 'object') {
+        return !this._selKeys.hasOwnProperty(item['source']);
+      }
+
+      return !this._selKeys.hasOwnProperty(item);
+    });
+  };
+
   handleEntryChanged = (_evt, value, width) => {
     if (typeof value !== 'string') {
       value = value.toString();
@@ -144,6 +162,8 @@ export default class ReactAhead extends React.Component {
 
     if (value !== '') {
       this._engine.find(value, options => {
+        options = this.getOptions(options);
+
         this._lastVal = {
           value,
           options,
@@ -155,11 +175,11 @@ export default class ReactAhead extends React.Component {
         });
       });      
     } else {
-      state['options'] = this.props.initOptions;
+      state['options'] = this.getOptions(this.props.initOptions);
       
       this._lastVal = {
         value,
-        options: this.props.initOptions,
+        options: state['options'],
       };
     }
 
@@ -203,28 +223,13 @@ export default class ReactAhead extends React.Component {
       this._selKeys[key] = null;
     }
 
-    // filter out selected items
-    const options = this.props.initOptions.filter(item => {
-      if (typeof item === 'object') {
-        return !this._selKeys.hasOwnProperty(item['source']);
-      }
-
-      return !this._selKeys.hasOwnProperty(item);
-    });
-
     // set focus type to prepare for transferring the focus
     this._focusType = 1;
     this.handleControlFocus(evt);
 
     // close the dropdown for now
-    setTimeout(() => {
-      this.setState({
-        dropdownOpen: false,
-      });
-    }, 0);
-
     this.setState({
-      options,
+      options: this.getOptions(this.props.initOptions, selection),
       selection,
       value: '',
     });
@@ -260,7 +265,7 @@ export default class ReactAhead extends React.Component {
         this.setState({
           dropdownOpen: false,
         });
-        
+
         break;
     
       default:

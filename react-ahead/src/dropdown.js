@@ -95,6 +95,8 @@ export default class Dropdown extends React.Component {
     const { options, onSelection } = this.props;
     const { activeIdx } = this.state;
 
+    console.log('selection at', activeIdx);
+
     if (activeIdx >= options.length || !onSelection) {
       return;
     }
