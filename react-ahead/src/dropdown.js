@@ -70,6 +70,8 @@ export default class Dropdown extends React.Component {
   }
 
   shouldComponentUpdate(nextProps, nextState) {
+    // console.log('should update??', nextProps.options);
+
     if (!nextState || this.state.activeIdx !== nextState.activeIdx) {
       return true;
     }
@@ -95,16 +97,11 @@ export default class Dropdown extends React.Component {
     const { options, onSelection } = this.props;
     const { activeIdx } = this.state;
 
-    console.log('selection at', activeIdx);
-
     if (activeIdx >= options.length || !onSelection) {
       return;
     }
 
-    const item = options[activeIdx];
-    const source = typeof item === 'object' ? item['source'] : item.toString();
-
-    onSelection(evt, source, item);
+    onSelection(evt, options[activeIdx]);
   };
 
   handleCursorMove = (type) => {
@@ -190,7 +187,6 @@ export default class Dropdown extends React.Component {
   };
 
   render() {
-    console.log('update ... ');
     if (!this.props.open) {
       return null;
     }

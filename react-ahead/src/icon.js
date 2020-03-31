@@ -1,81 +1,43 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import styles from './shared.css';
-import ClearIcon from './icons/clear';
-import DropIcon from './icons/drop';
 
-const dropdownClass = "react-ahead__dropdown-wrapper";
-const iconWrapperClass = "react-ahead__dropdown-icon-wrapper";
-const separatorClass = "react-ahead__dropdown-separator";
+const iconClass = "react-ahead__action-icon";
 
-const DropdownIcon = props => {
-  const dropdownWrapperStyle = styles[dropdownClass] || dropdownClass;
-  const iconWrapperStyle = styles[iconWrapperClass] || iconWrapperClass;
-  const separatorStyle = styles[separatorClass] || separatorClass;
+const ControlIcon = props => {
+  const iconStyle = styles[iconClass] || iconClass;
 
-  const handleKeyDown = (evt, action) => {
-    const { keyCode } = evt || {};
+  let { size, viewBox } = props;
+  
+  if (!size) {
+    size = "16";
+  }
 
-    if (!keyCode) {
-      return;
-    }
-
-    switch (keyCode) {
-      case 13:
-      case 32:
-        if (action === 'clear') {
-          props.onClear && props.onClear();
-        } else if (action === 'dropdown') {
-          props.onDropdown && props.onDropdown(true);
-        }
-
-        break;
-
-      case 38:
-      case 40:
-        props.onSpecialKey && props.onSpecialKey('move', keyCode === 38);
-        break;
-
-      case 9:
-        if (action !== 'dropdown' || evt.shiftKey) {
-          props.onSpecialKey && props.onSpecialKey('tab');
-        }
-
-        break;
-    
-      default:
-        break;
-    }
+  if (!viewBox) {
+    viewBox = "0 0 18 18";
   }
 
   return (
-    <div className={dropdownWrapperStyle}>
-      <div 
-        className={iconWrapperStyle} 
+    <div
+      aria-hidden="true"
+      className={props.className}
+      onClick={props.onClick}
+      onKeyDown={props.onKeyDown}
+      tabIndex={0}
+    >
+      <svg
+        x="0px" 
+        y="0px"
+        width={size} 
+        height={size}
+        viewBox={viewBox}
+        focusable="false"
         aria-hidden="true"
-        onClick={props.onClear}
-        onKeyDown={evt => handleKeyDown(evt, 'clear')}
-        tabIndex={0}
+        className={iconStyle}
       >
-        <ClearIcon />
-      </div>
-      <span className={separatorStyle}></span>
-      <div 
-        className={iconWrapperStyle} 
-        aria-hidden="true"
-        onClick={props.onDropdown}
-        onKeyDown={evt => handleKeyDown(evt, 'dropdown')}
-        tabIndex={0}
-      >
-        <DropIcon />
-      </div>
+        <path d={props.path} />
+      </svg>
     </div>
   );
 };
 
-DropdownIcon.propTypes = {
-  onClear: PropTypes.func,
-  onDropdown: PropTypes.func,
-}
-
-export default DropdownIcon;
+export default ControlIcon;

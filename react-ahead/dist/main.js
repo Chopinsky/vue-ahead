@@ -517,7 +517,7 @@ module.exports = function (list, options) {
 var ___CSS_LOADER_API_IMPORT___ = __webpack_require__(7);
 exports = ___CSS_LOADER_API_IMPORT___(false);
 // Module
-exports.push([module.i, "._2dH7OUMw0ESmltDd0ovClD {\r\n  position: relative;\r\n  box-sizing: border-box;\r\n}\r\n\r\n.Axrtb5jaHtP98cGxAqRLV {\r\n  -webkit-box-align: center;\r\n  -webkit-box-pack: justify;\r\n  padding-left: 6px;\r\n  padding-right: 2px;\r\n  min-height: 38px;\r\n  align-items: center;\r\n  background-color: rgb(255, 255, 255);\r\n  border-radius: 2px;\r\n  border: 1px solid rgb(204, 204, 204);\r\n  cursor: default;\r\n  position: relative;\r\n  box-sizing: border-box;\r\n  display: flex;\r\n  flex-wrap: wrap;\r\n  justify-content: space-between;\r\n  transition: all 100ms ease 0s;\r\n  outline: 0px !important;\r\n}\r\n\r\n._2SUkorElgQ76JGjtyHk4de {\r\n  border: 1px solid blue;\r\n}\r\n\r\n._1Vnmg2rKay_EA99qawmFda {\r\n  padding: 2px;\r\n  color: rgb(51, 51, 51);\r\n  position: relative;\r\n  display: flex;\r\n  flex: 1 1 0%;\r\n  flex-wrap: wrap;\r\n  box-sizing: border-box;\r\n  overflow: hidden;\r\n  visibility: visible;\r\n  box-sizing: border-box;\r\n  width: 100%;\r\n}\r\n\r\n._2CD9QkPe0_ZMyoTQxtKBm7 {\r\n  position: absolute;\r\n  top: 50%;\r\n  color: rgb(128, 128, 128);\r\n  margin: 0;\r\n  transform: translateY(-50%);\r\n  box-sizing: border-box;\r\n}\r\n\r\n.xLIYtwgLVzX9AyYwVcgLt {\r\n  color: inherit;\r\n}\r\n\r\n._1Vnmg2rKay_EA99qawmFda {  \r\n  cursor: text;\r\n  width: 100%;\r\n}\r\n\r\n._2eDYrfCE1goL3V_2ogtQtz {\r\n  background-color: rgb(230, 230, 230);\r\n  display: flex;\r\n  min-width: 0px;\r\n  box-sizing: border-box;\r\n  border-radius: 2px;\r\n  margin: 2px 4px 2px 0;\r\n}\r\n\r\n._1tWm_bFu71IXItBd0OXrpP {\r\n  color: rgb(51, 51, 51);\r\n  font-size: 85%;\r\n  text-overflow: ellipsis;\r\n  white-space: nowrap;\r\n  box-sizing: border-box;\r\n  border-radius: 2px;\r\n  overflow: hidden;\r\n  padding: 2px 3px 4px 6px;\r\n}\r\n\r\n._2jKHZpiKI_7YyEyQXA1yMk {\r\n  -webkit-box-align: center;\r\n  align-items: center;\r\n  cursor: pointer;\r\n  display: flex;\r\n  padding-left: 4px;\r\n  padding-right: 4px;\r\n  box-sizing: border-box;\r\n  border-radius: 2px;\r\n}\r\n\r\n.f3JQilMsEX8OORf4P64Je {\r\n  -webkit-box-align: center;\r\n  align-items: center;\r\n  align-self: stretch;\r\n  display: flex;\r\n  flex-shrink: 0;\r\n  box-sizing: border-box;\r\n}\r\n\r\n.VCVVJzKJ2WKTbtqdDC8bs {\r\n  color: rgb(204, 204, 204);\r\n  display: flex;\r\n  box-sizing: border-box;\r\n  padding: 10px 6px;\r\n  transition: color 150ms ease 0s;\r\n}\r\n\r\n.VCVVJzKJ2WKTbtqdDC8bs:hover {\r\n  cursor: pointer;\r\n  color: rgb(153, 153, 153);\r\n}\r\n\r\n.VCVVJzKJ2WKTbtqdDC8bs:focus {\r\n  color: rgb(153, 153, 153);\r\n  outline: 2px dotted gray;\r\n}\r\n\r\n._1CVLtK-SeWREdFbtMfsFr6 {\r\n  display: inline-block;\r\n  fill: currentcolor;\r\n  line-height: 1;\r\n  stroke: currentcolor;\r\n  stroke-width: 0;\r\n}\r\n\r\n.siGZdSGJ2DsmuVUPdLj1S {\r\n  align-self: stretch;\r\n  background-color: rgb(204, 204, 204);\r\n  margin-bottom: 8px;\r\n  margin-top: 8px;\r\n  width: 1px;\r\n  box-sizing: border-box;\r\n}\r\n\r\n._3etkCiSEHj9rBdr3HP7hoI {\r\n  top: 100%;\r\n  background-color: rgb(255, 255, 255);\r\n  box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 0px 1px, rgba(0, 0, 0, 0.1) 0px 4px 11px;\r\n  margin-bottom: 1px;\r\n  margin-top: 1px;\r\n  position: absolute;\r\n  width: 100%;\r\n  z-index: 1;\r\n  box-sizing: border-box;\r\n  border-radius: 2px;\r\n}\r\n\r\n._2BZ6P2ChebiTM94M-OMhZD {\r\n  max-height: 300px;\r\n  overflow-y: auto;\r\n  padding-bottom: 2px;\r\n  padding-top: 2px;\r\n  position: relative;\r\n  box-sizing: border-box;\r\n}\r\n\r\n._1V1IQxhU17EfSxmz_iTN5t {\r\n  color: rgb(153, 153, 153);\r\n  text-align: center;\r\n  box-sizing: border-box;\r\n  padding: 8px 12px;\r\n}\r\n\r\n._1D9Xo5PbA8nnizD0GLeBxM {\r\n  background-color: transparent;\r\n  color: inherit;\r\n  cursor: default;\r\n  display: block;\r\n  font-size: inherit;\r\n  width: 100%;\r\n  user-select: none;\r\n  box-sizing: border-box;\r\n  padding: 8px 12px;\r\n}\r\n\r\n._12tsaEmF9_7NK7pihcgxJw {\r\n  background-color: rgb(222, 235, 255);\r\n}\r\n", ""]);
+exports.push([module.i, "._2dH7OUMw0ESmltDd0ovClD {\r\n  position: relative;\r\n  box-sizing: border-box;\r\n}\r\n\r\n.Axrtb5jaHtP98cGxAqRLV {\r\n  -webkit-box-align: center;\r\n  -webkit-box-pack: justify;\r\n  padding-left: 6px;\r\n  padding-right: 2px;\r\n  min-height: 38px;\r\n  align-items: center;\r\n  background-color: rgb(255, 255, 255);\r\n  border-radius: 2px;\r\n  border: 1px solid rgb(204, 204, 204);\r\n  cursor: default;\r\n  position: relative;\r\n  box-sizing: border-box;\r\n  display: flex;\r\n  flex-wrap: wrap;\r\n  justify-content: space-between;\r\n  transition: all 100ms ease 0s;\r\n  outline: 0px !important;\r\n}\r\n\r\n._2SUkorElgQ76JGjtyHk4de {\r\n  border: 1px solid blue;\r\n}\r\n\r\n._1Vnmg2rKay_EA99qawmFda {\r\n  padding: 2px;\r\n  color: rgb(51, 51, 51);\r\n  position: relative;\r\n  display: flex;\r\n  flex: 1 1 0%;\r\n  flex-wrap: wrap;\r\n  box-sizing: border-box;\r\n  overflow: hidden;\r\n  visibility: visible;\r\n  box-sizing: border-box;\r\n  width: 100%;\r\n}\r\n\r\n._2CD9QkPe0_ZMyoTQxtKBm7 {\r\n  position: absolute;\r\n  top: 50%;\r\n  color: rgb(128, 128, 128);\r\n  margin: 0;\r\n  transform: translateY(-50%);\r\n  box-sizing: border-box;\r\n}\r\n\r\n.xLIYtwgLVzX9AyYwVcgLt {\r\n  color: inherit;\r\n}\r\n\r\n._1Vnmg2rKay_EA99qawmFda {  \r\n  cursor: text;\r\n  width: 100%;\r\n}\r\n\r\n._2eDYrfCE1goL3V_2ogtQtz {\r\n  background-color: rgb(230, 230, 230);\r\n  display: flex;\r\n  min-width: 0px;\r\n  box-sizing: border-box;\r\n  border-radius: 2px;\r\n  margin: 2px 4px 2px 0;\r\n}\r\n\r\n._1tWm_bFu71IXItBd0OXrpP {\r\n  color: rgb(51, 51, 51);\r\n  font-size: 85%;\r\n  text-overflow: ellipsis;\r\n  white-space: nowrap;\r\n  box-sizing: border-box;\r\n  border-radius: 2px;\r\n  overflow: hidden;\r\n  padding: 2px 3px 4px 6px;\r\n}\r\n\r\n._2jKHZpiKI_7YyEyQXA1yMk {\r\n  -webkit-box-align: center;\r\n  align-items: center;\r\n  cursor: pointer;\r\n  display: flex;\r\n  padding-left: 4px;\r\n  padding-right: 4px;\r\n  box-sizing: border-box;\r\n  border-radius: 2px;\r\n}\r\n\r\n._2jKHZpiKI_7YyEyQXA1yMk:hover {\r\n  background-color: rgb(255, 189, 173);\r\n  color: rgb(222, 53, 11);\r\n}\r\n\r\n._2U9LCKIK4vRQWtopGpYhPl {\r\n  -webkit-box-align: center;\r\n  align-items: center;\r\n  align-self: stretch;\r\n  display: flex;\r\n  flex-shrink: 0;\r\n  box-sizing: border-box;\r\n}\r\n\r\n._25xAyedeXMtrf4T3ed1PJt {\r\n  color: rgb(204, 204, 204);\r\n  display: flex;\r\n  box-sizing: border-box;\r\n  padding: 10px 6px;\r\n  transition: color 150ms ease 0s;\r\n}\r\n\r\n._25xAyedeXMtrf4T3ed1PJt:hover {\r\n  cursor: pointer;\r\n  color: rgb(153, 153, 153);\r\n}\r\n\r\n._25xAyedeXMtrf4T3ed1PJt:focus {\r\n  color: rgb(153, 153, 153);\r\n  outline: 2px dotted gray;\r\n}\r\n\r\n.k1UudnI1h5npE3btdwIY1 {\r\n  display: inline-block;\r\n  fill: currentcolor;\r\n  line-height: 1;\r\n  stroke: currentcolor;\r\n  stroke-width: 0;\r\n}\r\n\r\n._1fXbnnAsavNrQXwBYoNqlw {\r\n  align-self: stretch;\r\n  background-color: rgb(204, 204, 204);\r\n  margin-bottom: 8px;\r\n  margin-top: 8px;\r\n  width: 1px;\r\n  box-sizing: border-box;\r\n}\r\n\r\n._3etkCiSEHj9rBdr3HP7hoI {\r\n  top: 100%;\r\n  background-color: rgb(255, 255, 255);\r\n  box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 0px 1px, rgba(0, 0, 0, 0.1) 0px 4px 11px;\r\n  margin-bottom: 1px;\r\n  margin-top: 1px;\r\n  position: absolute;\r\n  width: 100%;\r\n  z-index: 1;\r\n  box-sizing: border-box;\r\n  border-radius: 2px;\r\n}\r\n\r\n._2BZ6P2ChebiTM94M-OMhZD {\r\n  max-height: 300px;\r\n  overflow-y: auto;\r\n  padding-bottom: 2px;\r\n  padding-top: 2px;\r\n  position: relative;\r\n  box-sizing: border-box;\r\n}\r\n\r\n._1V1IQxhU17EfSxmz_iTN5t {\r\n  color: rgb(153, 153, 153);\r\n  text-align: center;\r\n  box-sizing: border-box;\r\n  padding: 8px 12px;\r\n}\r\n\r\n._1D9Xo5PbA8nnizD0GLeBxM {\r\n  background-color: transparent;\r\n  color: inherit;\r\n  cursor: default;\r\n  display: block;\r\n  font-size: inherit;\r\n  width: 100%;\r\n  user-select: none;\r\n  box-sizing: border-box;\r\n  padding: 8px 12px;\r\n}\r\n\r\n._12tsaEmF9_7NK7pihcgxJw {\r\n  background-color: rgb(222, 235, 255);\r\n}\r\n", ""]);
 // Exports
 exports.locals = {
 	"react-ahead__control-container": "_2dH7OUMw0ESmltDd0ovClD",
@@ -529,10 +529,10 @@ exports.locals = {
 	"react-ahead__selection-container": "_2eDYrfCE1goL3V_2ogtQtz",
 	"react-ahead__selection-content": "_1tWm_bFu71IXItBd0OXrpP",
 	"react-ahead__selection-removal": "_2jKHZpiKI_7YyEyQXA1yMk",
-	"react-ahead__dropdown-wrapper": "f3JQilMsEX8OORf4P64Je",
-	"react-ahead__dropdown-icon-wrapper": "VCVVJzKJ2WKTbtqdDC8bs",
-	"react-ahead__dropdown-icon": "_1CVLtK-SeWREdFbtMfsFr6",
-	"react-ahead__dropdown-separator": "siGZdSGJ2DsmuVUPdLj1S",
+	"react-ahead__action-icons-container": "_2U9LCKIK4vRQWtopGpYhPl",
+	"react-ahead__action-icons": "_25xAyedeXMtrf4T3ed1PJt",
+	"react-ahead__action-icon": "k1UudnI1h5npE3btdwIY1",
+	"react-ahead__action-icons-separator": "_1fXbnnAsavNrQXwBYoNqlw",
 	"react-ahead__menu-wrapper": "_3etkCiSEHj9rBdr3HP7hoI",
 	"react-ahead__menu-content": "_2BZ6P2ChebiTM94M-OMhZD",
 	"react-ahead__menu-no-option": "_1V1IQxhU17EfSxmz_iTN5t",
@@ -927,15 +927,12 @@ class dropdown_Dropdown extends external_commonjs_react_commonjs2_react_amd_Reac
       const {
         activeIdx
       } = this.state;
-      console.log('selection at', activeIdx);
 
       if (activeIdx >= options.length || !onSelection) {
         return;
       }
 
-      const item = options[activeIdx];
-      const source = typeof item === 'object' ? item['source'] : item.toString();
-      onSelection(evt, source, item);
+      onSelection(evt, options[activeIdx]);
     });
 
     dropdown_defineProperty(this, "handleCursorMove", type => {
@@ -1050,6 +1047,7 @@ class dropdown_Dropdown extends external_commonjs_react_commonjs2_react_amd_Reac
   }
 
   shouldComponentUpdate(nextProps, nextState) {
+    // console.log('should update??', nextProps.options);
     if (!nextState || this.state.activeIdx !== nextState.activeIdx) {
       return true;
     }
@@ -1068,8 +1066,6 @@ class dropdown_Dropdown extends external_commonjs_react_commonjs2_react_amd_Reac
   }
 
   render() {
-    console.log('update ... ');
-
     if (!this.props.open) {
       return null;
     }
@@ -1127,8 +1123,50 @@ const Placeholder = props => {
 };
 
 /* harmony default export */ var src_placeholder = (Placeholder);
+// CONCATENATED MODULE: ./src/icon.js
+
+
+const iconClass = "react-ahead__action-icon";
+
+const ControlIcon = props => {
+  const iconStyle = shared_default.a[iconClass] || iconClass;
+  let {
+    size,
+    viewBox
+  } = props;
+
+  if (!size) {
+    size = "16";
+  }
+
+  if (!viewBox) {
+    viewBox = "0 0 18 18";
+  }
+
+  return external_commonjs_react_commonjs2_react_amd_React_root_React_default.a.createElement("div", {
+    "aria-hidden": "true",
+    className: props.className,
+    onClick: props.onClick,
+    onKeyDown: props.onKeyDown,
+    tabIndex: 0
+  }, external_commonjs_react_commonjs2_react_amd_React_root_React_default.a.createElement("svg", {
+    x: "0px",
+    y: "0px",
+    width: size,
+    height: size,
+    viewBox: viewBox,
+    focusable: "false",
+    "aria-hidden": "true",
+    className: iconStyle
+  }, external_commonjs_react_commonjs2_react_amd_React_root_React_default.a.createElement("path", {
+    d: props.path
+  })));
+};
+
+/* harmony default export */ var icon = (ControlIcon);
 // CONCATENATED MODULE: ./src/selection.js
 function selection_defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 
 
 
@@ -1147,7 +1185,7 @@ class selection_MultiSelection extends external_commonjs_react_commonjs2_react_a
       let title = content;
 
       if (typeof content === 'string' && content.length > 10) {
-        content = content.substr(0, 8) + '...';
+        content = content.substr(0, 8) + ' ...';
       }
 
       return external_commonjs_react_commonjs2_react_amd_React_root_React_default.a.createElement("div", {
@@ -1161,9 +1199,12 @@ class selection_MultiSelection extends external_commonjs_react_commonjs2_react_a
       }, external_commonjs_react_commonjs2_react_amd_React_root_React_default.a.createElement("div", {
         title: title,
         className: this._contentStyle
-      }, content), external_commonjs_react_commonjs2_react_amd_React_root_React_default.a.createElement("div", {
-        className: this._removalStyle
-      }, "X")));
+      }, content), external_commonjs_react_commonjs2_react_amd_React_root_React_default.a.createElement(icon, {
+        className: this._removalStyle,
+        path: "M 14.348 14.849 c -0.469 0.469 -1.229 0.469 -1.697 0 l -2.651 -3.03 l -2.651 3.029 c -0.469 0.469 -1.229 0.469 -1.697 0 c -0.469 -0.469 -0.469 -1.229 0 -1.697 l 2.758 -3.15 l -2.759 -3.152 c -0.469 -0.469 -0.469 -1.228 0 -1.697 s 1.228 -0.469 1.697 0 l 2.652 3.031 l 2.651 -3.031 c 0.469 -0.469 1.228 -0.469 1.697 0 s 0.469 1.229 0 1.697 l -2.758 3.152 l 2.758 3.15 c 0.469 0.469 0.469 1.229 0 1.698 Z",
+        size: "12",
+        onClick: evt => this.props.onSelectionRemoval(evt, idx)
+      })));
     });
 
     this._containerStyle = shared_default.a[containerClass] || containerClass;
@@ -1172,11 +1213,15 @@ class selection_MultiSelection extends external_commonjs_react_commonjs2_react_a
   }
 
   render() {
-    if (!Array.isArray(this.props.selection) || !this.props.selection.length) {
+    const {
+      selection
+    } = this.props;
+
+    if (!Array.isArray(selection) || !selection.length) {
       return null;
     }
 
-    return external_commonjs_react_commonjs2_react_amd_React_root_React_default.a.createElement(external_commonjs_react_commonjs2_react_amd_React_root_React_default.a.Fragment, null, this.props.selection.map((item, idx) => {
+    return external_commonjs_react_commonjs2_react_amd_React_root_React_default.a.createElement(external_commonjs_react_commonjs2_react_amd_React_root_React_default.a.Fragment, null, selection.map((item, idx) => {
       return this.renderItem(item, idx);
     }));
   }
@@ -1188,64 +1233,19 @@ selection_defineProperty(selection_MultiSelection, "propTypes", {
   selection: prop_types_default.a.arrayOf(prop_types_default.a.any),
   onSelectionRemoval: prop_types_default.a.func.isRequired
 });
-// CONCATENATED MODULE: ./src/icons/clear.js
-
-
-const iconClass = "react-ahead__dropdown-icon";
-
-const ClearIcon = _props => {
-  const iconStyle = shared_default.a[iconClass] || iconClass;
-  return external_commonjs_react_commonjs2_react_amd_React_root_React_default.a.createElement("svg", {
-    x: "0px",
-    y: "0px",
-    width: "16",
-    height: "16",
-    focusable: "false",
-    viewBox: "0 0 18 18",
-    className: iconStyle,
-    "aria-hidden": "true"
-  }, external_commonjs_react_commonjs2_react_amd_React_root_React_default.a.createElement("path", {
-    d: "M 14.348 14.849 c -0.469 0.469 -1.229 0.469 -1.697 0 l -2.651 -3.03 l -2.651 3.029 c -0.469 0.469 -1.229 0.469 -1.697 0 c -0.469 -0.469 -0.469 -1.229 0 -1.697 l 2.758 -3.15 l -2.759 -3.152 c -0.469 -0.469 -0.469 -1.228 0 -1.697 s 1.228 -0.469 1.697 0 l 2.652 3.031 l 2.651 -3.031 c 0.469 -0.469 1.228 -0.469 1.697 0 s 0.469 1.229 0 1.697 l -2.758 3.152 l 2.758 3.15 c 0.469 0.469 0.469 1.229 0 1.698 Z"
-  }));
-};
-
-/* harmony default export */ var clear = (ClearIcon);
-// CONCATENATED MODULE: ./src/icons/drop.js
-
-
-const drop_iconClass = "react-ahead__dropdown-icon";
-
-const DropIcon = _props => {
-  const iconStyle = shared_default.a[drop_iconClass] || drop_iconClass;
-  return external_commonjs_react_commonjs2_react_amd_React_root_React_default.a.createElement("svg", {
-    x: "0px",
-    y: "0px",
-    width: "16",
-    height: "16",
-    focusable: "false",
-    viewBox: "0 0 18 18",
-    className: iconStyle,
-    "aria-hidden": "true"
-  }, external_commonjs_react_commonjs2_react_amd_React_root_React_default.a.createElement("path", {
-    d: "M 4.516 7.548 c 0.436 -0.446 1.043 -0.481 1.576 0 l 3.908 3.747 l 3.908 -3.747 c 0.533 -0.481 1.141 -0.446 1.574 0 c 0.436 0.445 0.408 1.197 0 1.615 c -0.406 0.418 -4.695 4.502 -4.695 4.502 c -0.217 0.223 -0.502 0.335 -0.787 0.335 s -0.57 -0.112 -0.789 -0.335 c 0 0 -4.287 -4.084 -4.695 -4.502 s -0.436 -1.17 0 -1.615 Z"
-  }));
-};
-
-/* harmony default export */ var drop = (DropIcon);
-// CONCATENATED MODULE: ./src/icon.js
+// CONCATENATED MODULE: ./src/actionIcons.js
 
 
 
 
+const actionIcons_containerClass = "react-ahead__action-icons-container";
+const separatorClass = "react-ahead__action-icons-separator";
+const iconWrapperClass = "react-ahead__action-icons";
 
-const dropdownClass = "react-ahead__dropdown-wrapper";
-const iconWrapperClass = "react-ahead__dropdown-icon-wrapper";
-const separatorClass = "react-ahead__dropdown-separator";
-
-const DropdownIcon = props => {
-  const dropdownWrapperStyle = shared_default.a[dropdownClass] || dropdownClass;
-  const iconWrapperStyle = shared_default.a[iconWrapperClass] || iconWrapperClass;
+const ActionIcons = props => {
+  const containerStyle = shared_default.a[actionIcons_containerClass] || actionIcons_containerClass;
   const separatorStyle = shared_default.a[separatorClass] || separatorClass;
+  const iconWrapperStyle = shared_default.a[iconWrapperClass] || iconWrapperClass;
 
   const handleKeyDown = (evt, action) => {
     const {
@@ -1285,29 +1285,27 @@ const DropdownIcon = props => {
   };
 
   return external_commonjs_react_commonjs2_react_amd_React_root_React_default.a.createElement("div", {
-    className: dropdownWrapperStyle
-  }, external_commonjs_react_commonjs2_react_amd_React_root_React_default.a.createElement("div", {
+    className: containerStyle
+  }, external_commonjs_react_commonjs2_react_amd_React_root_React_default.a.createElement(icon, {
     className: iconWrapperStyle,
-    "aria-hidden": "true",
-    onClick: props.onClear,
-    onKeyDown: evt => handleKeyDown(evt, 'clear'),
-    tabIndex: 0
-  }, external_commonjs_react_commonjs2_react_amd_React_root_React_default.a.createElement(clear, null)), external_commonjs_react_commonjs2_react_amd_React_root_React_default.a.createElement("span", {
+    path: "M 14.348 14.849 c -0.469 0.469 -1.229 0.469 -1.697 0 l -2.651 -3.03 l -2.651 3.029 c -0.469 0.469 -1.229 0.469 -1.697 0 c -0.469 -0.469 -0.469 -1.229 0 -1.697 l 2.758 -3.15 l -2.759 -3.152 c -0.469 -0.469 -0.469 -1.228 0 -1.697 s 1.228 -0.469 1.697 0 l 2.652 3.031 l 2.651 -3.031 c 0.469 -0.469 1.228 -0.469 1.697 0 s 0.469 1.229 0 1.697 l -2.758 3.152 l 2.758 3.15 c 0.469 0.469 0.469 1.229 0 1.698 Z",
+    onClick: _evt => props.onClear(),
+    onKeyDown: evt => handleKeyDown(evt, 'clear')
+  }), external_commonjs_react_commonjs2_react_amd_React_root_React_default.a.createElement("span", {
     className: separatorStyle
-  }), external_commonjs_react_commonjs2_react_amd_React_root_React_default.a.createElement("div", {
+  }), external_commonjs_react_commonjs2_react_amd_React_root_React_default.a.createElement(icon, {
     className: iconWrapperStyle,
-    "aria-hidden": "true",
-    onClick: props.onDropdown,
-    onKeyDown: evt => handleKeyDown(evt, 'dropdown'),
-    tabIndex: 0
-  }, external_commonjs_react_commonjs2_react_amd_React_root_React_default.a.createElement(drop, null)));
+    path: "M 4.516 7.548 c 0.436 -0.446 1.043 -0.481 1.576 0 l 3.908 3.747 l 3.908 -3.747 c 0.533 -0.481 1.141 -0.446 1.574 0 c 0.436 0.445 0.408 1.197 0 1.615 c -0.406 0.418 -4.695 4.502 -4.695 4.502 c -0.217 0.223 -0.502 0.335 -0.787 0.335 s -0.57 -0.112 -0.789 -0.335 c 0 0 -4.287 -4.084 -4.695 -4.502 s -0.436 -1.17 0 -1.615 Z",
+    onClick: _evt => props.onDropdown(),
+    onKeyDown: evt => handleKeyDown(evt, 'dropdown')
+  }));
 };
 
-DropdownIcon.propTypes = {
+ActionIcons.propTypes = {
   onClear: prop_types_default.a.func,
   onDropdown: prop_types_default.a.func
 };
-/* harmony default export */ var icon = (DropdownIcon);
+/* harmony default export */ var actionIcons = (ActionIcons);
 // CONCATENATED MODULE: ./src/index.js
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return src_ReactAhead; });
 function src_defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
@@ -1361,6 +1359,7 @@ class src_ReactAhead extends external_commonjs_react_commonjs2_react_amd_React_r
     });
 
     src_defineProperty(this, "handleEntryChanged", (_evt, value, width) => {
+      // console.log('entry change???', value);
       if (typeof value !== 'string') {
         value = value.toString();
       }
@@ -1379,6 +1378,9 @@ class src_ReactAhead extends external_commonjs_react_commonjs2_react_amd_React_r
 
       if (value !== '') {
         this._engine.find(value, options => {
+          // cache the original search results, before being filtered
+          this._lastSearch = options; // filter 
+
           options = this.getOptions(options);
           this._lastVal = {
             value,
@@ -1416,7 +1418,9 @@ class src_ReactAhead extends external_commonjs_react_commonjs2_react_amd_React_r
       this._dropdown.current.select();
     });
 
-    src_defineProperty(this, "handleSelectionChoice", (evt, key, val) => {
+    src_defineProperty(this, "handleSelectionChoice", (evt, val) => {
+      const key = typeof val === 'object' ? val['source'] : val.toString();
+
       if (!key || this._selKeys.hasOwnProperty(key)) {
         return;
       }
@@ -1495,8 +1499,7 @@ class src_ReactAhead extends external_commonjs_react_commonjs2_react_amd_React_r
           if (this._lastVal) {
             value = this._lastVal['value'];
             options = this._lastVal['options'];
-          } //todo: do the search on opening the dropdown menu  
-
+          }
 
           this.setState({
             value,
@@ -1553,7 +1556,43 @@ class src_ReactAhead extends external_commonjs_react_commonjs2_react_amd_React_r
       }
     });
 
-    src_defineProperty(this, "handleSelectionRemoval", val => {});
+    src_defineProperty(this, "handleSelectionRemoval", (_evt, idx) => {
+      if (!this.props.isMulti) {
+        return;
+      }
+
+      let {
+        selection,
+        options,
+        value
+      } = this.state;
+
+      if (!selection || idx >= selection.length) {
+        return;
+      }
+
+      let [item] = selection.splice(idx, 1);
+      delete this._selKeys[typeof item === 'object' ? item['source'] : item.toString()];
+
+      if (value !== '') {
+        // rerun the value
+        options = this.getOptions(this._lastSearch || [], selection);
+      } else {
+        options = this.getOptions(this.props.initOptions, selection);
+      } // update stores
+
+
+      this._focusType = 4;
+      this._lastVal = {
+        value,
+        options
+      }; // update state
+
+      this.setState({
+        selection,
+        options
+      });
+    });
 
     src_defineProperty(this, "handleClear", () => {
       this._focusType = 2;
@@ -1575,6 +1614,8 @@ class src_ReactAhead extends external_commonjs_react_commonjs2_react_amd_React_r
     });
 
     src_defineProperty(this, "handleDropdownOpen", force => {
+      console.log('drop down action:', force, this._initDropdownState);
+
       if (force) {
         // only happens when clicking / typing on the dropdown menu button
         const {
@@ -1590,7 +1631,7 @@ class src_ReactAhead extends external_commonjs_react_commonjs2_react_amd_React_r
         let {
           value,
           options
-        } = this.state.value;
+        } = this.state;
         setTimeout(() => {
           this._lastVal = {
             value,
@@ -1662,6 +1703,7 @@ class src_ReactAhead extends external_commonjs_react_commonjs2_react_amd_React_r
     this._dropdown = external_commonjs_react_commonjs2_react_amd_React_root_React_default.a.createRef();
     this._focusType = 0;
     this._lastVal = null;
+    this._lastSearch = null;
     this._initDropdownState = false;
     this._selKeys = {};
     this._engine = new SearchEngine();
@@ -1730,7 +1772,7 @@ class src_ReactAhead extends external_commonjs_react_commonjs2_react_amd_React_r
       onClick: this.handleControlFocus,
       onFocus: this.handleGetFocus,
       onBlur: this.handleLoseFocus
-    }, this.renderInput(), external_commonjs_react_commonjs2_react_amd_React_root_React_default.a.createElement(icon, {
+    }, this.renderInput(), external_commonjs_react_commonjs2_react_amd_React_root_React_default.a.createElement(actionIcons, {
       onClear: this.handleClear,
       onDropdown: this.handleDropdownOpen,
       onSpecialKey: this.handleKeyAction

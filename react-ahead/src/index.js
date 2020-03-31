@@ -5,7 +5,7 @@ import Input from './input';
 import Dropdown from './dropdown';
 import Placeholder from './placeholder';
 import MultiSelection from './selection';
-import DropdownIcon from './icon';
+import ActionIcons from './actionIcons';
 import styles from "./shared.css";
 
 const containerClass = "react-ahead__control-container";
@@ -107,6 +107,7 @@ export default class ReactAhead extends React.Component {
 
     this._focusType = 0;
     this._lastVal = null;
+    this._lastSearch = null;
     this._initDropdownState = false;
     this._selKeys = {};
 
@@ -144,6 +145,8 @@ export default class ReactAhead extends React.Component {
   };
 
   handleEntryChanged = (_evt, value, width) => {
+    // console.log('entry change???', value);
+
     if (typeof value !== 'string') {
       value = value.toString();
     }
@@ -162,7 +165,11 @@ export default class ReactAhead extends React.Component {
 
     if (value !== '') {
       this._engine.find(value, options => {
-        options = this.getOptions(options);
+        // cache the original search results, before being filtered
+        this._lastSearch = options;
+
+        // filter 
+        options = this.getOptions(options);        
 
         this._lastVal = {
           value,
@@ -204,7 +211,8 @@ export default class ReactAhead extends React.Component {
     this._dropdown.current.select();
   };
 
-  handleSelectionChoice = (evt, key, val) => {
+  handleSelectionChoice = (evt, val) => {
+    const key = typeof val === 'object' ? val['source'] : val.toString();
     if (!key || this._selKeys.hasOwnProperty(key)) {
       return;
     }
@@ -285,9 +293,7 @@ export default class ReactAhead extends React.Component {
         if (this._lastVal) {
           value = this._lastVal['value'];
           options = this._lastVal['options'];
-        }
-
-        //todo: do the search on opening the dropdown menu  
+        } 
 
         this.setState({
           value,
@@ -347,8 +353,38 @@ export default class ReactAhead extends React.Component {
     }
   };
 
-  handleSelectionRemoval = val => {
+  handleSelectionRemoval = (_evt, idx) => {
+    if (!this.props.isMulti) {
+      return;
+    }
 
+    let { selection, options, value } = this.state;
+    if (!selection || idx >= selection.length) {
+      return;
+    }
+
+    let [ item ] = selection.splice(idx, 1);
+    delete this._selKeys[typeof item === 'object' ? item['source'] : item.toString()];
+
+    if (value !== '') {
+      // rerun the value
+      options = this.getOptions(this._lastSearch || [], selection);
+    } else {
+      options = this.getOptions(this.props.initOptions, selection);
+    }
+
+    // update stores
+    this._focusType = 4;
+    this._lastVal = {
+      value,
+      options,
+    };
+
+    // update state
+    this.setState({
+      selection,
+      options,
+    });
   };
 
   handleClear = () => {
@@ -376,6 +412,8 @@ export default class ReactAhead extends React.Component {
   };
 
   handleDropdownOpen = force => {
+    console.log('drop down action:', force, this._initDropdownState);
+
     if (force) {
       // only happens when clicking / typing on the dropdown menu button
       const { dropdownOpen } = this.state;
@@ -388,8 +426,7 @@ export default class ReactAhead extends React.Component {
     }
 
     if (this._initDropdownState) {
-      let { value, options } = this.state.value;
-
+      let { value, options } = this.state;
 
       setTimeout(() => {
         this._lastVal = {
@@ -527,7 +564,7 @@ export default class ReactAhead extends React.Component {
           onBlur={this.handleLoseFocus}
         >
           {this.renderInput()}
-          <DropdownIcon
+          <ActionIcons
             onClear={this.handleClear}
             onDropdown={this.handleDropdownOpen}
             onSpecialKey={this.handleKeyAction}
