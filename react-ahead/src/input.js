@@ -6,15 +6,17 @@ const inputClass = "react-ahead__input-inner-wrapper";
 
 export default class Input extends React.Component {
   static propTypes = {
-    onEntryChange: PropTypes.func,
-    onKeyChoice: PropTypes.func,
-    onSelectionMove: PropTypes.func,
-    onSpecialKey: PropTypes.func,
-    value: PropTypes.string,
+    inputWidth: PropTypes.number,
+    onEntryChange: PropTypes.func.isRequired,
+    onKeyChoice: PropTypes.func.isRequired,
+    onSelectionMove: PropTypes.func.isRequired,
+    onSpecialKey: PropTypes.func.isRequired,
+    value: PropTypes.string.isRequired,
   };
 
-  state = {
-    width: 0,
+  static defaultProps = {
+    inputWidth: 2,
+    value: '',
   }
 
   constructor(props) {
@@ -26,32 +28,37 @@ export default class Input extends React.Component {
     this._inputStyle = styles[inputClass] || inputClass;
   }
 
-  componentDidUpdate(prevProps, _prevState, _snapshot) {}
-
   focus = () => {
     this._input && this._input.current && this._input.current.focus();
   };
 
   blur = () => {
     this._input && this._input.current && this._input.current.blur();
-  }
+  };
 
-  handleTextChange = (evt, forceUpdate) => {
-    const val = (evt && evt.target && evt.target.value) || (forceUpdate && forceUpdate.value) || '';
-    let { width } = this.state;
+  clear = () => {
+    let width = this.props.inputWidth;
+
+    if (this._div && this._div.current) {
+      this._div.current.innerText = '';
+      width = this._div.current.offsetWidth;
+    }
+
+    return width;
+  };
+
+  handleTextChange = evt => {
+    const val = evt && evt.target && evt.target.value || '';
+    let width = this.props.inputWidth;
 
     if (this._div && this._div.current) {
       this._div.current.innerText = val;
       width = this._div.current.offsetWidth;
     }
 
-    if (!forceUpdate && this.props.onEntryChange) {
-      this.props.onEntryChange(evt, val);
+    if (this.props.onEntryChange) {
+      this.props.onEntryChange(evt, val, width);
     }
-
-    this.setState({
-      width,
-    });
   };
 
   handleKeydown = evt => {
@@ -61,11 +68,14 @@ export default class Input extends React.Component {
 
     const { keyCode } = evt;
 
-    // console.log('key pressed:', keyCode);
+    console.log('key pressed:', keyCode);
     
     switch (keyCode) {
       case 9:
-        this.props.onSpecialKey && this.props.onSpecialKey('tab');        
+        if (!evt.shiftKey) {
+          this.props.onSpecialKey('tab');          
+        }
+
         break;
 
       case 13:
@@ -77,14 +87,17 @@ export default class Input extends React.Component {
         }
 
         break;
+
+      case 27:
+        // esc
+        evt.preventDefault();
+        this.props.onSpecialKey('esc'); 
         
       case 38:
       case 40:
         evt.preventDefault();
 
-        if (this.props.onSelectionMove) {
-          this.props.onSelectionMove(evt, keyCode === 38 ? "up" : "down");
-        }
+        this.props.onSelectionMove(evt, keyCode === 38 ? "up" : "down");
 
         break;
     
@@ -116,13 +129,12 @@ export default class Input extends React.Component {
             fontWeight: "inherit",
             minWidth: "1px",
             marginTop: "2px",
-            width: `${this.state.width || 2}px`,
+            width: `${this.props.inputWidth || 2}px`,
             outline: "none",
             border: 0
           }}
           onChange={this.handleTextChange}
           onKeyDown={this.handleKeydown}
-          // onBlur={evt => evt.stopPropagation()}
           value={this.props.value}
         />
         <div

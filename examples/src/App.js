@@ -13,7 +13,29 @@ function App() {
           active: "app-control-active",
         }}
         placeholder={"Search terms ... "}
-        initOptions={[{source: 1}, {source: 2}, {source: 3}, {source: 4}, {source: 5}]}
+        initOptions={[
+          {source: 1}, 
+          {source: 2}, 
+          {source: 3}, 
+          {source: 4}, 
+          {source: 5}]
+        }
+      />
+      <ReactAhead
+        className={"app-control"}
+        customClassNames={{
+          input: "app-control-input",
+          dropdown: "app-control-dropdown",
+          active: "app-control-active",
+        }}
+        placeholder={"Pick a color ... "}
+        initOptions={[
+          { source: 'blue' },
+          { source: 'green' },
+          { source: 'orange' },
+          { source: 'black' },
+          { source: 'white' }]
+        }
       />
       <div className={"app-control"}>
         <input 

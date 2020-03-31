@@ -13,13 +13,73 @@ const wrapperClass = "react-ahead__control-wrapper";
 const activeClass = "react-ahead__control-active";
 const inputWrapperClass = "react-ahead__input-wrapper";
 
+/**
+ * The React UI for the auto-complete control
+ */
 export default class ReactAhead extends React.Component {
   static propTypes = {
+    /**
+     * An object containing the custom class names that we shall apply for 
+     * each component of the control. Avaliable fields are: 
+     * - `input`: for the input control
+     * - `active`: for the input control but applied when the control has focus
+     * - `dropdown`: for the dropdown menu
+     * 
+     * Example:
+     * <ReactAhead
+     *   customClassNames={{
+     *     active: "app-control-active",
+     *     input: "app-control-input",
+     *     dropdown: "app-control-dropdown",
+     *   }}
+     * />
+     */
     customClassNames: PropTypes.object,
+
+    /**
+     * A callback function for generating display text for options and values. 
+     * 
+     * If supplied, it will be invoked on the following occasions to generate 
+     * a customizable text (or React component) that shall be used as the 
+     * display content to the end user:
+     * 
+     * a) when rendering options in the dropdown menu;
+     * b) when a selection has been made;
+     * 
+     * The function takes 2 parameters:
+     * 
+     * 1) `item` -- the item (either string, number, or object, whichever provided
+     *              by the `initOption` or fetched from remote) that to be 
+     *              rendered.
+     * 2) `type` -- enumerate, possible values: 'display' or 'option', the former 
+     *              indeicates that the rendered content will be for the selected
+     *              item, while the later denotes to the items to be rendered in 
+     *              the dropdown options menu.
+     */
     displayFormatter: PropTypes.func,
+
+    /**
+     * Indicate if we allow user created options to appear and selectable
+     */
     isCreateable: PropTypes.bool,
+
+    /**
+     * Indicate if we allow mulitple value selections for the control
+     */
     isMulti: PropTypes.bool,
+
+    /**
+     * An array of the options to be displayed as the initial values. You must provide
+     * either `initOptions`, or the remote option such that we can fetch the options
+     * from the remote server
+     */
     initOptions: PropTypes.arrayOf(PropTypes.object),
+
+    /**
+     * An object containing the necessary information to contact a remote server for
+     * options. TODO: more info ...
+     */
+    remote: PropTypes.object,
   };
 
   static defaultProps = {
@@ -32,10 +92,11 @@ export default class ReactAhead extends React.Component {
 
   state = {
     dropdownOpen: false,
+    inputWidth: 2,
     options: [],
     selection: [],
     shield: false,
-    value: ''
+    value: '',
   };
 
   constructor(props) {
@@ -64,24 +125,45 @@ export default class ReactAhead extends React.Component {
     }
   }
 
-  handleEntryChanged = (_evt, value) => {
-    this._engine.find(value, options => {
+  handleEntryChanged = (_evt, value, width) => {
+    if (typeof value !== 'string') {
+      value = value.toString();
+    }
+
+    if (value === this.state.value) {
+      // nothing has changed
+      return;
+    }
+
+    let state = {
+      dropdownOpen: true,
+      inputWidth: width,
+      shield: true,
+      value,
+    };
+
+    if (value !== '') {
+      this._engine.find(value, options => {
+        this._lastVal = {
+          value,
+          options,
+        };
+
+        this.setState({
+          options,
+          shield: false,
+        });
+      });      
+    } else {
+      state['options'] = this.props.initOptions;
+      
       this._lastVal = {
         value,
-        options,
+        options: this.props.initOptions,
       };
+    }
 
-      this.setState({
-        options,
-        shield: false,
-      });
-    });
-
-    this.setState({
-      value,
-      dropdownOpen: true,
-      shield: true,
-    });
+    this.setState(state);
   };
 
   handleSelectionMove = (_evt, side) => {
@@ -173,6 +255,13 @@ export default class ReactAhead extends React.Component {
         }
 
         break;
+
+      case 'esc':
+        this.setState({
+          dropdownOpen: false,
+        });
+        
+        break;
     
       default:
         break;
@@ -180,7 +269,7 @@ export default class ReactAhead extends React.Component {
   };
 
   handleGetFocus = evt => {
-    console.log('get focus ... ', this._focusType);
+    // console.log('get focus ... ', this._focusType);
 
     switch (this._focusType) {
       case 0:
@@ -223,7 +312,7 @@ export default class ReactAhead extends React.Component {
   };
 
   handleLoseFocus = evt => {
-    console.log('lose focus ... ', this._focusType);
+    // console.log('lose focus ... ', this._focusType);
 
     switch (this._focusType) {
       case 2:
@@ -262,17 +351,23 @@ export default class ReactAhead extends React.Component {
     this._lastVal = null;
     this._selKeys = {};
 
-    if (this._input && this._input.current) {
-      this._input.current.handleTextChange(null, { value: '' });
+    let state = {
+      value: '',
+      selection: [],
+      options: this.props.initOptions,
+      inputWidth: this.state.inputWidth,
+    };
+
+    if (this.state.value !== '') {
+      state.inputWidth = 
+        this._input
+        && this._input.current
+        && this._input.current.clear();
     }
 
     this.handleControlFocus();
 
-    this.setState({
-      value: '',
-      selection: [],
-      options: this.props.initOptions,
-    });
+    this.setState(state);
   };
 
   handleDropdownOpen = force => {
@@ -306,25 +401,37 @@ export default class ReactAhead extends React.Component {
   };
 
   handleLoadMore = () => {
-
+    //todo: if there are more to load for the options, communicate with the remote
+    //      to do so
   };
 
   renderInput = () => {
     const {
+      displayFormatter,
       isMulti,
       placeholder,
     } = this.props;
 
-    const singleSelDone = !isMulti && this.state.selection.length === 1;
+    const {
+      selection,
+      inputWidth,
+      value,
+    } = this.state;
+
+    const singleSelDone = !isMulti && selection.length === 1;
     
     let text;
     if (singleSelDone) {
-      text = this.state.selection[0];
+      text = selection[0];
 
       if (typeof text === 'object') {
-        text = text['source'] || '<No display>';
+        text = text['source'] || 'N/A';
       } else {
         text = text.toString();
+      }
+
+      if (displayFormatter) {
+        text = displayFormatter(text, 'display');
       }
     } else {
       text = placeholder;
@@ -334,8 +441,8 @@ export default class ReactAhead extends React.Component {
       <div className={this._classNames.inputWrapper}>
         <Placeholder 
           show={
-            (placeholder && this.state.selection.length === 0 && !this.state.value)
-            || (singleSelDone && !this.state.value)
+            (placeholder && selection.length === 0 && !value)
+            || (singleSelDone && !value)
           } 
           text={text}
           valueDisplayMode={singleSelDone}
@@ -344,19 +451,20 @@ export default class ReactAhead extends React.Component {
           isMulti
             ?
             <MultiSelection
-              selection={this.state.selection}
+              selection={selection}
               onSelectionRemoval={this.handleSelectionRemoval}
             />
             :
             null
         }
         <Input
+          inputWidth={inputWidth}
           ref={this._input}
           onEntryChange={this.handleEntryChanged}
           onKeyChoice={this.handleKeyChoice}
           onSpecialKey={this.handleKeyAction}
           onSelectionMove={this.handleSelectionMove}
-          value={this.state.value}
+          value={value}
         />
       </div>
     );

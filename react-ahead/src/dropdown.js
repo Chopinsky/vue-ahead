@@ -36,7 +36,7 @@ export default class Dropdown extends React.Component {
     };
   }
 
-  componentDidUpdate(prevProps, prevState, snapshot) {
+  componentDidUpdate(prevProps, prevState) {
     let { length } = this.props.options;
     let idx = -1;
 
@@ -57,7 +57,7 @@ export default class Dropdown extends React.Component {
         }
       }
     }
-    
+
     if (prevState.activeIdx >= length) {
       idx = length - 1;
     }
@@ -67,6 +67,28 @@ export default class Dropdown extends React.Component {
         activeIdx: idx,
       });
     }
+  }
+
+  shouldComponentUpdate(nextProps, nextState) {
+    if (!nextState || this.state.activeIdx !== nextState.activeIdx) {
+      return true;
+    }
+
+    if (
+      !nextProps 
+      || this.props.options.length !== nextProps.options.length 
+      || this.props.open !== nextProps.open
+    ) {
+      return true;
+    }
+
+    for (let i = 0; i < this.props.options.length; i++) {
+      if (this.props.options[i] !== nextProps.options[i]) {
+        return true;
+      }  
+    }
+
+    return false;
   }
 
   select = evt => {
@@ -79,6 +101,7 @@ export default class Dropdown extends React.Component {
 
     const item = options[activeIdx];
     const source = typeof item === 'object' ? item['source'] : item.toString();
+
     onSelection(evt, source, item);
   };
 
@@ -141,7 +164,7 @@ export default class Dropdown extends React.Component {
           options.map((item, idx) => {
             const key = `option_item_${idx}`;            
             const source = typeof item === 'object' ? item['source'] : item.toString();
-            const content = display ? display(item) : source;
+            const content = display ? display(item, 'option') : source;
 
             return (
               <div
@@ -165,6 +188,7 @@ export default class Dropdown extends React.Component {
   };
 
   render() {
+    console.log('update ... ');
     if (!this.props.open) {
       return null;
     }

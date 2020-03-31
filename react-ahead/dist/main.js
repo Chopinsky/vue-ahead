@@ -517,7 +517,7 @@ module.exports = function (list, options) {
 var ___CSS_LOADER_API_IMPORT___ = __webpack_require__(7);
 exports = ___CSS_LOADER_API_IMPORT___(false);
 // Module
-exports.push([module.i, "._2dH7OUMw0ESmltDd0ovClD {\r\n  position: relative;\r\n  box-sizing: border-box;\r\n}\r\n\r\n.Axrtb5jaHtP98cGxAqRLV {\r\n  -webkit-box-align: center;\r\n  -webkit-box-pack: justify;\r\n  padding-left: 6px;\r\n  padding-right: 2px;\r\n  min-height: 38px;\r\n  align-items: center;\r\n  background-color: rgb(255, 255, 255);\r\n  border-radius: 2px;\r\n  border: 1px solid rgb(204, 204, 204);\r\n  cursor: default;\r\n  position: relative;\r\n  box-sizing: border-box;\r\n  display: flex;\r\n  flex-wrap: wrap;\r\n  justify-content: space-between;\r\n  transition: all 100ms ease 0s;\r\n  outline: 0px !important;\r\n}\r\n\r\n._2SUkorElgQ76JGjtyHk4de {\r\n  border: 1px solid blue;\r\n}\r\n\r\n._1Vnmg2rKay_EA99qawmFda {\r\n  padding: 2px;\r\n  color: rgb(51, 51, 51);\r\n  position: relative;\r\n  display: flex;\r\n  flex: 1 1 0%;\r\n  flex-wrap: wrap;\r\n  box-sizing: border-box;\r\n  overflow: hidden;\r\n  visibility: visible;\r\n  box-sizing: border-box;\r\n  width: 100%;\r\n}\r\n\r\n._2CD9QkPe0_ZMyoTQxtKBm7 {\r\n  position: absolute;\r\n  top: 50%;\r\n  color: rgb(128, 128, 128);\r\n  margin: 0;\r\n  transform: translateY(-50%);\r\n  box-sizing: border-box;\r\n}\r\n\r\n.xLIYtwgLVzX9AyYwVcgLt {\r\n  color: inherit;\r\n}\r\n\r\n._1Vnmg2rKay_EA99qawmFda {  \r\n  cursor: text;\r\n  width: 100%;\r\n}\r\n\r\n._2eDYrfCE1goL3V_2ogtQtz {\r\n  background-color: rgb(230, 230, 230);\r\n  display: flex;\r\n  min-width: 0px;\r\n  box-sizing: border-box;\r\n  border-radius: 2px;\r\n  margin: 2px;\r\n}\r\n\r\n.f3JQilMsEX8OORf4P64Je {\r\n  -webkit-box-align: center;\r\n  align-items: center;\r\n  align-self: stretch;\r\n  display: flex;\r\n  flex-shrink: 0;\r\n  box-sizing: border-box;\r\n}\r\n\r\n.VCVVJzKJ2WKTbtqdDC8bs {\r\n  color: rgb(204, 204, 204);\r\n  display: flex;\r\n  box-sizing: border-box;\r\n  padding: 10px 6px;\r\n  transition: color 150ms ease 0s;\r\n}\r\n\r\n.VCVVJzKJ2WKTbtqdDC8bs:hover {\r\n  cursor: pointer;\r\n  color: rgb(153, 153, 153);\r\n}\r\n\r\n.VCVVJzKJ2WKTbtqdDC8bs:focus {\r\n  color: rgb(153, 153, 153);\r\n  outline: 2px dotted gray;\r\n}\r\n\r\n._1CVLtK-SeWREdFbtMfsFr6 {\r\n  display: inline-block;\r\n  fill: currentcolor;\r\n  line-height: 1;\r\n  stroke: currentcolor;\r\n  stroke-width: 0;\r\n}\r\n\r\n.siGZdSGJ2DsmuVUPdLj1S {\r\n  align-self: stretch;\r\n  background-color: rgb(204, 204, 204);\r\n  margin-bottom: 8px;\r\n  margin-top: 8px;\r\n  width: 1px;\r\n  box-sizing: border-box;\r\n}\r\n\r\n._3etkCiSEHj9rBdr3HP7hoI {\r\n  top: 100%;\r\n  background-color: rgb(255, 255, 255);\r\n  box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 0px 1px, rgba(0, 0, 0, 0.1) 0px 4px 11px;\r\n  margin-bottom: 8px;\r\n  margin-top: 8px;\r\n  position: absolute;\r\n  width: 100%;\r\n  z-index: 1;\r\n  box-sizing: border-box;\r\n  border-radius: 2px;\r\n}\r\n\r\n._2BZ6P2ChebiTM94M-OMhZD {\r\n  max-height: 300px;\r\n  overflow-y: auto;\r\n  padding-bottom: 4px;\r\n  padding-top: 4px;\r\n  position: relative;\r\n  box-sizing: border-box;\r\n}\r\n\r\n._1V1IQxhU17EfSxmz_iTN5t {\r\n  color: rgb(153, 153, 153);\r\n  text-align: center;\r\n  box-sizing: border-box;\r\n  padding: 8px 12px;\r\n}\r\n\r\n._1D9Xo5PbA8nnizD0GLeBxM {\r\n  background-color: transparent;\r\n  color: inherit;\r\n  cursor: default;\r\n  display: block;\r\n  font-size: inherit;\r\n  width: 100%;\r\n  user-select: none;\r\n  box-sizing: border-box;\r\n  padding: 8px 12px;\r\n}\r\n\r\n._12tsaEmF9_7NK7pihcgxJw {\r\n  background-color: rgb(222, 235, 255);\r\n}\r\n", ""]);
+exports.push([module.i, "._2dH7OUMw0ESmltDd0ovClD {\r\n  position: relative;\r\n  box-sizing: border-box;\r\n}\r\n\r\n.Axrtb5jaHtP98cGxAqRLV {\r\n  -webkit-box-align: center;\r\n  -webkit-box-pack: justify;\r\n  padding-left: 6px;\r\n  padding-right: 2px;\r\n  min-height: 38px;\r\n  align-items: center;\r\n  background-color: rgb(255, 255, 255);\r\n  border-radius: 2px;\r\n  border: 1px solid rgb(204, 204, 204);\r\n  cursor: default;\r\n  position: relative;\r\n  box-sizing: border-box;\r\n  display: flex;\r\n  flex-wrap: wrap;\r\n  justify-content: space-between;\r\n  transition: all 100ms ease 0s;\r\n  outline: 0px !important;\r\n}\r\n\r\n._2SUkorElgQ76JGjtyHk4de {\r\n  border: 1px solid blue;\r\n}\r\n\r\n._1Vnmg2rKay_EA99qawmFda {\r\n  padding: 2px;\r\n  color: rgb(51, 51, 51);\r\n  position: relative;\r\n  display: flex;\r\n  flex: 1 1 0%;\r\n  flex-wrap: wrap;\r\n  box-sizing: border-box;\r\n  overflow: hidden;\r\n  visibility: visible;\r\n  box-sizing: border-box;\r\n  width: 100%;\r\n}\r\n\r\n._2CD9QkPe0_ZMyoTQxtKBm7 {\r\n  position: absolute;\r\n  top: 50%;\r\n  color: rgb(128, 128, 128);\r\n  margin: 0;\r\n  transform: translateY(-50%);\r\n  box-sizing: border-box;\r\n}\r\n\r\n.xLIYtwgLVzX9AyYwVcgLt {\r\n  color: inherit;\r\n}\r\n\r\n._1Vnmg2rKay_EA99qawmFda {  \r\n  cursor: text;\r\n  width: 100%;\r\n}\r\n\r\n._2eDYrfCE1goL3V_2ogtQtz {\r\n  background-color: rgb(230, 230, 230);\r\n  display: flex;\r\n  min-width: 0px;\r\n  box-sizing: border-box;\r\n  border-radius: 2px;\r\n  margin: 2px;\r\n}\r\n\r\n.f3JQilMsEX8OORf4P64Je {\r\n  -webkit-box-align: center;\r\n  align-items: center;\r\n  align-self: stretch;\r\n  display: flex;\r\n  flex-shrink: 0;\r\n  box-sizing: border-box;\r\n}\r\n\r\n.VCVVJzKJ2WKTbtqdDC8bs {\r\n  color: rgb(204, 204, 204);\r\n  display: flex;\r\n  box-sizing: border-box;\r\n  padding: 10px 6px;\r\n  transition: color 150ms ease 0s;\r\n}\r\n\r\n.VCVVJzKJ2WKTbtqdDC8bs:hover {\r\n  cursor: pointer;\r\n  color: rgb(153, 153, 153);\r\n}\r\n\r\n.VCVVJzKJ2WKTbtqdDC8bs:focus {\r\n  color: rgb(153, 153, 153);\r\n  outline: 2px dotted gray;\r\n}\r\n\r\n._1CVLtK-SeWREdFbtMfsFr6 {\r\n  display: inline-block;\r\n  fill: currentcolor;\r\n  line-height: 1;\r\n  stroke: currentcolor;\r\n  stroke-width: 0;\r\n}\r\n\r\n.siGZdSGJ2DsmuVUPdLj1S {\r\n  align-self: stretch;\r\n  background-color: rgb(204, 204, 204);\r\n  margin-bottom: 8px;\r\n  margin-top: 8px;\r\n  width: 1px;\r\n  box-sizing: border-box;\r\n}\r\n\r\n._3etkCiSEHj9rBdr3HP7hoI {\r\n  top: 100%;\r\n  background-color: rgb(255, 255, 255);\r\n  box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 0px 1px, rgba(0, 0, 0, 0.1) 0px 4px 11px;\r\n  margin-bottom: 1px;\r\n  margin-top: 1px;\r\n  position: absolute;\r\n  width: 100%;\r\n  z-index: 1;\r\n  box-sizing: border-box;\r\n  border-radius: 2px;\r\n}\r\n\r\n._2BZ6P2ChebiTM94M-OMhZD {\r\n  max-height: 300px;\r\n  overflow-y: auto;\r\n  padding-bottom: 2px;\r\n  padding-top: 2px;\r\n  position: relative;\r\n  box-sizing: border-box;\r\n}\r\n\r\n._1V1IQxhU17EfSxmz_iTN5t {\r\n  color: rgb(153, 153, 153);\r\n  text-align: center;\r\n  box-sizing: border-box;\r\n  padding: 8px 12px;\r\n}\r\n\r\n._1D9Xo5PbA8nnizD0GLeBxM {\r\n  background-color: transparent;\r\n  color: inherit;\r\n  cursor: default;\r\n  display: block;\r\n  font-size: inherit;\r\n  width: 100%;\r\n  user-select: none;\r\n  box-sizing: border-box;\r\n  padding: 8px 12px;\r\n}\r\n\r\n._12tsaEmF9_7NK7pihcgxJw {\r\n  background-color: rgb(222, 235, 255);\r\n}\r\n", ""]);
 // Exports
 exports.locals = {
 	"react-ahead__control-container": "_2dH7OUMw0ESmltDd0ovClD",
@@ -753,10 +753,6 @@ class input_Input extends external_commonjs_react_commonjs2_react_amd_React_root
   constructor(props) {
     super(props);
 
-    input_defineProperty(this, "state", {
-      width: 0
-    });
-
     input_defineProperty(this, "focus", () => {
       this._input && this._input.current && this._input.current.focus();
     });
@@ -765,24 +761,29 @@ class input_Input extends external_commonjs_react_commonjs2_react_amd_React_root
       this._input && this._input.current && this._input.current.blur();
     });
 
-    input_defineProperty(this, "handleTextChange", (evt, forceUpdate) => {
-      const val = evt && evt.target && evt.target.value || forceUpdate && forceUpdate.value || '';
-      let {
-        width
-      } = this.state;
+    input_defineProperty(this, "clear", () => {
+      let width = this.props.inputWidth;
+
+      if (this._div && this._div.current) {
+        this._div.current.innerText = '';
+        width = this._div.current.offsetWidth;
+      }
+
+      return width;
+    });
+
+    input_defineProperty(this, "handleTextChange", evt => {
+      const val = evt && evt.target && evt.target.value || '';
+      let width = this.props.inputWidth;
 
       if (this._div && this._div.current) {
         this._div.current.innerText = val;
         width = this._div.current.offsetWidth;
       }
 
-      if (!forceUpdate && this.props.onEntryChange) {
-        this.props.onEntryChange(evt, val);
+      if (this.props.onEntryChange) {
+        this.props.onEntryChange(evt, val, width);
       }
-
-      this.setState({
-        width
-      });
     });
 
     input_defineProperty(this, "handleKeydown", evt => {
@@ -792,11 +793,15 @@ class input_Input extends external_commonjs_react_commonjs2_react_amd_React_root
 
       const {
         keyCode
-      } = evt; // console.log('key pressed:', keyCode);
+      } = evt;
+      console.log('key pressed:', keyCode);
 
       switch (keyCode) {
         case 9:
-          this.props.onSpecialKey && this.props.onSpecialKey('tab');
+          if (!evt.shiftKey) {
+            this.props.onSpecialKey('tab');
+          }
+
           break;
 
         case 13:
@@ -809,14 +814,15 @@ class input_Input extends external_commonjs_react_commonjs2_react_amd_React_root
 
           break;
 
+        case 27:
+          // esc
+          evt.preventDefault();
+          this.props.onSpecialKey('esc');
+
         case 38:
         case 40:
           evt.preventDefault();
-
-          if (this.props.onSelectionMove) {
-            this.props.onSelectionMove(evt, keyCode === 38 ? "up" : "down");
-          }
-
+          this.props.onSelectionMove(evt, keyCode === 38 ? "up" : "down");
           break;
 
         default:
@@ -828,8 +834,6 @@ class input_Input extends external_commonjs_react_commonjs2_react_amd_React_root
     this._input = external_commonjs_react_commonjs2_react_amd_React_root_React_default.a.createRef();
     this._inputStyle = shared_default.a[inputClass] || inputClass;
   }
-
-  componentDidUpdate(prevProps, _prevState, _snapshot) {}
 
   render() {
     return external_commonjs_react_commonjs2_react_amd_React_root_React_default.a.createElement("div", {
@@ -852,13 +856,12 @@ class input_Input extends external_commonjs_react_commonjs2_react_amd_React_root
         fontWeight: "inherit",
         minWidth: "1px",
         marginTop: "2px",
-        width: `${this.state.width || 2}px`,
+        width: `${this.props.inputWidth || 2}px`,
         outline: "none",
         border: 0
       },
       onChange: this.handleTextChange,
-      onKeyDown: this.handleKeydown // onBlur={evt => evt.stopPropagation()}
-      ,
+      onKeyDown: this.handleKeydown,
       value: this.props.value
     }), external_commonjs_react_commonjs2_react_amd_React_root_React_default.a.createElement("div", {
       ref: this._div,
@@ -884,11 +887,17 @@ class input_Input extends external_commonjs_react_commonjs2_react_amd_React_root
 }
 
 input_defineProperty(input_Input, "propTypes", {
-  onEntryChange: prop_types_default.a.func,
-  onKeyChoice: prop_types_default.a.func,
-  onSelectionMove: prop_types_default.a.func,
-  onSpecialKey: prop_types_default.a.func,
-  value: prop_types_default.a.string
+  inputWidth: prop_types_default.a.number,
+  onEntryChange: prop_types_default.a.func.isRequired,
+  onKeyChoice: prop_types_default.a.func.isRequired,
+  onSelectionMove: prop_types_default.a.func.isRequired,
+  onSpecialKey: prop_types_default.a.func.isRequired,
+  value: prop_types_default.a.string.isRequired
+});
+
+input_defineProperty(input_Input, "defaultProps", {
+  inputWidth: 2,
+  value: ''
 });
 // CONCATENATED MODULE: ./src/dropdown.js
 function dropdown_defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
@@ -983,7 +992,7 @@ class dropdown_Dropdown extends external_commonjs_react_commonjs2_react_amd_Reac
       return external_commonjs_react_commonjs2_react_amd_React_root_React_default.a.createElement(external_commonjs_react_commonjs2_react_amd_React_root_React_["Fragment"], null, options.map((item, idx) => {
         const key = `option_item_${idx}`;
         const source = typeof item === 'object' ? item['source'] : item.toString();
-        const content = display ? display(item) : source;
+        const content = display ? display(item, 'option') : source;
         return external_commonjs_react_commonjs2_react_amd_React_root_React_default.a.createElement("div", {
           className: activeIdx === idx ? this._classNames.active : this._classNames.option,
           key: key,
@@ -1003,7 +1012,7 @@ class dropdown_Dropdown extends external_commonjs_react_commonjs2_react_amd_Reac
     };
   }
 
-  componentDidUpdate(prevProps, prevState, snapshot) {
+  componentDidUpdate(prevProps, prevState) {
     let {
       length
     } = this.props.options;
@@ -1038,7 +1047,27 @@ class dropdown_Dropdown extends external_commonjs_react_commonjs2_react_amd_Reac
     }
   }
 
+  shouldComponentUpdate(nextProps, nextState) {
+    if (!nextState || this.state.activeIdx !== nextState.activeIdx) {
+      return true;
+    }
+
+    if (!nextProps || this.props.options.length !== nextProps.options.length || this.props.open !== nextProps.open) {
+      return true;
+    }
+
+    for (let i = 0; i < this.props.options.length; i++) {
+      if (this.props.options[i] !== nextProps.options[i]) {
+        return true;
+      }
+    }
+
+    return false;
+  }
+
   render() {
+    console.log('update ... ');
+
     if (!this.props.open) {
       return null;
     }
@@ -1277,35 +1306,60 @@ const src_containerClass = "react-ahead__control-container";
 const src_wrapperClass = "react-ahead__control-wrapper";
 const src_activeClass = "react-ahead__control-active";
 const inputWrapperClass = "react-ahead__input-wrapper";
+/**
+ * The React UI for the auto-complete control
+ */
+
 class src_ReactAhead extends external_commonjs_react_commonjs2_react_amd_React_root_React_default.a.Component {
   constructor(props) {
     super(props);
 
     src_defineProperty(this, "state", {
       dropdownOpen: false,
+      inputWidth: 2,
       options: [],
       selection: [],
       shield: false,
       value: ''
     });
 
-    src_defineProperty(this, "handleEntryChanged", (_evt, value) => {
-      this._engine.find(value, options => {
+    src_defineProperty(this, "handleEntryChanged", (_evt, value, width) => {
+      if (typeof value !== 'string') {
+        value = value.toString();
+      }
+
+      if (value === this.state.value) {
+        // nothing has changed
+        return;
+      }
+
+      let state = {
+        dropdownOpen: true,
+        inputWidth: width,
+        shield: true,
+        value
+      };
+
+      if (value !== '') {
+        this._engine.find(value, options => {
+          this._lastVal = {
+            value,
+            options
+          };
+          this.setState({
+            options,
+            shield: false
+          });
+        });
+      } else {
+        state['options'] = this.props.initOptions;
         this._lastVal = {
           value,
-          options
+          options: this.props.initOptions
         };
-        this.setState({
-          options,
-          shield: false
-        });
-      });
+      }
 
-      this.setState({
-        value,
-        dropdownOpen: true,
-        shield: true
-      });
+      this.setState(state);
     });
 
     src_defineProperty(this, "handleSelectionMove", (_evt, side) => {
@@ -1393,14 +1447,19 @@ class src_ReactAhead extends external_commonjs_react_commonjs2_react_amd_React_r
 
           break;
 
+        case 'esc':
+          this.setState({
+            dropdownOpen: false
+          });
+          break;
+
         default:
           break;
       }
     });
 
     src_defineProperty(this, "handleGetFocus", evt => {
-      console.log('get focus ... ', this._focusType);
-
+      // console.log('get focus ... ', this._focusType);
       switch (this._focusType) {
         case 0:
         case 2:
@@ -1442,8 +1501,7 @@ class src_ReactAhead extends external_commonjs_react_commonjs2_react_amd_React_r
     });
 
     src_defineProperty(this, "handleLoseFocus", evt => {
-      console.log('lose focus ... ', this._focusType);
-
+      // console.log('lose focus ... ', this._focusType);
       switch (this._focusType) {
         case 2:
           // clicked within the control, the focus type will remain
@@ -1476,19 +1534,19 @@ class src_ReactAhead extends external_commonjs_react_commonjs2_react_amd_React_r
       this._focusType = 2;
       this._lastVal = null;
       this._selKeys = {};
+      let state = {
+        value: '',
+        selection: [],
+        options: this.props.initOptions,
+        inputWidth: this.state.inputWidth
+      };
 
-      if (this._input && this._input.current) {
-        this._input.current.handleTextChange(null, {
-          value: ''
-        });
+      if (this.state.value !== '') {
+        state.inputWidth = this._input && this._input.current && this._input.current.clear();
       }
 
       this.handleControlFocus();
-      this.setState({
-        value: '',
-        selection: [],
-        options: this.props.initOptions
-      });
+      this.setState(state);
     });
 
     src_defineProperty(this, "handleDropdownOpen", force => {
@@ -1521,23 +1579,35 @@ class src_ReactAhead extends external_commonjs_react_commonjs2_react_amd_React_r
       }
     });
 
-    src_defineProperty(this, "handleLoadMore", () => {});
+    src_defineProperty(this, "handleLoadMore", () => {//todo: if there are more to load for the options, communicate with the remote
+      //      to do so
+    });
 
     src_defineProperty(this, "renderInput", () => {
       const {
+        displayFormatter,
         isMulti,
         placeholder
       } = this.props;
-      const singleSelDone = !isMulti && this.state.selection.length === 1;
+      const {
+        selection,
+        inputWidth,
+        value
+      } = this.state;
+      const singleSelDone = !isMulti && selection.length === 1;
       let text;
 
       if (singleSelDone) {
-        text = this.state.selection[0];
+        text = selection[0];
 
         if (typeof text === 'object') {
-          text = text['source'] || '<No display>';
+          text = text['source'] || 'N/A';
         } else {
           text = text.toString();
+        }
+
+        if (displayFormatter) {
+          text = displayFormatter(text, 'display');
         }
       } else {
         text = placeholder;
@@ -1546,19 +1616,20 @@ class src_ReactAhead extends external_commonjs_react_commonjs2_react_amd_React_r
       return external_commonjs_react_commonjs2_react_amd_React_root_React_default.a.createElement("div", {
         className: this._classNames.inputWrapper
       }, external_commonjs_react_commonjs2_react_amd_React_root_React_default.a.createElement(src_placeholder, {
-        show: placeholder && this.state.selection.length === 0 && !this.state.value || singleSelDone && !this.state.value,
+        show: placeholder && selection.length === 0 && !value || singleSelDone && !value,
         text: text,
         valueDisplayMode: singleSelDone
       }), isMulti ? external_commonjs_react_commonjs2_react_amd_React_root_React_default.a.createElement(selection_MultiSelection, {
-        selection: this.state.selection,
+        selection: selection,
         onSelectionRemoval: this.handleSelectionRemoval
       }) : null, external_commonjs_react_commonjs2_react_amd_React_root_React_default.a.createElement(input_Input, {
+        inputWidth: inputWidth,
         ref: this._input,
         onEntryChange: this.handleEntryChanged,
         onKeyChoice: this.handleKeyChoice,
         onSpecialKey: this.handleKeyAction,
         onSelectionMove: this.handleSelectionMove,
-        value: this.state.value
+        value: value
       }));
     });
 
@@ -1653,11 +1724,68 @@ class src_ReactAhead extends external_commonjs_react_commonjs2_react_amd_React_r
 }
 
 src_defineProperty(src_ReactAhead, "propTypes", {
+  /**
+   * An object containing the custom class names that we shall apply for 
+   * each component of the control. Avaliable fields are: 
+   * - `input`: for the input control
+   * - `active`: for the input control but applied when the control has focus
+   * - `dropdown`: for the dropdown menu
+   * 
+   * Example:
+   * <ReactAhead
+   *   customClassNames={{
+   *     active: "app-control-active",
+   *     input: "app-control-input",
+   *     dropdown: "app-control-dropdown",
+   *   }}
+   * />
+   */
   customClassNames: prop_types_default.a.object,
+
+  /**
+   * A callback function for generating display text for options and values. 
+   * 
+   * If supplied, it will be invoked on the following occasions to generate 
+   * a customizable text (or React component) that shall be used as the 
+   * display content to the end user:
+   * 
+   * a) when rendering options in the dropdown menu;
+   * b) when a selection has been made;
+   * 
+   * The function takes 2 parameters:
+   * 
+   * 1) `item` -- the item (either string, number, or object, whichever provided
+   *              by the `initOption` or fetched from remote) that to be 
+   *              rendered.
+   * 2) `type` -- enumerate, possible values: 'display' or 'option', the former 
+   *              indeicates that the rendered content will be for the selected
+   *              item, while the later denotes to the items to be rendered in 
+   *              the dropdown options menu.
+   */
   displayFormatter: prop_types_default.a.func,
+
+  /**
+   * Indicate if we allow user created options to appear and selectable
+   */
   isCreateable: prop_types_default.a.bool,
+
+  /**
+   * Indicate if we allow mulitple value selections for the control
+   */
   isMulti: prop_types_default.a.bool,
-  initOptions: prop_types_default.a.arrayOf(prop_types_default.a.object)
+
+  /**
+   * An array of the options to be displayed as the initial values. You must provide
+   * either `initOptions`, or the remote option such that we can fetch the options
+   * from the remote server
+   */
+  initOptions: prop_types_default.a.arrayOf(prop_types_default.a.object),
+
+  /**
+   * An object containing the necessary information to contact a remote server for
+   * options. TODO: more info ...
+   */
+  remote: prop_types_default.a.object
 });
 
 src_defineProperty(src_ReactAhead, "defaultProps", {
