@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import ControlIcon from './icon';
+import { getItemLabel } from './utils';
 import styles from "./shared.css";
 
 const containerClass = "react-ahead__selection-container";
@@ -23,8 +24,8 @@ export default class MultiSelection extends React.Component {
   }
 
   renderItem = (item, idx) => {
-    const key = `sel_item_${idx}`;
-    const source = typeof item === 'object' ? item['source'] : item.toString();
+    const key = `__sel_item_${idx}`;
+    const source = getItemLabel(item);
     
     let content = this.props.display ? this.props.display(item, 'display') : source;
     let title = content;
@@ -62,6 +63,8 @@ export default class MultiSelection extends React.Component {
     if (!Array.isArray(selection) || !selection.length) {
       return null;
     }
+
+    console.log(selection);
 
     return (
       <>

@@ -68,18 +68,27 @@ export default class Input extends React.Component {
 
     const { keyCode } = evt;
 
-    // console.log('key pressed:', keyCode);
+    console.log('key pressed:', keyCode);
     
     switch (keyCode) {
+      case 8:
+        // backspace
+        if (this.props.value === '') {
+          this.props.onSpecialKey('backspace');
+        }
+
+        break;
+
       case 9:
+        // tab
         if (!evt.shiftKey) {
-          this.props.onSpecialKey('tab');          
+          this.props.onSpecialKey('tab');    
         }
 
         break;
 
       case 13:
-        // selection
+        // enter: selection
         evt.preventDefault();
 
         if (this.props.onKeyChoice) {
@@ -94,7 +103,9 @@ export default class Input extends React.Component {
         this.props.onSpecialKey('esc'); 
         
       case 38:
+        // arrow up
       case 40:
+        // arrow down
         evt.preventDefault();
 
         this.props.onSelectionMove(evt, keyCode === 38 ? "up" : "down");

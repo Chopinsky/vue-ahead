@@ -795,10 +795,20 @@ class input_Input extends external_commonjs_react_commonjs2_react_amd_React_root
 
       const {
         keyCode
-      } = evt; // console.log('key pressed:', keyCode);
+      } = evt;
+      console.log('key pressed:', keyCode);
 
       switch (keyCode) {
+        case 8:
+          // backspace
+          if (this.props.value === '') {
+            this.props.onSpecialKey('backspace');
+          }
+
+          break;
+
         case 9:
+          // tab
           if (!evt.shiftKey) {
             this.props.onSpecialKey('tab');
           }
@@ -806,7 +816,7 @@ class input_Input extends external_commonjs_react_commonjs2_react_amd_React_root
           break;
 
         case 13:
-          // selection
+          // enter: selection
           evt.preventDefault();
 
           if (this.props.onKeyChoice) {
@@ -820,8 +830,10 @@ class input_Input extends external_commonjs_react_commonjs2_react_amd_React_root
           evt.preventDefault();
           this.props.onSpecialKey('esc');
 
-        case 38:
+        case 38: // arrow up
+
         case 40:
+          // arrow down
           evt.preventDefault();
           this.props.onSelectionMove(evt, keyCode === 38 ? "up" : "down");
           break;
@@ -900,8 +912,12 @@ input_defineProperty(input_Input, "defaultProps", {
   inputWidth: 2,
   value: ''
 });
+// EXTERNAL MODULE: ./src/utils.js
+var utils = __webpack_require__(9);
+
 // CONCATENATED MODULE: ./src/dropdown.js
 function dropdown_defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 
 
 
@@ -921,18 +937,19 @@ class dropdown_Dropdown extends external_commonjs_react_commonjs2_react_amd_Reac
 
     dropdown_defineProperty(this, "select", evt => {
       const {
-        options,
-        onSelection
+        options
       } = this.props;
       const {
         activeIdx
       } = this.state;
 
-      if (activeIdx >= options.length || !onSelection) {
+      if (activeIdx >= options.length) {
         return;
       }
 
-      onSelection(evt, options[activeIdx]);
+      let item = options[activeIdx];
+      const source = Object(utils["getItemLabel"])(item);
+      this.handleItemSelection(evt, source, item);
     });
 
     dropdown_defineProperty(this, "handleCursorMove", type => {
@@ -973,24 +990,37 @@ class dropdown_Dropdown extends external_commonjs_react_commonjs2_react_amd_Reac
       });
     });
 
-    dropdown_defineProperty(this, "handleItemSelection", (evt, src, item) => {
-      if (!this.props.onSelection) {
+    dropdown_defineProperty(this, "handleItemSelection", (evt, source, item) => {
+      if (!this.props.onSelection || typeof source !== 'string') {
         return;
+      } // removing book-keeping data for the created item
+
+
+      if (item['__itemType'] === 'created') {
+        item['source'] = item['__createdValue'] || source.substring(7);
+        delete item['__createdValue'];
       }
 
-      this.props.onSelection(evt, src, item);
+      this.props.onSelection(evt, source, item);
     });
 
     dropdown_defineProperty(this, "renderList", options => {
+      // the caller has guaranteed that the options is a non-null array
       const {
-        display
+        display,
+        grouped
       } = this.props;
       const {
         activeIdx
       } = this.state;
+
+      if (grouped) {// get the labels ready for insertion
+      }
+
+      console.log('render options', options);
       return external_commonjs_react_commonjs2_react_amd_React_root_React_default.a.createElement(external_commonjs_react_commonjs2_react_amd_React_root_React_["Fragment"], null, options.map((item, idx) => {
-        const key = `option_item_${idx}`;
-        const source = typeof item === 'object' ? item['source'] : item.toString();
+        const key = `__option_item_${idx}`;
+        const source = Object(utils["getItemLabel"])(item);
         const content = display ? display(item, 'option') : source;
         return external_commonjs_react_commonjs2_react_amd_React_root_React_default.a.createElement("div", {
           className: activeIdx === idx ? this._classNames.active : this._classNames.option,
@@ -1021,11 +1051,10 @@ class dropdown_Dropdown extends external_commonjs_react_commonjs2_react_amd_Reac
       const item = prevProps.options[prevState.activeIdx];
 
       if (item) {
-        const lastSource = typeof item === 'object' ? item['source'] : item.toString();
+        const lastSource = Object(utils["getItemLabel"])(item);
 
         for (let i = 0; i < length; i++) {
-          const nextItem = this.props.options[i];
-          const source = typeof inextItemtem === 'object' ? nextItem['source'] : nextItem.toString();
+          const source = Object(utils["getItemLabel"])(this.props.options[i]);
 
           if (source === lastSource) {
             idx = i;
@@ -1047,7 +1076,6 @@ class dropdown_Dropdown extends external_commonjs_react_commonjs2_react_amd_Reac
   }
 
   shouldComponentUpdate(nextProps, nextState) {
-    // console.log('should update??', nextProps.options);
     if (!nextState || this.state.activeIdx !== nextState.activeIdx) {
       return true;
     }
@@ -1092,8 +1120,10 @@ class dropdown_Dropdown extends external_commonjs_react_commonjs2_react_amd_Reac
 
 dropdown_defineProperty(dropdown_Dropdown, "propTypes", {
   display: prop_types_default.a.func,
+  grouped: prop_types_default.a.bool,
   isCreateable: prop_types_default.a.bool,
   options: prop_types_default.a.arrayOf(prop_types_default.a.object),
+  onClick: prop_types_default.a.func,
   onLoadMore: prop_types_default.a.func
 });
 
@@ -1171,6 +1201,7 @@ function selection_defineProperty(obj, key, value) { if (key in obj) { Object.de
 
 
 
+
 const containerClass = "react-ahead__selection-container";
 const selection_contentClass = "react-ahead__selection-content";
 const removalClass = "react-ahead__selection-removal";
@@ -1179,8 +1210,8 @@ class selection_MultiSelection extends external_commonjs_react_commonjs2_react_a
     super(props);
 
     selection_defineProperty(this, "renderItem", (item, idx) => {
-      const key = `sel_item_${idx}`;
-      const source = typeof item === 'object' ? item['source'] : item.toString();
+      const key = `__sel_item_${idx}`;
+      const source = Object(utils["getItemLabel"])(item);
       let content = this.props.display ? this.props.display(item, 'display') : source;
       let title = content;
 
@@ -1221,6 +1252,7 @@ class selection_MultiSelection extends external_commonjs_react_commonjs2_react_a
       return null;
     }
 
+    console.log(selection);
     return external_commonjs_react_commonjs2_react_amd_React_root_React_default.a.createElement(external_commonjs_react_commonjs2_react_amd_React_root_React_default.a.Fragment, null, selection.map((item, idx) => {
       return this.renderItem(item, idx);
     }));
@@ -1319,6 +1351,7 @@ function src_defineProperty(obj, key, value) { if (key in obj) { Object.definePr
 
 
 
+
 const src_containerClass = "react-ahead__control-container";
 const src_wrapperClass = "react-ahead__control-wrapper";
 const src_activeClass = "react-ahead__control-active";
@@ -1340,9 +1373,54 @@ class src_ReactAhead extends external_commonjs_react_commonjs2_react_amd_React_r
       value: ''
     });
 
-    src_defineProperty(this, "getOptions", (options, selection) => {
+    src_defineProperty(this, "getSelection", () => {
+      return this.state.selection;
+    });
+
+    src_defineProperty(this, "groupOptions", options => {
+      if (!Array.isArray(options) || !options.length) {
+        return options || [];
+      }
+
+      options.sort((a, b) => {
+        let ag = a['group'];
+        let bg = b['group'];
+
+        if (ag === bg) {
+          return 0;
+        }
+
+        if (ag === null || ag === undefined) {
+          return -1;
+        }
+
+        if (bg === null || bg === undefined) {
+          return 1;
+        }
+
+        if (typeof ag !== 'string') {
+          ag = ag.toString();
+        }
+
+        if (typeof bg !== 'string') {
+          bg = bg.toString();
+        }
+
+        if (ag < bg) {
+          return -1;
+        }
+
+        return 1;
+      });
+    });
+
+    src_defineProperty(this, "getOptions", (options, selection, group) => {
       if (!selection) {
         selection = this.state.selection;
+      }
+
+      if (group) {
+        options = this.groupOptions(options);
       }
 
       if (!selection || !selection.length) {
@@ -1392,7 +1470,7 @@ class src_ReactAhead extends external_commonjs_react_commonjs2_react_amd_React_r
           });
         });
       } else {
-        state['options'] = this.getOptions(this.props.initOptions);
+        state['options'] = this.getOptions(this.props.initOptions, null, this.props.grouped);
         this._lastVal = {
           value,
           options: state['options']
@@ -1416,38 +1494,6 @@ class src_ReactAhead extends external_commonjs_react_commonjs2_react_amd_React_r
       }
 
       this._dropdown.current.select();
-    });
-
-    src_defineProperty(this, "handleSelectionChoice", (evt, val) => {
-      const key = typeof val === 'object' ? val['source'] : val.toString();
-
-      if (!key || this._selKeys.hasOwnProperty(key)) {
-        return;
-      }
-
-      let {
-        selection
-      } = this.state;
-      this._lastVal = null; // add the selection to the list
-
-      if (this.props.isMulti) {
-        selection.push(val);
-        this._selKeys[key] = null;
-      } else {
-        selection = [val];
-        this._selKeys = {};
-        this._selKeys[key] = null;
-      } // set focus type to prepare for transferring the focus
-
-
-      this._focusType = 1;
-      this.handleControlFocus(evt); // close the dropdown for now
-
-      this.setState({
-        options: this.getOptions(this.props.initOptions, selection),
-        selection,
-        value: ''
-      });
     });
 
     src_defineProperty(this, "handleKeepFocus", evt => {
@@ -1480,6 +1526,13 @@ class src_ReactAhead extends external_commonjs_react_commonjs2_react_amd_React_r
           this.setState({
             dropdownOpen: false
           });
+          break;
+
+        case 'backspace':
+          if (this.props.isMulti && this.state.selection.length > 0) {
+            this.handleSelectionRemoval(null, this.state.selection.length - 1, true);
+          }
+
           break;
 
         default:
@@ -1556,7 +1609,50 @@ class src_ReactAhead extends external_commonjs_react_commonjs2_react_amd_React_r
       }
     });
 
-    src_defineProperty(this, "handleSelectionRemoval", (_evt, idx) => {
+    src_defineProperty(this, "handleSelectionAddition", (evt, source, item) => {
+      if (!source || this._selKeys.hasOwnProperty(source)) {
+        return;
+      }
+
+      let {
+        selection
+      } = this.state;
+      this._lastVal = null;
+
+      if (this.props.isCreateable && item['__itemType'] === 'created' && this.props.onItemCreated) {
+        // adding any extra information to the created item
+        item = Object.assign(item, this.props.onItemCreated(source)); // maintain the 'source' property
+
+        if (item['source'] !== source) {
+          item['source'] = source;
+        }
+      } // add the selection to the list
+
+
+      if (this.props.isMulti) {
+        selection.push(item);
+        this._selKeys[source] = null;
+      } else {
+        selection = [item];
+        this._selKeys = {};
+        this._selKeys[source] = null;
+      } // set focus type to prepare for transferring the focus
+
+
+      this._focusType = 1;
+      this.handleControlFocus(evt);
+      console.log('addition', selection, source, item, this._selKeys); // close the dropdown for now
+
+      this.setState({
+        options: this.getOptions(this.props.initOptions, selection, this.props.grouped),
+        selection,
+        value: ''
+      }); // acknowledge the selection change
+
+      this.props.onSelectionChange && this.props.onSelectionChange(selection);
+    });
+
+    src_defineProperty(this, "handleSelectionRemoval", (_evt, idx, inPlaceRemoval) => {
       if (!this.props.isMulti) {
         return;
       }
@@ -1572,26 +1668,32 @@ class src_ReactAhead extends external_commonjs_react_commonjs2_react_amd_React_r
       }
 
       let [item] = selection.splice(idx, 1);
-      delete this._selKeys[typeof item === 'object' ? item['source'] : item.toString()];
+      delete this._selKeys[Object(utils["getItemLabel"])(item)];
 
       if (value !== '') {
         // rerun the value
         options = this.getOptions(this._lastSearch || [], selection);
       } else {
-        options = this.getOptions(this.props.initOptions, selection);
+        options = this.getOptions(this.props.initOptions, selection, this.props.grouped);
       } // update stores
 
 
-      this._focusType = 4;
+      if (!inPlaceRemoval) {
+        this._focusType = 4;
+      }
+
       this._lastVal = {
         value,
         options
-      }; // update state
+      };
+      console.log('remove', selection); // update state
 
       this.setState({
         selection,
         options
-      });
+      }); // acknowledge the selection change
+
+      this.props.onSelectionChange && this.props.onSelectionChange(selection);
     });
 
     src_defineProperty(this, "handleClear", () => {
@@ -1601,7 +1703,7 @@ class src_ReactAhead extends external_commonjs_react_commonjs2_react_amd_React_r
       let state = {
         value: '',
         selection: [],
-        options: this.props.initOptions,
+        options: !this.props.grouped ? this.props.initOptions : this.groupOptions(this.props.initOptions),
         inputWidth: this.state.inputWidth
       };
 
@@ -1709,9 +1811,9 @@ class src_ReactAhead extends external_commonjs_react_commonjs2_react_amd_React_r
     this._engine = new SearchEngine();
 
     if (Array.isArray(props.initOptions) && props.initOptions.length > 0) {
-      this.state.options = props.initOptions;
+      this.state.options = !props.grouped ? props.initOptions : this.groupOptions(props.initOptions);
 
-      this._engine.add(props.initOptions);
+      this._engine.add(this.state.options);
     }
 
     this._classNames = {
@@ -1722,11 +1824,23 @@ class src_ReactAhead extends external_commonjs_react_commonjs2_react_amd_React_r
     };
   }
 
+  componentDidUpdate(prevProps) {
+    if (prevProps.grouped !== this.props.grouped && this.props.grouped) {
+      let {
+        options
+      } = this.state;
+      this.setState({
+        options: this.groupOptions(options)
+      });
+    }
+  }
+
   render() {
     const {
       className,
       customClassNames,
       displayFormatter,
+      grouped,
       isCreateable
     } = this.props;
     const {
@@ -1741,7 +1855,6 @@ class src_ReactAhead extends external_commonjs_react_commonjs2_react_amd_React_r
       let exactMatch = false;
 
       for (let i = 0; i < options.length; i++) {
-        //todo: use display funciton to get the display value??
         if (this.state.value === options[i].source) {
           exactMatch = true;
           break;
@@ -1750,7 +1863,9 @@ class src_ReactAhead extends external_commonjs_react_commonjs2_react_amd_React_r
 
       if (!exactMatch) {
         options.push({
-          source: `Create ${this.state.value}`
+          source: `Create ${this.state.value}`,
+          __itemType: 'created',
+          __createdValue: this.state.value
         });
       }
     } else {
@@ -1780,9 +1895,10 @@ class src_ReactAhead extends external_commonjs_react_commonjs2_react_amd_React_r
       ref: this._dropdown,
       className: customClassNames.dropdown,
       display: displayFormatter,
+      grouped: grouped,
       open: dropdownOpen,
       options: options,
-      onSelection: this.handleSelectionChoice,
+      onSelection: this.handleSelectionAddition,
       onLoadMore: this.handleLoadMore,
       shield: shield
     }));
@@ -1810,6 +1926,12 @@ src_defineProperty(src_ReactAhead, "propTypes", {
   customClassNames: prop_types_default.a.object,
 
   /**
+   * The index number of the option that shall be treated as the default value
+   * to the control.
+   */
+  default: prop_types_default.a.number,
+
+  /**
    * A callback function for generating display text for options and values. 
    * 
    * If supplied, it will be invoked on the following occasions to generate 
@@ -1832,6 +1954,12 @@ src_defineProperty(src_ReactAhead, "propTypes", {
   displayFormatter: prop_types_default.a.func,
 
   /**
+   * Indicate if we shall display options in the dropdown menu in the grouped
+   * mode. Requires `options` data to contain the `group` property.
+   */
+  grouped: prop_types_default.a.bool,
+
+  /**
    * Indicate if we allow user created options to appear and selectable
    */
   isCreateable: prop_types_default.a.bool,
@@ -1849,6 +1977,12 @@ src_defineProperty(src_ReactAhead, "propTypes", {
   initOptions: prop_types_default.a.arrayOf(prop_types_default.a.object),
 
   /**
+   * Callback function which will be invoked when a selection change has been made,
+   * it can be either an addition or deletion.
+   */
+  onSelectionChange: prop_types_default.a.func,
+
+  /**
    * An object containing the necessary information to contact a remote server for
    * options. TODO: more info ...
    */
@@ -1862,6 +1996,18 @@ src_defineProperty(src_ReactAhead, "defaultProps", {
     active: ''
   }
 });
+
+/***/ }),
+/* 9 */
+/***/ (function(module, exports) {
+
+const getItemLabel = item => {
+  return typeof item === 'object' ? item['source'] : item.toString();
+};
+
+module.exports = {
+  getItemLabel
+};
 
 /***/ })
 /******/ ]);

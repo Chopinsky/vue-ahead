@@ -1,5 +1,6 @@
 import React, {Fragment} from 'react';
 import PropTypes from 'prop-types';
+import { getItemLabel } from './utils';
 import styles from './shared.css';
 
 const wrapperClass = "react-ahead__menu-wrapper";
@@ -11,8 +12,10 @@ const activeClass = "react-head__menu-active-option";
 export default class Dropdown extends React.Component {
   static propTypes = {
     display: PropTypes.func,
+    grouped: PropTypes.bool,
     isCreateable: PropTypes.bool,
     options: PropTypes.arrayOf(PropTypes.object),
+    onClick: PropTypes.func,
     onLoadMore: PropTypes.func,
   };
 
@@ -44,11 +47,10 @@ export default class Dropdown extends React.Component {
       const item = prevProps.options[prevState.activeIdx];
 
       if (item) {
-        const lastSource = typeof item === 'object' ? item['source'] : item.toString();
+        const lastSource = getItemLabel(item);
 
         for (let i = 0; i < length; i++) {
-          const nextItem = this.props.options[i];
-          const source = typeof inextItemtem === 'object' ? nextItem['source'] : nextItem.toString();
+          const source = getItemLabel(this.props.options[i])
 
           if (source === lastSource) {
             idx = i;
@@ -70,8 +72,6 @@ export default class Dropdown extends React.Component {
   }
 
   shouldComponentUpdate(nextProps, nextState) {
-    // console.log('should update??', nextProps.options);
-
     if (!nextState || this.state.activeIdx !== nextState.activeIdx) {
       return true;
     }
@@ -94,14 +94,17 @@ export default class Dropdown extends React.Component {
   }
 
   select = evt => {
-    const { options, onSelection } = this.props;
+    const { options } = this.props;
     const { activeIdx } = this.state;
 
-    if (activeIdx >= options.length || !onSelection) {
+    if (activeIdx >= options.length) {
       return;
     }
 
-    onSelection(evt, options[activeIdx]);
+    let item = options[activeIdx];
+    const source = getItemLabel(item);
+    
+    this.handleItemSelection(evt, source, item);
   };
 
   handleCursorMove = (type) => {
@@ -140,29 +143,44 @@ export default class Dropdown extends React.Component {
     });
   };
 
-  handleItemSelection = (evt, src, item) => {
-    if (!this.props.onSelection) {
+  handleItemSelection = (evt, source, item) => {
+    if (!this.props.onSelection || typeof source !== 'string') {
       return;
     }
 
-    this.props.onSelection(evt, src, item);
+    // removing book-keeping data for the created item
+    if (item['__itemType'] === 'created') {
+      item['source'] = item['__createdValue'] || source.substring(7);
+      delete item['__createdValue'];
+    }
+
+    this.props.onSelection(evt, source, item);
   }
 
   renderList = options => {
+    // the caller has guaranteed that the options is a non-null array
+
     const {
-      display
+      display,
+      grouped
     } = this.props;
 
     const {
       activeIdx
     } = this.state;
 
+    if (grouped) {
+      // get the labels ready for insertion
+    }
+
+    console.log('render options', options);
+
     return (
       <Fragment>
         {
           options.map((item, idx) => {
-            const key = `option_item_${idx}`;            
-            const source = typeof item === 'object' ? item['source'] : item.toString();
+            const key = `__option_item_${idx}`;
+            const source = getItemLabel(item);
             const content = display ? display(item, 'option') : source;
 
             return (

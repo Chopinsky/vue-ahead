@@ -17,7 +17,8 @@ class NativeEngine {
       val = val.toString();
     }
 
-    return this._store.filter(data => data.source && data.source.indexOf(val) >= 0);
+    return this._store
+      .filter(data => data.source && data.source.indexOf(val) >= 0)
   };
 }
 
