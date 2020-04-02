@@ -222,6 +222,16 @@ export default class ReactAhead extends React.Component {
     });
   };
 
+  moveCursor = side => {
+    if (!this.state.dropdownOpen || !side) {
+      return;
+    }
+
+    this._dropdown
+      && this._dropdown.current
+      && this._dropdown.current.handleCursorMove(side);
+  };
+
   handleEntryChanged = (_evt, value, width) => {
     // console.log('entry change???', value);
 
@@ -234,6 +244,8 @@ export default class ReactAhead extends React.Component {
       return;
     }
 
+    value = value.trimStart();
+
     let state = {
       dropdownOpen: true,
       inputWidth: width,
@@ -242,7 +254,7 @@ export default class ReactAhead extends React.Component {
     };
 
     if (value !== '') {
-      this._engine.find(value, options => {
+      this._engine.find(value.trimEnd(), options => {
         // cache the original search results, before being filtered
         this._lastSearch = options;
 
@@ -272,24 +284,6 @@ export default class ReactAhead extends React.Component {
     this.setState(state);
   };
 
-  handleSelectionMove = (_evt, side) => {
-    if (!this.state.dropdownOpen) {
-      return;
-    }
-
-    this._dropdown 
-    && this._dropdown.current 
-    && this._dropdown.current.handleCursorMove(side);
-  };
-
-  handleKeyChoice = evt => {
-    if (!this._dropdown || !this._dropdown.current) {
-      return;
-    }
-
-    this._dropdown.current.select();
-  };
-
   handleKeepFocus = evt => {
     this._focusType = 2;
     this._initDropdownState = this.state.dropdownOpen;
@@ -302,8 +296,20 @@ export default class ReactAhead extends React.Component {
 
   handleKeyAction = (key, info) => {
     switch (key) {
+      case 'enter':
+        this._dropdown 
+        && this._dropdown.current
+        && this._dropdown.current.select();
+        
+        break;
+
       case 'tab':
         this._focusType = 4;
+        break;
+
+      case 'up':
+      case 'down':
+        this.moveCursor(key);
         break;
 
       case 'move':
@@ -311,7 +317,7 @@ export default class ReactAhead extends React.Component {
 
         if (this.state.dropdownOpen) {
           // only respect the cursor move if the dropdown is still open
-          setTimeout(() => this.handleSelectionMove(info ? 'up' : 'down'), 0)          
+          setTimeout(() => this.moveCursor(info), 0)          
         }
 
         break;
@@ -615,9 +621,7 @@ export default class ReactAhead extends React.Component {
           inputWidth={inputWidth}
           ref={this._input}
           onEntryChange={this.handleEntryChanged}
-          onKeyChoice={this.handleKeyChoice}
           onSpecialKey={this.handleKeyAction}
-          onSelectionMove={this.handleSelectionMove}
           value={value}
         />
       </div>
@@ -673,6 +677,18 @@ export default class ReactAhead extends React.Component {
         className={wrapperClassName}
         onMouseDown={this.handleKeepFocus}
       >
+        <div 
+          style={{
+            display: shield ? 'default' : 'none',
+            width: '100%',
+            height: '100%',
+            position: "absolute",
+            top: 0,
+            left: 0,
+            zIndex: 100000,
+          }}
+        >
+        </div>
         <div
           className={inputClassName}
           onClick={this.handleControlFocus}

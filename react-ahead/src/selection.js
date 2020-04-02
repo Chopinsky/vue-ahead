@@ -23,6 +23,19 @@ export default class MultiSelection extends React.Component {
     this._removalStyle = styles[removalClass] || removalClass;
   }
 
+  handleRemovalKeydown = (evt, idx) => {
+    if (!evt) {
+      return;
+    }
+
+    const { keyCode } = evt;
+
+    if (keyCode === 13 || keyCode === 32) {
+      evt.preventDefault();
+      this.props.onSelectionRemoval(evt, idx);
+    }
+  };
+
   renderItem = (item, idx) => {
     const key = `__sel_item_${idx}`;
     const title = getItemLabel(item);
@@ -51,6 +64,7 @@ export default class MultiSelection extends React.Component {
             path={"M 14.348 14.849 c -0.469 0.469 -1.229 0.469 -1.697 0 l -2.651 -3.03 l -2.651 3.029 c -0.469 0.469 -1.229 0.469 -1.697 0 c -0.469 -0.469 -0.469 -1.229 0 -1.697 l 2.758 -3.15 l -2.759 -3.152 c -0.469 -0.469 -0.469 -1.228 0 -1.697 s 1.228 -0.469 1.697 0 l 2.652 3.031 l 2.651 -3.031 c 0.469 -0.469 1.228 -0.469 1.697 0 s 0.469 1.229 0 1.697 l -2.758 3.152 l 2.758 3.15 c 0.469 0.469 0.469 1.229 0 1.698 Z"}
             size={"12"}
             onClick={evt => this.props.onSelectionRemoval(evt, idx)}
+            onKeyDown={evt => this.handleRemovalKeydown(evt, idx)}
           />
         </div>
       </div>

@@ -19,6 +19,7 @@ export default class Dropdown extends React.Component {
     options: PropTypes.arrayOf(PropTypes.object),
     onClick: PropTypes.func,
     onLoadMore: PropTypes.func,
+    shield: PropTypes.bool,
   };
 
   static defaultProps = {
@@ -210,7 +211,7 @@ export default class Dropdown extends React.Component {
                 }
                 key={`__option_item_${source+idx}`}
                 tabIndex={-1}
-                onMouseEnter={evt => this.handleHighlight(evt, idx)}
+                onMouseOverCapture={evt => this.handleHighlight(evt, idx)}
                 onClick={evt => this.handleItemSelection(evt, source, item)}
               >
                 {content}
@@ -262,6 +263,18 @@ export default class Dropdown extends React.Component {
         onClick={this.props.onClick}
         className={this._classNames.wrapper + " " + this.props.className}
       >
+        <div
+          style={{
+            display: this.props.shield ? 'default' : 'none',
+            width: '100%',
+            height: '100%',
+            position: "absolute",
+            top: 0,
+            left: 0,
+            zIndex: 100000,
+          }}
+        >
+        </div>
         <div className={this._classNames.content}>
           {contents}
         </div>

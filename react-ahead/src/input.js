@@ -8,8 +8,6 @@ export default class Input extends React.Component {
   static propTypes = {
     inputWidth: PropTypes.number,
     onEntryChange: PropTypes.func.isRequired,
-    onKeyChoice: PropTypes.func.isRequired,
-    onSelectionMove: PropTypes.func.isRequired,
     onSpecialKey: PropTypes.func.isRequired,
     value: PropTypes.string.isRequired,
   };
@@ -90,10 +88,7 @@ export default class Input extends React.Component {
       case 13:
         // enter: selection
         evt.preventDefault();
-
-        if (this.props.onKeyChoice) {
-          this.props.onKeyChoice(evt);
-        }
+        this.props.onSpecialKey('enter');  
 
         break;
 
@@ -107,8 +102,7 @@ export default class Input extends React.Component {
       case 40:
         // arrow down
         evt.preventDefault();
-
-        this.props.onSelectionMove(evt, keyCode === 38 ? "up" : "down");
+        this.props.onSpecialKey(keyCode === 38 ? 'up' : 'down');
 
         break;
     

@@ -165,7 +165,7 @@
   color: rgb(153, 153, 153);
   text-align: center;
   box-sizing: border-box;
-  padding: 8px 12px;
+  padding: 6px 12px;
 }
 
 .react-ahead__menu-option {
@@ -177,7 +177,7 @@
   width: 100%;
   user-select: none;
   box-sizing: border-box;
-  padding: 8px 12px;
+  padding: 4px 12px;
 }
 
 .react-head__menu-active-option {

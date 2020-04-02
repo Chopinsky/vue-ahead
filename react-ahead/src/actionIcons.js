@@ -32,7 +32,7 @@ const ActionIcons = props => {
 
       case 38:
       case 40:
-        props.onSpecialKey && props.onSpecialKey('move', keyCode === 38);
+        props.onSpecialKey && props.onSpecialKey('move', keyCode === 38 ? 'up' : 'down');
         break;
 
       case 9:

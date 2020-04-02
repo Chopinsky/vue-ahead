@@ -535,7 +535,7 @@ module.exports = function (list, options) {
 var ___CSS_LOADER_API_IMPORT___ = __webpack_require__(8);
 exports = ___CSS_LOADER_API_IMPORT___(false);
 // Module
-exports.push([module.i, "._2dH7OUMw0ESmltDd0ovClD {\r\n  position: relative;\r\n  box-sizing: border-box;\r\n}\r\n\r\n.Axrtb5jaHtP98cGxAqRLV {\r\n  -webkit-box-align: center;\r\n  -webkit-box-pack: justify;\r\n  padding-left: 6px;\r\n  padding-right: 2px;\r\n  min-height: 38px;\r\n  align-items: center;\r\n  background-color: rgb(255, 255, 255);\r\n  border-radius: 2px;\r\n  border: 1px solid rgb(204, 204, 204);\r\n  cursor: default;\r\n  position: relative;\r\n  box-sizing: border-box;\r\n  display: flex;\r\n  flex-wrap: wrap;\r\n  justify-content: space-between;\r\n  transition: all 100ms ease 0s;\r\n  outline: 0px !important;\r\n}\r\n\r\n._2SUkorElgQ76JGjtyHk4de {\r\n  border: 1px solid blue;\r\n}\r\n\r\n._1Vnmg2rKay_EA99qawmFda {\r\n  padding: 2px;\r\n  color: rgb(51, 51, 51);\r\n  position: relative;\r\n  display: flex;\r\n  flex: 1 1 0%;\r\n  flex-wrap: wrap;\r\n  box-sizing: border-box;\r\n  overflow: hidden;\r\n  visibility: visible;\r\n  box-sizing: border-box;\r\n  width: 100%;\r\n}\r\n\r\n._2CD9QkPe0_ZMyoTQxtKBm7 {\r\n  position: absolute;\r\n  top: 50%;\r\n  color: rgb(128, 128, 128);\r\n  margin: 0;\r\n  transform: translateY(-50%);\r\n  box-sizing: border-box;\r\n}\r\n\r\n.xLIYtwgLVzX9AyYwVcgLt {\r\n  color: inherit;\r\n}\r\n\r\n._1Vnmg2rKay_EA99qawmFda {  \r\n  cursor: text;\r\n  width: 100%;\r\n}\r\n\r\n._2eDYrfCE1goL3V_2ogtQtz {\r\n  background-color: rgb(230, 230, 230);\r\n  display: flex;\r\n  min-width: 0px;\r\n  box-sizing: border-box;\r\n  border-radius: 2px;\r\n  margin: 2px 4px 2px 0;\r\n}\r\n\r\n._1tWm_bFu71IXItBd0OXrpP {\r\n  color: rgb(51, 51, 51);\r\n  font-size: 85%;\r\n  text-overflow: ellipsis;\r\n  white-space: nowrap;\r\n  box-sizing: border-box;\r\n  border-radius: 2px;\r\n  overflow: hidden;\r\n  padding: 2px 3px 4px 6px;\r\n}\r\n\r\n._2jKHZpiKI_7YyEyQXA1yMk {\r\n  -webkit-box-align: center;\r\n  align-items: center;\r\n  cursor: pointer;\r\n  display: flex;\r\n  padding-left: 4px;\r\n  padding-right: 4px;\r\n  box-sizing: border-box;\r\n  border-radius: 2px;\r\n}\r\n\r\n._2jKHZpiKI_7YyEyQXA1yMk:hover {\r\n  background-color: rgb(255, 189, 173);\r\n  color: rgb(222, 53, 11);\r\n}\r\n\r\n._2U9LCKIK4vRQWtopGpYhPl {\r\n  -webkit-box-align: center;\r\n  align-items: center;\r\n  align-self: stretch;\r\n  display: flex;\r\n  flex-shrink: 0;\r\n  box-sizing: border-box;\r\n}\r\n\r\n._25xAyedeXMtrf4T3ed1PJt {\r\n  color: rgb(204, 204, 204);\r\n  display: flex;\r\n  box-sizing: border-box;\r\n  padding: 10px 6px;\r\n  transition: color 150ms ease 0s;\r\n}\r\n\r\n._25xAyedeXMtrf4T3ed1PJt:hover {\r\n  cursor: pointer;\r\n  color: rgb(153, 153, 153);\r\n}\r\n\r\n._25xAyedeXMtrf4T3ed1PJt:focus {\r\n  color: rgb(153, 153, 153);\r\n  outline: 2px dotted gray;\r\n}\r\n\r\n.k1UudnI1h5npE3btdwIY1 {\r\n  display: inline-block;\r\n  fill: currentcolor;\r\n  line-height: 1;\r\n  stroke: currentcolor;\r\n  stroke-width: 0;\r\n}\r\n\r\n._1fXbnnAsavNrQXwBYoNqlw {\r\n  align-self: stretch;\r\n  background-color: rgb(204, 204, 204);\r\n  margin-bottom: 8px;\r\n  margin-top: 8px;\r\n  width: 1px;\r\n  box-sizing: border-box;\r\n}\r\n\r\n._3etkCiSEHj9rBdr3HP7hoI {\r\n  top: 100%;\r\n  background-color: rgb(255, 255, 255);\r\n  box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 0px 1px, rgba(0, 0, 0, 0.1) 0px 4px 11px;\r\n  margin-bottom: 1px;\r\n  margin-top: 1px;\r\n  position: absolute;\r\n  width: 100%;\r\n  z-index: 1;\r\n  box-sizing: border-box;\r\n  border-radius: 2px;\r\n}\r\n\r\n._2BZ6P2ChebiTM94M-OMhZD {\r\n  max-height: 300px;\r\n  overflow-y: auto;\r\n  padding-bottom: 2px;\r\n  padding-top: 2px;\r\n  position: relative;\r\n  box-sizing: border-box;\r\n}\r\n\r\n._1V1IQxhU17EfSxmz_iTN5t {\r\n  color: rgb(153, 153, 153);\r\n  text-align: center;\r\n  box-sizing: border-box;\r\n  padding: 8px 12px;\r\n}\r\n\r\n._1D9Xo5PbA8nnizD0GLeBxM {\r\n  background-color: transparent;\r\n  color: inherit;\r\n  cursor: default;\r\n  display: block;\r\n  font-size: inherit;\r\n  width: 100%;\r\n  user-select: none;\r\n  box-sizing: border-box;\r\n  padding: 8px 12px;\r\n}\r\n\r\n._12tsaEmF9_7NK7pihcgxJw {\r\n  background-color: rgb(222, 235, 255);\r\n}\r\n\r\n._3khQpvMiBoqHO8CsroCjVi {\r\n  color: rgb(153, 153, 153);\r\n  cursor: default;\r\n  display: block;\r\n  font-size: 75%;\r\n  font-weight: 500;\r\n  margin-bottom: 0.25em;\r\n  padding: 2px 12px;\r\n  text-transform: uppercase;\r\n  box-sizing: border-box;\r\n  display: flex;\r\n  align-items: center;\r\n  justify-content: space-between;\r\n}\r\n\r\n._2fvgAdZ635qKwR24y2XIFT {\r\n  background-color: #EBECF0;\r\n  border-radius: 1em;\r\n  color: #172B4D;\r\n  display: inline-block;\r\n  font-size: 10;\r\n  font-weight: normal;\r\n  line-height: 1;\r\n  text-align: center;\r\n  min-width: 1;\r\n  padding: 0.16666666666667em 0.5em;\r\n}\r\n", ""]);
+exports.push([module.i, "._2dH7OUMw0ESmltDd0ovClD {\r\n  position: relative;\r\n  box-sizing: border-box;\r\n}\r\n\r\n.Axrtb5jaHtP98cGxAqRLV {\r\n  -webkit-box-align: center;\r\n  -webkit-box-pack: justify;\r\n  padding-left: 6px;\r\n  padding-right: 2px;\r\n  min-height: 38px;\r\n  align-items: center;\r\n  background-color: rgb(255, 255, 255);\r\n  border-radius: 2px;\r\n  border: 1px solid rgb(204, 204, 204);\r\n  cursor: default;\r\n  position: relative;\r\n  box-sizing: border-box;\r\n  display: flex;\r\n  flex-wrap: wrap;\r\n  justify-content: space-between;\r\n  transition: all 100ms ease 0s;\r\n  outline: 0px !important;\r\n}\r\n\r\n._2SUkorElgQ76JGjtyHk4de {\r\n  border: 1px solid blue;\r\n}\r\n\r\n._1Vnmg2rKay_EA99qawmFda {\r\n  padding: 2px;\r\n  color: rgb(51, 51, 51);\r\n  position: relative;\r\n  display: flex;\r\n  flex: 1 1 0%;\r\n  flex-wrap: wrap;\r\n  box-sizing: border-box;\r\n  overflow: hidden;\r\n  visibility: visible;\r\n  box-sizing: border-box;\r\n  width: 100%;\r\n}\r\n\r\n._2CD9QkPe0_ZMyoTQxtKBm7 {\r\n  position: absolute;\r\n  top: 50%;\r\n  color: rgb(128, 128, 128);\r\n  margin: 0;\r\n  transform: translateY(-50%);\r\n  box-sizing: border-box;\r\n}\r\n\r\n.xLIYtwgLVzX9AyYwVcgLt {\r\n  color: inherit;\r\n}\r\n\r\n._1Vnmg2rKay_EA99qawmFda {  \r\n  cursor: text;\r\n  width: 100%;\r\n}\r\n\r\n._2eDYrfCE1goL3V_2ogtQtz {\r\n  background-color: rgb(230, 230, 230);\r\n  display: flex;\r\n  min-width: 0px;\r\n  box-sizing: border-box;\r\n  border-radius: 2px;\r\n  margin: 2px 4px 2px 0;\r\n}\r\n\r\n._1tWm_bFu71IXItBd0OXrpP {\r\n  color: rgb(51, 51, 51);\r\n  font-size: 85%;\r\n  text-overflow: ellipsis;\r\n  white-space: nowrap;\r\n  box-sizing: border-box;\r\n  border-radius: 2px;\r\n  overflow: hidden;\r\n  padding: 2px 3px 4px 6px;\r\n}\r\n\r\n._2jKHZpiKI_7YyEyQXA1yMk {\r\n  -webkit-box-align: center;\r\n  align-items: center;\r\n  cursor: pointer;\r\n  display: flex;\r\n  padding-left: 4px;\r\n  padding-right: 4px;\r\n  box-sizing: border-box;\r\n  border-radius: 2px;\r\n}\r\n\r\n._2jKHZpiKI_7YyEyQXA1yMk:hover {\r\n  background-color: rgb(255, 189, 173);\r\n  color: rgb(222, 53, 11);\r\n}\r\n\r\n._2U9LCKIK4vRQWtopGpYhPl {\r\n  -webkit-box-align: center;\r\n  align-items: center;\r\n  align-self: stretch;\r\n  display: flex;\r\n  flex-shrink: 0;\r\n  box-sizing: border-box;\r\n}\r\n\r\n._25xAyedeXMtrf4T3ed1PJt {\r\n  color: rgb(204, 204, 204);\r\n  display: flex;\r\n  box-sizing: border-box;\r\n  padding: 10px 6px;\r\n  transition: color 150ms ease 0s;\r\n}\r\n\r\n._25xAyedeXMtrf4T3ed1PJt:hover {\r\n  cursor: pointer;\r\n  color: rgb(153, 153, 153);\r\n}\r\n\r\n._25xAyedeXMtrf4T3ed1PJt:focus {\r\n  color: rgb(153, 153, 153);\r\n  outline: 2px dotted gray;\r\n}\r\n\r\n.k1UudnI1h5npE3btdwIY1 {\r\n  display: inline-block;\r\n  fill: currentcolor;\r\n  line-height: 1;\r\n  stroke: currentcolor;\r\n  stroke-width: 0;\r\n}\r\n\r\n._1fXbnnAsavNrQXwBYoNqlw {\r\n  align-self: stretch;\r\n  background-color: rgb(204, 204, 204);\r\n  margin-bottom: 8px;\r\n  margin-top: 8px;\r\n  width: 1px;\r\n  box-sizing: border-box;\r\n}\r\n\r\n._3etkCiSEHj9rBdr3HP7hoI {\r\n  top: 100%;\r\n  background-color: rgb(255, 255, 255);\r\n  box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 0px 1px, rgba(0, 0, 0, 0.1) 0px 4px 11px;\r\n  margin-bottom: 1px;\r\n  margin-top: 1px;\r\n  position: absolute;\r\n  width: 100%;\r\n  z-index: 1;\r\n  box-sizing: border-box;\r\n  border-radius: 2px;\r\n}\r\n\r\n._2BZ6P2ChebiTM94M-OMhZD {\r\n  max-height: 300px;\r\n  overflow-y: auto;\r\n  padding-bottom: 2px;\r\n  padding-top: 2px;\r\n  position: relative;\r\n  box-sizing: border-box;\r\n}\r\n\r\n._1V1IQxhU17EfSxmz_iTN5t {\r\n  color: rgb(153, 153, 153);\r\n  text-align: center;\r\n  box-sizing: border-box;\r\n  padding: 6px 12px;\r\n}\r\n\r\n._1D9Xo5PbA8nnizD0GLeBxM {\r\n  background-color: transparent;\r\n  color: inherit;\r\n  cursor: default;\r\n  display: block;\r\n  font-size: inherit;\r\n  width: 100%;\r\n  user-select: none;\r\n  box-sizing: border-box;\r\n  padding: 4px 12px;\r\n}\r\n\r\n._12tsaEmF9_7NK7pihcgxJw {\r\n  background-color: rgb(222, 235, 255);\r\n}\r\n\r\n._3khQpvMiBoqHO8CsroCjVi {\r\n  color: rgb(153, 153, 153);\r\n  cursor: default;\r\n  display: block;\r\n  font-size: 75%;\r\n  font-weight: 500;\r\n  margin-bottom: 0.25em;\r\n  padding: 2px 12px;\r\n  text-transform: uppercase;\r\n  box-sizing: border-box;\r\n  display: flex;\r\n  align-items: center;\r\n  justify-content: space-between;\r\n}\r\n\r\n._2fvgAdZ635qKwR24y2XIFT {\r\n  background-color: #EBECF0;\r\n  border-radius: 1em;\r\n  color: #172B4D;\r\n  display: inline-block;\r\n  font-size: 10;\r\n  font-weight: normal;\r\n  line-height: 1;\r\n  text-align: center;\r\n  min-width: 1;\r\n  padding: 0.16666666666667em 0.5em;\r\n}\r\n", ""]);
 // Exports
 exports.locals = {
 	"react-ahead__control-container": "_2dH7OUMw0ESmltDd0ovClD",
@@ -838,11 +838,7 @@ class input_Input extends external_commonjs_react_commonjs2_react_amd_React_root
         case 13:
           // enter: selection
           evt.preventDefault();
-
-          if (this.props.onKeyChoice) {
-            this.props.onKeyChoice(evt);
-          }
-
+          this.props.onSpecialKey('enter');
           break;
 
         case 27:
@@ -922,7 +918,6 @@ class input_Input extends external_commonjs_react_commonjs2_react_amd_React_root
 input_defineProperty(input_Input, "propTypes", {
   inputWidth: prop_types_default.a.number,
   onEntryChange: prop_types_default.a.func.isRequired,
-  onKeyChoice: prop_types_default.a.func.isRequired,
   onSelectionMove: prop_types_default.a.func.isRequired,
   onSpecialKey: prop_types_default.a.func.isRequired,
   value: prop_types_default.a.string.isRequired
@@ -1082,7 +1077,7 @@ class dropdown_Dropdown extends external_commonjs_react_commonjs2_react_amd_Reac
           className: activeIdx === idx ? this._classNames.active : this._classNames.option,
           key: `__option_item_${source + idx}`,
           tabIndex: -1,
-          onMouseEnter: evt => this.handleHighlight(evt, idx),
+          onMouseOverCapture: evt => this.handleHighlight(evt, idx),
           onClick: evt => this.handleItemSelection(evt, source, item)
         }, content);
 
@@ -1184,6 +1179,16 @@ class dropdown_Dropdown extends external_commonjs_react_commonjs2_react_amd_Reac
       onClick: this.props.onClick,
       className: this._classNames.wrapper + " " + this.props.className
     }, external_commonjs_react_commonjs2_react_amd_React_root_React_default.a.createElement("div", {
+      style: {
+        display: this.props.shield ? 'default' : 'none',
+        width: '100%',
+        height: '100%',
+        position: "absolute",
+        top: 0,
+        left: 0,
+        zIndex: 100000
+      }
+    }), external_commonjs_react_commonjs2_react_amd_React_root_React_default.a.createElement("div", {
       className: this._classNames.content
     }, contents));
   }
@@ -1196,7 +1201,8 @@ dropdown_defineProperty(dropdown_Dropdown, "propTypes", {
   isCreateable: prop_types_default.a.bool,
   options: prop_types_default.a.arrayOf(prop_types_default.a.object),
   onClick: prop_types_default.a.func,
-  onLoadMore: prop_types_default.a.func
+  onLoadMore: prop_types_default.a.func,
+  shield: prop_types_default.a.bool
 });
 
 dropdown_defineProperty(dropdown_Dropdown, "defaultProps", {
@@ -1281,6 +1287,21 @@ class selection_MultiSelection extends external_commonjs_react_commonjs2_react_a
   constructor(props) {
     super(props);
 
+    selection_defineProperty(this, "handleRemovalKeydown", (evt, idx) => {
+      if (!evt) {
+        return;
+      }
+
+      const {
+        keyCode
+      } = evt;
+
+      if (keyCode === 13 || keyCode === 32) {
+        evt.preventDefault();
+        this.props.onSelectionRemoval(evt, idx);
+      }
+    });
+
     selection_defineProperty(this, "renderItem", (item, idx) => {
       const key = `__sel_item_${idx}`;
       const title = Object(utils["getItemLabel"])(item);
@@ -1305,7 +1326,8 @@ class selection_MultiSelection extends external_commonjs_react_commonjs2_react_a
         className: this._removalStyle,
         path: "M 14.348 14.849 c -0.469 0.469 -1.229 0.469 -1.697 0 l -2.651 -3.03 l -2.651 3.029 c -0.469 0.469 -1.229 0.469 -1.697 0 c -0.469 -0.469 -0.469 -1.229 0 -1.697 l 2.758 -3.15 l -2.759 -3.152 c -0.469 -0.469 -0.469 -1.228 0 -1.697 s 1.228 -0.469 1.697 0 l 2.652 3.031 l 2.651 -3.031 c 0.469 -0.469 1.228 -0.469 1.697 0 s 0.469 1.229 0 1.697 l -2.758 3.152 l 2.758 3.15 c 0.469 0.469 0.469 1.229 0 1.698 Z",
         size: "12",
-        onClick: evt => this.props.onSelectionRemoval(evt, idx)
+        onClick: evt => this.props.onSelectionRemoval(evt, idx),
+        onKeyDown: evt => this.handleRemovalKeydown(evt, idx)
       })));
     });
 
@@ -1519,6 +1541,7 @@ class src_ReactAhead extends external_commonjs_react_commonjs2_react_amd_React_r
         return;
       }
 
+      value = value.trimStart();
       let state = {
         dropdownOpen: true,
         inputWidth: width,
@@ -1527,7 +1550,7 @@ class src_ReactAhead extends external_commonjs_react_commonjs2_react_amd_React_r
       };
 
       if (value !== '') {
-        this._engine.find(value, options => {
+        this._engine.find(value.trimEnd(), options => {
           // cache the original search results, before being filtered
           this._lastSearch = options; // filter 
 
@@ -1560,14 +1583,6 @@ class src_ReactAhead extends external_commonjs_react_commonjs2_react_amd_React_r
       this._dropdown && this._dropdown.current && this._dropdown.current.handleCursorMove(side);
     });
 
-    src_defineProperty(this, "handleKeyChoice", evt => {
-      if (!this._dropdown || !this._dropdown.current) {
-        return;
-      }
-
-      this._dropdown.current.select();
-    });
-
     src_defineProperty(this, "handleKeepFocus", evt => {
       this._focusType = 2;
       this._initDropdownState = this.state.dropdownOpen;
@@ -1580,6 +1595,10 @@ class src_ReactAhead extends external_commonjs_react_commonjs2_react_amd_React_r
 
     src_defineProperty(this, "handleKeyAction", (key, info) => {
       switch (key) {
+        case 'enter':
+          this._dropdown && this._dropdown.current && this._dropdown.current.select();
+          break;
+
         case 'tab':
           this._focusType = 4;
           break;
@@ -1866,7 +1885,6 @@ class src_ReactAhead extends external_commonjs_react_commonjs2_react_amd_React_r
         inputWidth: inputWidth,
         ref: this._input,
         onEntryChange: this.handleEntryChanged,
-        onKeyChoice: this.handleKeyChoice,
         onSpecialKey: this.handleKeyAction,
         onSelectionMove: this.handleSelectionMove,
         value: value
@@ -1955,6 +1973,16 @@ class src_ReactAhead extends external_commonjs_react_commonjs2_react_amd_React_r
       className: wrapperClassName,
       onMouseDown: this.handleKeepFocus
     }, external_commonjs_react_commonjs2_react_amd_React_root_React_default.a.createElement("div", {
+      style: {
+        display: shield ? 'default' : 'none',
+        width: '100%',
+        height: '100%',
+        position: "absolute",
+        top: 0,
+        left: 0,
+        zIndex: 100000
+      }
+    }), external_commonjs_react_commonjs2_react_amd_React_root_React_default.a.createElement("div", {
       className: inputClassName,
       onClick: this.handleControlFocus,
       onFocus: this.handleGetFocus,
