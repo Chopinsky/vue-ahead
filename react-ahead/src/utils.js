@@ -1,5 +1,11 @@
 const getItemLabel = item => {
-  return typeof item === 'object' ? item['source'] : item.toString();
+  let src = typeof item === 'object' ? item['source'] : item;
+
+  if (typeof src !== 'string') {
+    src = src.toString();
+  }
+
+  return src
 };
 
 module.exports = {

@@ -1,5 +1,6 @@
 import React, {Fragment} from 'react';
 import PropTypes from 'prop-types';
+import GroupLabel from './groupLabel';
 import { getItemLabel } from './utils';
 import styles from './shared.css';
 
@@ -8,6 +9,7 @@ const contentClass = "react-ahead__menu-content";
 const noOptionClass = "react-ahead__menu-no-option";
 const optionClass = "react-ahead__menu-option";
 const activeClass = "react-head__menu-active-option";
+const defaultGroupName = 'default';
 
 export default class Dropdown extends React.Component {
   static propTypes = {
@@ -152,9 +154,21 @@ export default class Dropdown extends React.Component {
     if (item['__itemType'] === 'created') {
       item['source'] = item['__createdValue'] || source.substring(7);
       delete item['__createdValue'];
-    }
+    }    
 
     this.props.onSelection(evt, source, item);
+  };
+
+  getGroupKey = item => {
+    let groupKey =
+      typeof item === 'object' ? item['group'] : defaultGroupName;
+
+    if (typeof groupKey !== 'string' && typeof groupKey !== 'number') {
+      groupKey = defaultGroupName;
+    }
+
+    groupKey = (groupKey.toString() || defaultGroupName);
+    return groupKey.toUpperCase();
   }
 
   renderList = options => {
@@ -169,28 +183,32 @@ export default class Dropdown extends React.Component {
       activeIdx
     } = this.state;
 
+    let groups = {};
+    let currGroup;
+    
     if (grouped) {
       // get the labels ready for insertion
+      options.forEach(option => {
+        const key = this.getGroupKey(option);
+        groups[key] = groups.hasOwnProperty(key) ? groups[key] + 1 : 1;
+      });
     }
-
-    console.log('render options', options);
 
     return (
       <Fragment>
         {
           options.map((item, idx) => {
-            const key = `__option_item_${idx}`;
             const source = getItemLabel(item);
             const content = display ? display(item, 'option') : source;
 
-            return (
+            const optionItem = (
               <div
                 className={
                   activeIdx === idx
                     ? this._classNames.active
                     : this._classNames.option
                 }
-                key={key}
+                key={`__option_item_${source+idx}`}
                 tabIndex={-1}
                 onMouseEnter={evt => this.handleHighlight(evt, idx)}
                 onClick={evt => this.handleItemSelection(evt, source, item)}
@@ -198,6 +216,26 @@ export default class Dropdown extends React.Component {
                 {content}
               </div>
             );
+
+            if (grouped) {
+              const key = this.getGroupKey(item);
+
+              if (idx === 0 || key !== currGroup) {
+                currGroup = key;
+
+                return (
+                  <Fragment key={`__option_label_${key}`}>
+                    <GroupLabel
+                      label={key}
+                      count={groups[key]} 
+                    />
+                    {optionItem}
+                  </Fragment>
+                );                
+              }
+            }
+
+            return optionItem;
           })
         }
       </Fragment>

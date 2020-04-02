@@ -14,12 +14,14 @@ function App() {
         }}
         placeholder={"Search terms ... "}
         initOptions={[
-          {source: 1}, 
-          {source: 2}, 
-          {source: 3}, 
-          {source: 4}, 
-          {source: 5}]
+          { source: 0 },
+          { source: 1 }, 
+          { source: 2, group: 'group a' }, 
+          { source: 3, group: 'group b' }, 
+          { source: 4, group: 'group a'}, 
+          { source: 5, group: 'group b'}]
         }
+        grouped={true}
       />
       <ReactAhead
         className={"app-control"}

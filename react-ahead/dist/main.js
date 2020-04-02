@@ -91,7 +91,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 8);
+/******/ 	return __webpack_require__(__webpack_require__.s = 9);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -104,8 +104,26 @@ module.exports = __WEBPACK_EXTERNAL_MODULE__0__;
 /* 1 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var api = __webpack_require__(5);
-            var content = __webpack_require__(6);
+/**
+ * Copyright (c) 2013-present, Facebook, Inc.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
+
+if (false) { var throwOnDirectAccess, ReactIs; } else {
+  // By explicitly using `prop-types` you are opting into new production behavior.
+  // http://fb.me/prop-types-in-prod
+  module.exports = __webpack_require__(4)();
+}
+
+
+/***/ }),
+/* 2 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var api = __webpack_require__(6);
+            var content = __webpack_require__(7);
 
             content = content.__esModule ? content.default : content;
 
@@ -127,25 +145,25 @@ var exported = content.locals ? content.locals : {};
 module.exports = exported;
 
 /***/ }),
-/* 2 */
-/***/ (function(module, exports, __webpack_require__) {
+/* 3 */
+/***/ (function(module, exports) {
 
-/**
- * Copyright (c) 2013-present, Facebook, Inc.
- *
- * This source code is licensed under the MIT license found in the
- * LICENSE file in the root directory of this source tree.
- */
+const getItemLabel = item => {
+  let src = typeof item === 'object' ? item['source'] : item;
 
-if (false) { var throwOnDirectAccess, ReactIs; } else {
-  // By explicitly using `prop-types` you are opting into new production behavior.
-  // http://fb.me/prop-types-in-prod
-  module.exports = __webpack_require__(3)();
-}
+  if (typeof src !== 'string') {
+    src = src.toString();
+  }
 
+  return src;
+};
+
+module.exports = {
+  getItemLabel
+};
 
 /***/ }),
-/* 3 */
+/* 4 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -158,7 +176,7 @@ if (false) { var throwOnDirectAccess, ReactIs; } else {
 
 
 
-var ReactPropTypesSecret = __webpack_require__(4);
+var ReactPropTypesSecret = __webpack_require__(5);
 
 function emptyFunction() {}
 function emptyFunctionWithReset() {}
@@ -216,7 +234,7 @@ module.exports = function() {
 
 
 /***/ }),
-/* 4 */
+/* 5 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -235,7 +253,7 @@ module.exports = ReactPropTypesSecret;
 
 
 /***/ }),
-/* 5 */
+/* 6 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -510,14 +528,14 @@ module.exports = function (list, options) {
 };
 
 /***/ }),
-/* 6 */
+/* 7 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // Imports
-var ___CSS_LOADER_API_IMPORT___ = __webpack_require__(7);
+var ___CSS_LOADER_API_IMPORT___ = __webpack_require__(8);
 exports = ___CSS_LOADER_API_IMPORT___(false);
 // Module
-exports.push([module.i, "._2dH7OUMw0ESmltDd0ovClD {\r\n  position: relative;\r\n  box-sizing: border-box;\r\n}\r\n\r\n.Axrtb5jaHtP98cGxAqRLV {\r\n  -webkit-box-align: center;\r\n  -webkit-box-pack: justify;\r\n  padding-left: 6px;\r\n  padding-right: 2px;\r\n  min-height: 38px;\r\n  align-items: center;\r\n  background-color: rgb(255, 255, 255);\r\n  border-radius: 2px;\r\n  border: 1px solid rgb(204, 204, 204);\r\n  cursor: default;\r\n  position: relative;\r\n  box-sizing: border-box;\r\n  display: flex;\r\n  flex-wrap: wrap;\r\n  justify-content: space-between;\r\n  transition: all 100ms ease 0s;\r\n  outline: 0px !important;\r\n}\r\n\r\n._2SUkorElgQ76JGjtyHk4de {\r\n  border: 1px solid blue;\r\n}\r\n\r\n._1Vnmg2rKay_EA99qawmFda {\r\n  padding: 2px;\r\n  color: rgb(51, 51, 51);\r\n  position: relative;\r\n  display: flex;\r\n  flex: 1 1 0%;\r\n  flex-wrap: wrap;\r\n  box-sizing: border-box;\r\n  overflow: hidden;\r\n  visibility: visible;\r\n  box-sizing: border-box;\r\n  width: 100%;\r\n}\r\n\r\n._2CD9QkPe0_ZMyoTQxtKBm7 {\r\n  position: absolute;\r\n  top: 50%;\r\n  color: rgb(128, 128, 128);\r\n  margin: 0;\r\n  transform: translateY(-50%);\r\n  box-sizing: border-box;\r\n}\r\n\r\n.xLIYtwgLVzX9AyYwVcgLt {\r\n  color: inherit;\r\n}\r\n\r\n._1Vnmg2rKay_EA99qawmFda {  \r\n  cursor: text;\r\n  width: 100%;\r\n}\r\n\r\n._2eDYrfCE1goL3V_2ogtQtz {\r\n  background-color: rgb(230, 230, 230);\r\n  display: flex;\r\n  min-width: 0px;\r\n  box-sizing: border-box;\r\n  border-radius: 2px;\r\n  margin: 2px 4px 2px 0;\r\n}\r\n\r\n._1tWm_bFu71IXItBd0OXrpP {\r\n  color: rgb(51, 51, 51);\r\n  font-size: 85%;\r\n  text-overflow: ellipsis;\r\n  white-space: nowrap;\r\n  box-sizing: border-box;\r\n  border-radius: 2px;\r\n  overflow: hidden;\r\n  padding: 2px 3px 4px 6px;\r\n}\r\n\r\n._2jKHZpiKI_7YyEyQXA1yMk {\r\n  -webkit-box-align: center;\r\n  align-items: center;\r\n  cursor: pointer;\r\n  display: flex;\r\n  padding-left: 4px;\r\n  padding-right: 4px;\r\n  box-sizing: border-box;\r\n  border-radius: 2px;\r\n}\r\n\r\n._2jKHZpiKI_7YyEyQXA1yMk:hover {\r\n  background-color: rgb(255, 189, 173);\r\n  color: rgb(222, 53, 11);\r\n}\r\n\r\n._2U9LCKIK4vRQWtopGpYhPl {\r\n  -webkit-box-align: center;\r\n  align-items: center;\r\n  align-self: stretch;\r\n  display: flex;\r\n  flex-shrink: 0;\r\n  box-sizing: border-box;\r\n}\r\n\r\n._25xAyedeXMtrf4T3ed1PJt {\r\n  color: rgb(204, 204, 204);\r\n  display: flex;\r\n  box-sizing: border-box;\r\n  padding: 10px 6px;\r\n  transition: color 150ms ease 0s;\r\n}\r\n\r\n._25xAyedeXMtrf4T3ed1PJt:hover {\r\n  cursor: pointer;\r\n  color: rgb(153, 153, 153);\r\n}\r\n\r\n._25xAyedeXMtrf4T3ed1PJt:focus {\r\n  color: rgb(153, 153, 153);\r\n  outline: 2px dotted gray;\r\n}\r\n\r\n.k1UudnI1h5npE3btdwIY1 {\r\n  display: inline-block;\r\n  fill: currentcolor;\r\n  line-height: 1;\r\n  stroke: currentcolor;\r\n  stroke-width: 0;\r\n}\r\n\r\n._1fXbnnAsavNrQXwBYoNqlw {\r\n  align-self: stretch;\r\n  background-color: rgb(204, 204, 204);\r\n  margin-bottom: 8px;\r\n  margin-top: 8px;\r\n  width: 1px;\r\n  box-sizing: border-box;\r\n}\r\n\r\n._3etkCiSEHj9rBdr3HP7hoI {\r\n  top: 100%;\r\n  background-color: rgb(255, 255, 255);\r\n  box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 0px 1px, rgba(0, 0, 0, 0.1) 0px 4px 11px;\r\n  margin-bottom: 1px;\r\n  margin-top: 1px;\r\n  position: absolute;\r\n  width: 100%;\r\n  z-index: 1;\r\n  box-sizing: border-box;\r\n  border-radius: 2px;\r\n}\r\n\r\n._2BZ6P2ChebiTM94M-OMhZD {\r\n  max-height: 300px;\r\n  overflow-y: auto;\r\n  padding-bottom: 2px;\r\n  padding-top: 2px;\r\n  position: relative;\r\n  box-sizing: border-box;\r\n}\r\n\r\n._1V1IQxhU17EfSxmz_iTN5t {\r\n  color: rgb(153, 153, 153);\r\n  text-align: center;\r\n  box-sizing: border-box;\r\n  padding: 8px 12px;\r\n}\r\n\r\n._1D9Xo5PbA8nnizD0GLeBxM {\r\n  background-color: transparent;\r\n  color: inherit;\r\n  cursor: default;\r\n  display: block;\r\n  font-size: inherit;\r\n  width: 100%;\r\n  user-select: none;\r\n  box-sizing: border-box;\r\n  padding: 8px 12px;\r\n}\r\n\r\n._12tsaEmF9_7NK7pihcgxJw {\r\n  background-color: rgb(222, 235, 255);\r\n}\r\n", ""]);
+exports.push([module.i, "._2dH7OUMw0ESmltDd0ovClD {\r\n  position: relative;\r\n  box-sizing: border-box;\r\n}\r\n\r\n.Axrtb5jaHtP98cGxAqRLV {\r\n  -webkit-box-align: center;\r\n  -webkit-box-pack: justify;\r\n  padding-left: 6px;\r\n  padding-right: 2px;\r\n  min-height: 38px;\r\n  align-items: center;\r\n  background-color: rgb(255, 255, 255);\r\n  border-radius: 2px;\r\n  border: 1px solid rgb(204, 204, 204);\r\n  cursor: default;\r\n  position: relative;\r\n  box-sizing: border-box;\r\n  display: flex;\r\n  flex-wrap: wrap;\r\n  justify-content: space-between;\r\n  transition: all 100ms ease 0s;\r\n  outline: 0px !important;\r\n}\r\n\r\n._2SUkorElgQ76JGjtyHk4de {\r\n  border: 1px solid blue;\r\n}\r\n\r\n._1Vnmg2rKay_EA99qawmFda {\r\n  padding: 2px;\r\n  color: rgb(51, 51, 51);\r\n  position: relative;\r\n  display: flex;\r\n  flex: 1 1 0%;\r\n  flex-wrap: wrap;\r\n  box-sizing: border-box;\r\n  overflow: hidden;\r\n  visibility: visible;\r\n  box-sizing: border-box;\r\n  width: 100%;\r\n}\r\n\r\n._2CD9QkPe0_ZMyoTQxtKBm7 {\r\n  position: absolute;\r\n  top: 50%;\r\n  color: rgb(128, 128, 128);\r\n  margin: 0;\r\n  transform: translateY(-50%);\r\n  box-sizing: border-box;\r\n}\r\n\r\n.xLIYtwgLVzX9AyYwVcgLt {\r\n  color: inherit;\r\n}\r\n\r\n._1Vnmg2rKay_EA99qawmFda {  \r\n  cursor: text;\r\n  width: 100%;\r\n}\r\n\r\n._2eDYrfCE1goL3V_2ogtQtz {\r\n  background-color: rgb(230, 230, 230);\r\n  display: flex;\r\n  min-width: 0px;\r\n  box-sizing: border-box;\r\n  border-radius: 2px;\r\n  margin: 2px 4px 2px 0;\r\n}\r\n\r\n._1tWm_bFu71IXItBd0OXrpP {\r\n  color: rgb(51, 51, 51);\r\n  font-size: 85%;\r\n  text-overflow: ellipsis;\r\n  white-space: nowrap;\r\n  box-sizing: border-box;\r\n  border-radius: 2px;\r\n  overflow: hidden;\r\n  padding: 2px 3px 4px 6px;\r\n}\r\n\r\n._2jKHZpiKI_7YyEyQXA1yMk {\r\n  -webkit-box-align: center;\r\n  align-items: center;\r\n  cursor: pointer;\r\n  display: flex;\r\n  padding-left: 4px;\r\n  padding-right: 4px;\r\n  box-sizing: border-box;\r\n  border-radius: 2px;\r\n}\r\n\r\n._2jKHZpiKI_7YyEyQXA1yMk:hover {\r\n  background-color: rgb(255, 189, 173);\r\n  color: rgb(222, 53, 11);\r\n}\r\n\r\n._2U9LCKIK4vRQWtopGpYhPl {\r\n  -webkit-box-align: center;\r\n  align-items: center;\r\n  align-self: stretch;\r\n  display: flex;\r\n  flex-shrink: 0;\r\n  box-sizing: border-box;\r\n}\r\n\r\n._25xAyedeXMtrf4T3ed1PJt {\r\n  color: rgb(204, 204, 204);\r\n  display: flex;\r\n  box-sizing: border-box;\r\n  padding: 10px 6px;\r\n  transition: color 150ms ease 0s;\r\n}\r\n\r\n._25xAyedeXMtrf4T3ed1PJt:hover {\r\n  cursor: pointer;\r\n  color: rgb(153, 153, 153);\r\n}\r\n\r\n._25xAyedeXMtrf4T3ed1PJt:focus {\r\n  color: rgb(153, 153, 153);\r\n  outline: 2px dotted gray;\r\n}\r\n\r\n.k1UudnI1h5npE3btdwIY1 {\r\n  display: inline-block;\r\n  fill: currentcolor;\r\n  line-height: 1;\r\n  stroke: currentcolor;\r\n  stroke-width: 0;\r\n}\r\n\r\n._1fXbnnAsavNrQXwBYoNqlw {\r\n  align-self: stretch;\r\n  background-color: rgb(204, 204, 204);\r\n  margin-bottom: 8px;\r\n  margin-top: 8px;\r\n  width: 1px;\r\n  box-sizing: border-box;\r\n}\r\n\r\n._3etkCiSEHj9rBdr3HP7hoI {\r\n  top: 100%;\r\n  background-color: rgb(255, 255, 255);\r\n  box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 0px 1px, rgba(0, 0, 0, 0.1) 0px 4px 11px;\r\n  margin-bottom: 1px;\r\n  margin-top: 1px;\r\n  position: absolute;\r\n  width: 100%;\r\n  z-index: 1;\r\n  box-sizing: border-box;\r\n  border-radius: 2px;\r\n}\r\n\r\n._2BZ6P2ChebiTM94M-OMhZD {\r\n  max-height: 300px;\r\n  overflow-y: auto;\r\n  padding-bottom: 2px;\r\n  padding-top: 2px;\r\n  position: relative;\r\n  box-sizing: border-box;\r\n}\r\n\r\n._1V1IQxhU17EfSxmz_iTN5t {\r\n  color: rgb(153, 153, 153);\r\n  text-align: center;\r\n  box-sizing: border-box;\r\n  padding: 8px 12px;\r\n}\r\n\r\n._1D9Xo5PbA8nnizD0GLeBxM {\r\n  background-color: transparent;\r\n  color: inherit;\r\n  cursor: default;\r\n  display: block;\r\n  font-size: inherit;\r\n  width: 100%;\r\n  user-select: none;\r\n  box-sizing: border-box;\r\n  padding: 8px 12px;\r\n}\r\n\r\n._12tsaEmF9_7NK7pihcgxJw {\r\n  background-color: rgb(222, 235, 255);\r\n}\r\n\r\n._3khQpvMiBoqHO8CsroCjVi {\r\n  color: rgb(153, 153, 153);\r\n  cursor: default;\r\n  display: block;\r\n  font-size: 75%;\r\n  font-weight: 500;\r\n  margin-bottom: 0.25em;\r\n  padding: 2px 12px;\r\n  text-transform: uppercase;\r\n  box-sizing: border-box;\r\n  display: flex;\r\n  align-items: center;\r\n  justify-content: space-between;\r\n}\r\n\r\n._2fvgAdZ635qKwR24y2XIFT {\r\n  background-color: #EBECF0;\r\n  border-radius: 1em;\r\n  color: #172B4D;\r\n  display: inline-block;\r\n  font-size: 10;\r\n  font-weight: normal;\r\n  line-height: 1;\r\n  text-align: center;\r\n  min-width: 1;\r\n  padding: 0.16666666666667em 0.5em;\r\n}\r\n", ""]);
 // Exports
 exports.locals = {
 	"react-ahead__control-container": "_2dH7OUMw0ESmltDd0ovClD",
@@ -537,13 +555,15 @@ exports.locals = {
 	"react-ahead__menu-content": "_2BZ6P2ChebiTM94M-OMhZD",
 	"react-ahead__menu-no-option": "_1V1IQxhU17EfSxmz_iTN5t",
 	"react-ahead__menu-option": "_1D9Xo5PbA8nnizD0GLeBxM",
-	"react-head__menu-active-option": "_12tsaEmF9_7NK7pihcgxJw"
+	"react-head__menu-active-option": "_12tsaEmF9_7NK7pihcgxJw",
+	"react-ahead__group-label": "_3khQpvMiBoqHO8CsroCjVi",
+	"react-ahead__group-label-icon": "_2fvgAdZ635qKwR24y2XIFT"
 };
 module.exports = exports;
 
 
 /***/ }),
-/* 7 */
+/* 8 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -643,7 +663,7 @@ function toComment(sourceMap) {
 }
 
 /***/ }),
-/* 8 */
+/* 9 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -654,7 +674,7 @@ var external_commonjs_react_commonjs2_react_amd_React_root_React_ = __webpack_re
 var external_commonjs_react_commonjs2_react_amd_React_root_React_default = /*#__PURE__*/__webpack_require__.n(external_commonjs_react_commonjs2_react_amd_React_root_React_);
 
 // EXTERNAL MODULE: ./node_modules/prop-types/index.js
-var prop_types = __webpack_require__(2);
+var prop_types = __webpack_require__(1);
 var prop_types_default = /*#__PURE__*/__webpack_require__.n(prop_types);
 
 // CONCATENATED MODULE: ./src/engine.js
@@ -741,7 +761,7 @@ class SearchEngine {
 
 }
 // EXTERNAL MODULE: ./src/shared.css
-var shared = __webpack_require__(1);
+var shared = __webpack_require__(2);
 var shared_default = /*#__PURE__*/__webpack_require__.n(shared);
 
 // CONCATENATED MODULE: ./src/input.js
@@ -912,11 +932,30 @@ input_defineProperty(input_Input, "defaultProps", {
   inputWidth: 2,
   value: ''
 });
+// CONCATENATED MODULE: ./src/groupLabel.js
+
+
+
+const groupLabelClass = 'react-ahead__group-label';
+const groupLabelIconClass = 'react-ahead__group-label-icon';
+
+const GroupLabel = props => {
+  const groupStyles = shared_default.a[groupLabelClass] || groupLabelClass;
+  const groupIconStyles = shared_default.a[groupLabelIconClass] || groupLabelIconClass;
+  return external_commonjs_react_commonjs2_react_amd_React_root_React_default.a.createElement("div", {
+    className: groupStyles
+  }, external_commonjs_react_commonjs2_react_amd_React_root_React_default.a.createElement("span", null, props.label || 'Default'), external_commonjs_react_commonjs2_react_amd_React_root_React_default.a.createElement("span", {
+    className: groupIconStyles
+  }, props.count || 0));
+};
+
+/* harmony default export */ var groupLabel = (GroupLabel);
 // EXTERNAL MODULE: ./src/utils.js
-var utils = __webpack_require__(9);
+var utils = __webpack_require__(3);
 
 // CONCATENATED MODULE: ./src/dropdown.js
 function dropdown_defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 
 
 
@@ -927,6 +966,7 @@ const contentClass = "react-ahead__menu-content";
 const noOptionClass = "react-ahead__menu-no-option";
 const optionClass = "react-ahead__menu-option";
 const activeClass = "react-head__menu-active-option";
+const defaultGroupName = 'default';
 class dropdown_Dropdown extends external_commonjs_react_commonjs2_react_amd_React_root_React_default.a.Component {
   constructor(props) {
     super(props);
@@ -1004,6 +1044,17 @@ class dropdown_Dropdown extends external_commonjs_react_commonjs2_react_amd_Reac
       this.props.onSelection(evt, source, item);
     });
 
+    dropdown_defineProperty(this, "getGroupKey", item => {
+      let groupKey = typeof item === 'object' ? item['group'] : defaultGroupName;
+
+      if (typeof groupKey !== 'string' && typeof groupKey !== 'number') {
+        groupKey = defaultGroupName;
+      }
+
+      groupKey = groupKey.toString() || defaultGroupName;
+      return groupKey.toUpperCase();
+    });
+
     dropdown_defineProperty(this, "renderList", options => {
       // the caller has guaranteed that the options is a non-null array
       const {
@@ -1013,22 +1064,43 @@ class dropdown_Dropdown extends external_commonjs_react_commonjs2_react_amd_Reac
       const {
         activeIdx
       } = this.state;
+      let groups = {};
+      let currGroup;
 
-      if (grouped) {// get the labels ready for insertion
+      if (grouped) {
+        // get the labels ready for insertion
+        options.forEach(option => {
+          const key = this.getGroupKey(option);
+          groups[key] = groups.hasOwnProperty(key) ? groups[key] + 1 : 1;
+        });
       }
 
-      console.log('render options', options);
       return external_commonjs_react_commonjs2_react_amd_React_root_React_default.a.createElement(external_commonjs_react_commonjs2_react_amd_React_root_React_["Fragment"], null, options.map((item, idx) => {
-        const key = `__option_item_${idx}`;
         const source = Object(utils["getItemLabel"])(item);
         const content = display ? display(item, 'option') : source;
-        return external_commonjs_react_commonjs2_react_amd_React_root_React_default.a.createElement("div", {
+        const optionItem = external_commonjs_react_commonjs2_react_amd_React_root_React_default.a.createElement("div", {
           className: activeIdx === idx ? this._classNames.active : this._classNames.option,
-          key: key,
+          key: `__option_item_${source + idx}`,
           tabIndex: -1,
           onMouseEnter: evt => this.handleHighlight(evt, idx),
           onClick: evt => this.handleItemSelection(evt, source, item)
         }, content);
+
+        if (grouped) {
+          const key = this.getGroupKey(item);
+
+          if (idx === 0 || key !== currGroup) {
+            currGroup = key;
+            return external_commonjs_react_commonjs2_react_amd_React_root_React_default.a.createElement(external_commonjs_react_commonjs2_react_amd_React_root_React_["Fragment"], {
+              key: `__option_label_${key}`
+            }, external_commonjs_react_commonjs2_react_amd_React_root_React_default.a.createElement(groupLabel, {
+              label: key,
+              count: groups[key]
+            }), optionItem);
+          }
+        }
+
+        return optionItem;
       }));
     });
 
@@ -1211,9 +1283,8 @@ class selection_MultiSelection extends external_commonjs_react_commonjs2_react_a
 
     selection_defineProperty(this, "renderItem", (item, idx) => {
       const key = `__sel_item_${idx}`;
-      const source = Object(utils["getItemLabel"])(item);
-      let content = this.props.display ? this.props.display(item, 'display') : source;
-      let title = content;
+      const title = Object(utils["getItemLabel"])(item);
+      let content = this.props.display ? this.props.display(item, 'display') : title;
 
       if (typeof content === 'string' && content.length > 10) {
         content = content.substr(0, 8) + ' ...';
@@ -1412,6 +1483,7 @@ class src_ReactAhead extends external_commonjs_react_commonjs2_react_amd_React_r
 
         return 1;
       });
+      return options;
     });
 
     src_defineProperty(this, "getOptions", (options, selection, group) => {
@@ -1769,7 +1841,7 @@ class src_ReactAhead extends external_commonjs_react_commonjs2_react_amd_React_r
         text = selection[0];
 
         if (typeof text === 'object') {
-          text = text['source'] || 'N/A';
+          text = text['source'].toString();
         } else {
           text = text.toString();
         }
@@ -1855,7 +1927,7 @@ class src_ReactAhead extends external_commonjs_react_commonjs2_react_amd_React_r
       let exactMatch = false;
 
       for (let i = 0; i < options.length; i++) {
-        if (this.state.value === options[i].source) {
+        if (this.state.value === options[i]['source']) {
           exactMatch = true;
           break;
         }
@@ -1996,18 +2068,6 @@ src_defineProperty(src_ReactAhead, "defaultProps", {
     active: ''
   }
 });
-
-/***/ }),
-/* 9 */
-/***/ (function(module, exports) {
-
-const getItemLabel = item => {
-  return typeof item === 'object' ? item['source'] : item.toString();
-};
-
-module.exports = {
-  getItemLabel
-};
 
 /***/ })
 /******/ ]);

@@ -196,6 +196,8 @@ export default class ReactAhead extends React.Component {
 
       return 1;
     });
+
+    return options;
   }
 
   getOptions = (options, selection, group) => {
@@ -577,7 +579,7 @@ export default class ReactAhead extends React.Component {
       text = selection[0];
 
       if (typeof text === 'object') {
-        text = text['source'] || 'N/A';
+        text = text['source'].toString();
       } else {
         text = text.toString();
       }
@@ -643,7 +645,7 @@ export default class ReactAhead extends React.Component {
       // don't add the createable if there're exact matches
       let exactMatch = false;
       for (let i = 0; i < options.length; i++) {
-        if (this.state.value === options[i].source) {
+        if (this.state.value === options[i]['source']) {
           exactMatch = true;
           break; 
         }

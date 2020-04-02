@@ -25,10 +25,10 @@ export default class MultiSelection extends React.Component {
 
   renderItem = (item, idx) => {
     const key = `__sel_item_${idx}`;
-    const source = getItemLabel(item);
+    const title = getItemLabel(item);
     
-    let content = this.props.display ? this.props.display(item, 'display') : source;
-    let title = content;
+    let content = 
+      this.props.display ? this.props.display(item, 'display') : title;
 
     if (typeof content === 'string' && content.length > 10) {
       content = content.substr(0, 8) + ' ...';
