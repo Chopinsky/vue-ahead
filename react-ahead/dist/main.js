@@ -148,6 +148,8 @@ module.exports = exported;
 /* 3 */
 /***/ (function(module, exports) {
 
+const defaultGroupName = 'default';
+
 const getItemLabel = item => {
   let src = typeof item === 'object' ? item['source'] : item;
 
@@ -158,8 +160,20 @@ const getItemLabel = item => {
   return src;
 };
 
+const getGroupKey = item => {
+  let groupKey = typeof item === 'object' ? item['group'] : defaultGroupName;
+
+  if (typeof groupKey !== 'string' && typeof groupKey !== 'number') {
+    groupKey = defaultGroupName;
+  }
+
+  groupKey = groupKey.toString() || defaultGroupName;
+  return groupKey.toUpperCase();
+};
+
 module.exports = {
-  getItemLabel
+  getItemLabel,
+  getGroupKey
 };
 
 /***/ }),
@@ -535,7 +549,7 @@ module.exports = function (list, options) {
 var ___CSS_LOADER_API_IMPORT___ = __webpack_require__(8);
 exports = ___CSS_LOADER_API_IMPORT___(false);
 // Module
-exports.push([module.i, "._2dH7OUMw0ESmltDd0ovClD {\r\n  position: relative;\r\n  box-sizing: border-box;\r\n}\r\n\r\n.Axrtb5jaHtP98cGxAqRLV {\r\n  -webkit-box-align: center;\r\n  -webkit-box-pack: justify;\r\n  padding-left: 6px;\r\n  padding-right: 2px;\r\n  min-height: 38px;\r\n  align-items: center;\r\n  background-color: rgb(255, 255, 255);\r\n  border-radius: 2px;\r\n  border: 1px solid rgb(204, 204, 204);\r\n  cursor: default;\r\n  position: relative;\r\n  box-sizing: border-box;\r\n  display: flex;\r\n  flex-wrap: wrap;\r\n  justify-content: space-between;\r\n  transition: all 100ms ease 0s;\r\n  outline: 0px !important;\r\n}\r\n\r\n._2SUkorElgQ76JGjtyHk4de {\r\n  border: 1px solid blue;\r\n}\r\n\r\n._1Vnmg2rKay_EA99qawmFda {\r\n  padding: 2px;\r\n  color: rgb(51, 51, 51);\r\n  position: relative;\r\n  display: flex;\r\n  flex: 1 1 0%;\r\n  flex-wrap: wrap;\r\n  box-sizing: border-box;\r\n  overflow: hidden;\r\n  visibility: visible;\r\n  box-sizing: border-box;\r\n  width: 100%;\r\n}\r\n\r\n._2CD9QkPe0_ZMyoTQxtKBm7 {\r\n  position: absolute;\r\n  top: 50%;\r\n  color: rgb(128, 128, 128);\r\n  margin: 0;\r\n  transform: translateY(-50%);\r\n  box-sizing: border-box;\r\n}\r\n\r\n.xLIYtwgLVzX9AyYwVcgLt {\r\n  color: inherit;\r\n}\r\n\r\n._1Vnmg2rKay_EA99qawmFda {  \r\n  cursor: text;\r\n  width: 100%;\r\n}\r\n\r\n._2eDYrfCE1goL3V_2ogtQtz {\r\n  background-color: rgb(230, 230, 230);\r\n  display: flex;\r\n  min-width: 0px;\r\n  box-sizing: border-box;\r\n  border-radius: 2px;\r\n  margin: 2px 4px 2px 0;\r\n}\r\n\r\n._1tWm_bFu71IXItBd0OXrpP {\r\n  color: rgb(51, 51, 51);\r\n  font-size: 85%;\r\n  text-overflow: ellipsis;\r\n  white-space: nowrap;\r\n  box-sizing: border-box;\r\n  border-radius: 2px;\r\n  overflow: hidden;\r\n  padding: 2px 3px 4px 6px;\r\n}\r\n\r\n._2jKHZpiKI_7YyEyQXA1yMk {\r\n  -webkit-box-align: center;\r\n  align-items: center;\r\n  cursor: pointer;\r\n  display: flex;\r\n  padding-left: 4px;\r\n  padding-right: 4px;\r\n  box-sizing: border-box;\r\n  border-radius: 2px;\r\n}\r\n\r\n._2jKHZpiKI_7YyEyQXA1yMk:hover {\r\n  background-color: rgb(255, 189, 173);\r\n  color: rgb(222, 53, 11);\r\n}\r\n\r\n._2U9LCKIK4vRQWtopGpYhPl {\r\n  -webkit-box-align: center;\r\n  align-items: center;\r\n  align-self: stretch;\r\n  display: flex;\r\n  flex-shrink: 0;\r\n  box-sizing: border-box;\r\n}\r\n\r\n._25xAyedeXMtrf4T3ed1PJt {\r\n  color: rgb(204, 204, 204);\r\n  display: flex;\r\n  box-sizing: border-box;\r\n  padding: 10px 6px;\r\n  transition: color 150ms ease 0s;\r\n}\r\n\r\n._25xAyedeXMtrf4T3ed1PJt:hover {\r\n  cursor: pointer;\r\n  color: rgb(153, 153, 153);\r\n}\r\n\r\n._25xAyedeXMtrf4T3ed1PJt:focus {\r\n  color: rgb(153, 153, 153);\r\n  outline: 2px dotted gray;\r\n}\r\n\r\n.k1UudnI1h5npE3btdwIY1 {\r\n  display: inline-block;\r\n  fill: currentcolor;\r\n  line-height: 1;\r\n  stroke: currentcolor;\r\n  stroke-width: 0;\r\n}\r\n\r\n._1fXbnnAsavNrQXwBYoNqlw {\r\n  align-self: stretch;\r\n  background-color: rgb(204, 204, 204);\r\n  margin-bottom: 8px;\r\n  margin-top: 8px;\r\n  width: 1px;\r\n  box-sizing: border-box;\r\n}\r\n\r\n._3etkCiSEHj9rBdr3HP7hoI {\r\n  top: 100%;\r\n  background-color: rgb(255, 255, 255);\r\n  box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 0px 1px, rgba(0, 0, 0, 0.1) 0px 4px 11px;\r\n  margin-bottom: 1px;\r\n  margin-top: 1px;\r\n  position: absolute;\r\n  width: 100%;\r\n  z-index: 1;\r\n  box-sizing: border-box;\r\n  border-radius: 2px;\r\n}\r\n\r\n._2BZ6P2ChebiTM94M-OMhZD {\r\n  max-height: 300px;\r\n  overflow-y: auto;\r\n  padding-bottom: 2px;\r\n  padding-top: 2px;\r\n  position: relative;\r\n  box-sizing: border-box;\r\n}\r\n\r\n._1V1IQxhU17EfSxmz_iTN5t {\r\n  color: rgb(153, 153, 153);\r\n  text-align: center;\r\n  box-sizing: border-box;\r\n  padding: 6px 12px;\r\n}\r\n\r\n._1D9Xo5PbA8nnizD0GLeBxM {\r\n  background-color: transparent;\r\n  color: inherit;\r\n  cursor: default;\r\n  display: block;\r\n  font-size: inherit;\r\n  width: 100%;\r\n  user-select: none;\r\n  box-sizing: border-box;\r\n  padding: 4px 12px;\r\n}\r\n\r\n._12tsaEmF9_7NK7pihcgxJw {\r\n  background-color: rgb(222, 235, 255);\r\n}\r\n\r\n._3khQpvMiBoqHO8CsroCjVi {\r\n  color: rgb(153, 153, 153);\r\n  cursor: default;\r\n  display: block;\r\n  font-size: 75%;\r\n  font-weight: 500;\r\n  margin-bottom: 0.25em;\r\n  padding: 2px 12px;\r\n  text-transform: uppercase;\r\n  box-sizing: border-box;\r\n  display: flex;\r\n  align-items: center;\r\n  justify-content: space-between;\r\n}\r\n\r\n._2fvgAdZ635qKwR24y2XIFT {\r\n  background-color: #EBECF0;\r\n  border-radius: 1em;\r\n  color: #172B4D;\r\n  display: inline-block;\r\n  font-size: 10;\r\n  font-weight: normal;\r\n  line-height: 1;\r\n  text-align: center;\r\n  min-width: 1;\r\n  padding: 0.16666666666667em 0.5em;\r\n}\r\n", ""]);
+exports.push([module.i, "._2dH7OUMw0ESmltDd0ovClD {\r\n  position: relative;\r\n  box-sizing: border-box;\r\n}\r\n\r\n.Axrtb5jaHtP98cGxAqRLV {\r\n  -webkit-box-align: center;\r\n  -webkit-box-pack: justify;\r\n  padding-left: 6px;\r\n  padding-right: 2px;\r\n  min-height: 38px;\r\n  align-items: center;\r\n  background-color: rgb(255, 255, 255);\r\n  border-radius: 2px;\r\n  border: 1px solid rgb(204, 204, 204);\r\n  cursor: default;\r\n  position: relative;\r\n  box-sizing: border-box;\r\n  display: flex;\r\n  flex-wrap: wrap;\r\n  justify-content: space-between;\r\n  transition: all 100ms ease 0s;\r\n  outline: 0px !important;\r\n}\r\n\r\n._2SUkorElgQ76JGjtyHk4de {\r\n  border: 1px solid blue;\r\n}\r\n\r\n._1Vnmg2rKay_EA99qawmFda {\r\n  padding: 2px;\r\n  color: rgb(51, 51, 51);\r\n  position: relative;\r\n  display: flex;\r\n  flex: 1 1 0%;\r\n  flex-wrap: wrap;\r\n  box-sizing: border-box;\r\n  overflow: hidden;\r\n  visibility: visible;\r\n  box-sizing: border-box;\r\n  width: 100%;\r\n}\r\n\r\n._2CD9QkPe0_ZMyoTQxtKBm7 {\r\n  position: absolute;\r\n  top: 50%;\r\n  color: rgb(128, 128, 128);\r\n  margin: 0;\r\n  transform: translateY(-50%);\r\n  box-sizing: border-box;\r\n}\r\n\r\n.xLIYtwgLVzX9AyYwVcgLt {\r\n  color: inherit;\r\n}\r\n\r\n._1Vnmg2rKay_EA99qawmFda {  \r\n  cursor: text;\r\n  width: 100%;\r\n}\r\n\r\n._2eDYrfCE1goL3V_2ogtQtz {\r\n  background-color: rgb(230, 230, 230);\r\n  display: flex;\r\n  min-width: 0px;\r\n  box-sizing: border-box;\r\n  border-radius: 2px;\r\n  margin: 2px 4px 2px 0;\r\n}\r\n\r\n._1tWm_bFu71IXItBd0OXrpP {\r\n  color: rgb(51, 51, 51);\r\n  font-size: 85%;\r\n  text-overflow: ellipsis;\r\n  white-space: nowrap;\r\n  box-sizing: border-box;\r\n  border-radius: 2px;\r\n  overflow: hidden;\r\n  padding: 2px 3px 4px 6px;\r\n}\r\n\r\n._2jKHZpiKI_7YyEyQXA1yMk {\r\n  -webkit-box-align: center;\r\n  align-items: center;\r\n  cursor: pointer;\r\n  display: flex;\r\n  padding-left: 4px;\r\n  padding-right: 4px;\r\n  box-sizing: border-box;\r\n  border-radius: 2px;\r\n}\r\n\r\n._2jKHZpiKI_7YyEyQXA1yMk:hover {\r\n  background-color: rgb(255, 189, 173);\r\n  color: rgb(222, 53, 11);\r\n}\r\n\r\n._2U9LCKIK4vRQWtopGpYhPl {\r\n  -webkit-box-align: center;\r\n  align-items: center;\r\n  align-self: stretch;\r\n  display: flex;\r\n  flex-shrink: 0;\r\n  box-sizing: border-box;\r\n}\r\n\r\n._25xAyedeXMtrf4T3ed1PJt {\r\n  color: rgb(204, 204, 204);\r\n  display: flex;\r\n  box-sizing: border-box;\r\n  padding: 10px 6px;\r\n  transition: color 150ms ease 0s;\r\n}\r\n\r\n._25xAyedeXMtrf4T3ed1PJt:hover {\r\n  cursor: pointer;\r\n  color: rgb(153, 153, 153);\r\n}\r\n\r\n._25xAyedeXMtrf4T3ed1PJt:focus {\r\n  color: rgb(153, 153, 153);\r\n  outline: 2px dotted gray;\r\n}\r\n\r\n.k1UudnI1h5npE3btdwIY1 {\r\n  display: inline-block;\r\n  fill: currentcolor;\r\n  line-height: 1;\r\n  stroke: currentcolor;\r\n  stroke-width: 0;\r\n}\r\n\r\n._1fXbnnAsavNrQXwBYoNqlw {\r\n  align-self: stretch;\r\n  background-color: rgb(204, 204, 204);\r\n  margin-bottom: 8px;\r\n  margin-top: 8px;\r\n  width: 1px;\r\n  box-sizing: border-box;\r\n}\r\n\r\n._3etkCiSEHj9rBdr3HP7hoI {\r\n  top: 100%;\r\n  background-color: rgb(255, 255, 255);\r\n  box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 0px 1px, rgba(0, 0, 0, 0.1) 0px 4px 11px;\r\n  margin-bottom: 1px;\r\n  margin-top: 1px;\r\n  position: absolute;\r\n  width: 100%;\r\n  z-index: 1;\r\n  box-sizing: border-box;\r\n  border-radius: 2px;\r\n  animation: _83_0pFPws0OPGRRHDRiNR 200ms;\r\n}\r\n\r\n@keyframes _83_0pFPws0OPGRRHDRiNR {\r\n  from { opacity: 0; }\r\n  to { opacity: 1; }\r\n}\r\n\r\n._2BZ6P2ChebiTM94M-OMhZD {\r\n  max-height: 300px;\r\n  overflow-y: auto;\r\n  padding-bottom: 2px;\r\n  padding-top: 2px;\r\n  position: relative;\r\n  box-sizing: border-box;\r\n}\r\n\r\n._1V1IQxhU17EfSxmz_iTN5t {\r\n  color: rgb(153, 153, 153);\r\n  text-align: center;\r\n  box-sizing: border-box;\r\n  padding: 6px 12px;\r\n}\r\n\r\n._1D9Xo5PbA8nnizD0GLeBxM {\r\n  background-color: transparent;\r\n  color: inherit;\r\n  cursor: default;\r\n  display: block;\r\n  font-size: inherit;\r\n  width: 100%;\r\n  user-select: none;\r\n  box-sizing: border-box;\r\n  padding: 4px 12px;\r\n}\r\n\r\n._1D9Xo5PbA8nnizD0GLeBxM:hover,\r\n._1D9Xo5PbA8nnizD0GLeBxM._12tsaEmF9_7NK7pihcgxJw {\r\n  background-color: rgb(222, 235, 255);\r\n  /* animation: highlight 100ms; */\r\n  /* animation-fill-mode: forwards; */\r\n}\r\n\r\n/* @keyframes highlight {\r\n  from { background-color: rgb(255, 255, 255); }\r\n  to { background-color: rgb(222, 235, 255); }\r\n} */\r\n\r\n._3khQpvMiBoqHO8CsroCjVi {\r\n  color: rgb(153, 153, 153);\r\n  cursor: default;\r\n  display: block;\r\n  font-size: 75%;\r\n  font-weight: 500;\r\n  margin-bottom: 0.25em;\r\n  padding: 2px 12px;\r\n  text-transform: uppercase;\r\n  box-sizing: border-box;\r\n  display: flex;\r\n  align-items: center;\r\n  justify-content: space-between;\r\n}\r\n\r\n._2fvgAdZ635qKwR24y2XIFT {\r\n  background-color: #EBECF0;\r\n  border-radius: 1em;\r\n  color: #172B4D;\r\n  display: inline-block;\r\n  font-size: 10;\r\n  font-weight: normal;\r\n  line-height: 1;\r\n  text-align: center;\r\n  min-width: 1;\r\n  padding: 0.16666666666667em 0.5em;\r\n}\r\n", ""]);
 // Exports
 exports.locals = {
 	"react-ahead__control-container": "_2dH7OUMw0ESmltDd0ovClD",
@@ -552,6 +566,7 @@ exports.locals = {
 	"react-ahead__action-icon": "k1UudnI1h5npE3btdwIY1",
 	"react-ahead__action-icons-separator": "_1fXbnnAsavNrQXwBYoNqlw",
 	"react-ahead__menu-wrapper": "_3etkCiSEHj9rBdr3HP7hoI",
+	"menu-appear": "_83_0pFPws0OPGRRHDRiNR",
 	"react-ahead__menu-content": "_2BZ6P2ChebiTM94M-OMhZD",
 	"react-ahead__menu-no-option": "_1V1IQxhU17EfSxmz_iTN5t",
 	"react-ahead__menu-option": "_1D9Xo5PbA8nnizD0GLeBxM",
@@ -851,7 +866,7 @@ class input_Input extends external_commonjs_react_commonjs2_react_amd_React_root
         case 40:
           // arrow down
           evt.preventDefault();
-          this.props.onSelectionMove(evt, keyCode === 38 ? "up" : "down");
+          this.props.onSpecialKey(keyCode === 38 ? 'up' : 'down');
           break;
 
         default:
@@ -918,7 +933,6 @@ class input_Input extends external_commonjs_react_commonjs2_react_amd_React_root
 input_defineProperty(input_Input, "propTypes", {
   inputWidth: prop_types_default.a.number,
   onEntryChange: prop_types_default.a.func.isRequired,
-  onSelectionMove: prop_types_default.a.func.isRequired,
   onSpecialKey: prop_types_default.a.func.isRequired,
   value: prop_types_default.a.string.isRequired
 });
@@ -948,6 +962,58 @@ const GroupLabel = props => {
 // EXTERNAL MODULE: ./src/utils.js
 var utils = __webpack_require__(3);
 
+// CONCATENATED MODULE: ./src/dropdownItem.js
+
+
+
+
+
+const optionClass = "react-ahead__menu-option";
+const activeClass = "react-head__menu-active-option";
+
+const getClassNames = () => {
+  const option = shared_default.a[optionClass] || optionClass;
+  const active = shared_default.a[activeClass] && `${shared_default.a[activeClass]} ${shared_default.a[optionClass]}` || `${activeClass} ${optionClass}`;
+  return {
+    active,
+    option
+  };
+};
+
+const classNames = getClassNames();
+const DropdownItem = external_commonjs_react_commonjs2_react_amd_React_root_React_default.a.memo(props => {
+  const {
+    activeIdx,
+    count,
+    display,
+    idx,
+    item,
+    groupKey,
+    onHighlight,
+    onItemSelection
+  } = props;
+  const source = Object(utils["getItemLabel"])(item);
+  const content = display ? display(item, 'option') : source;
+  const optionItem = external_commonjs_react_commonjs2_react_amd_React_root_React_default.a.createElement("div", {
+    className: activeIdx === idx ? classNames.active : classNames.option,
+    key: `__option_item_${source + idx}`,
+    tabIndex: -1,
+    onMouseOverCapture: evt => onHighlight(evt, idx),
+    onClick: evt => onItemSelection(evt, source, item)
+  }, content);
+
+  if (count > 0) {
+    return external_commonjs_react_commonjs2_react_amd_React_root_React_default.a.createElement(external_commonjs_react_commonjs2_react_amd_React_root_React_["Fragment"], {
+      key: `__option_label_${groupKey}`
+    }, external_commonjs_react_commonjs2_react_amd_React_root_React_default.a.createElement(groupLabel, {
+      label: groupKey,
+      count: count
+    }), optionItem);
+  }
+
+  return optionItem;
+});
+/* harmony default export */ var dropdownItem = (DropdownItem);
 // CONCATENATED MODULE: ./src/dropdown.js
 function dropdown_defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
@@ -959,9 +1025,8 @@ function dropdown_defineProperty(obj, key, value) { if (key in obj) { Object.def
 const wrapperClass = "react-ahead__menu-wrapper";
 const contentClass = "react-ahead__menu-content";
 const noOptionClass = "react-ahead__menu-no-option";
-const optionClass = "react-ahead__menu-option";
-const activeClass = "react-head__menu-active-option";
-const defaultGroupName = 'default';
+const dropdown_optionClass = "react-ahead__menu-option";
+const dropdown_activeClass = "react-head__menu-active-option";
 class dropdown_Dropdown extends external_commonjs_react_commonjs2_react_amd_React_root_React_default.a.Component {
   constructor(props) {
     super(props);
@@ -1039,17 +1104,6 @@ class dropdown_Dropdown extends external_commonjs_react_commonjs2_react_amd_Reac
       this.props.onSelection(evt, source, item);
     });
 
-    dropdown_defineProperty(this, "getGroupKey", item => {
-      let groupKey = typeof item === 'object' ? item['group'] : defaultGroupName;
-
-      if (typeof groupKey !== 'string' && typeof groupKey !== 'number') {
-        groupKey = defaultGroupName;
-      }
-
-      groupKey = groupKey.toString() || defaultGroupName;
-      return groupKey.toUpperCase();
-    });
-
     dropdown_defineProperty(this, "renderList", options => {
       // the caller has guaranteed that the options is a non-null array
       const {
@@ -1059,53 +1113,88 @@ class dropdown_Dropdown extends external_commonjs_react_commonjs2_react_amd_Reac
       const {
         activeIdx
       } = this.state;
-      let groups = {};
-      let currGroup;
+      this._currGroup = null;
 
-      if (grouped) {
+      if (grouped && !this._groups) {
         // get the labels ready for insertion
+        this._groups = {};
         options.forEach(option => {
-          const key = this.getGroupKey(option);
-          groups[key] = groups.hasOwnProperty(key) ? groups[key] + 1 : 1;
+          const key = Object(utils["getGroupKey"])(option);
+          this._groups[key] = this._groups.hasOwnProperty(key) ? this._groups[key] + 1 : 1;
         });
       }
 
       return external_commonjs_react_commonjs2_react_amd_React_root_React_default.a.createElement(external_commonjs_react_commonjs2_react_amd_React_root_React_["Fragment"], null, options.map((item, idx) => {
-        const source = Object(utils["getItemLabel"])(item);
-        const content = display ? display(item, 'option') : source;
-        const optionItem = external_commonjs_react_commonjs2_react_amd_React_root_React_default.a.createElement("div", {
-          className: activeIdx === idx ? this._classNames.active : this._classNames.option,
-          key: `__option_item_${source + idx}`,
-          tabIndex: -1,
-          onMouseOverCapture: evt => this.handleHighlight(evt, idx),
-          onClick: evt => this.handleItemSelection(evt, source, item)
-        }, content);
+        let count = 0;
+        let key;
 
         if (grouped) {
-          const key = this.getGroupKey(item);
+          key = Object(utils["getGroupKey"])(item);
 
-          if (idx === 0 || key !== currGroup) {
-            currGroup = key;
-            return external_commonjs_react_commonjs2_react_amd_React_root_React_default.a.createElement(external_commonjs_react_commonjs2_react_amd_React_root_React_["Fragment"], {
-              key: `__option_label_${key}`
-            }, external_commonjs_react_commonjs2_react_amd_React_root_React_default.a.createElement(groupLabel, {
-              label: key,
-              count: groups[key]
-            }), optionItem);
+          if (idx === 0 || key !== this._currGroup) {
+            this._currGroup = key;
+            count = this._groups[key];
           }
         }
 
-        return optionItem;
+        return external_commonjs_react_commonjs2_react_amd_React_root_React_default.a.createElement(dropdownItem, {
+          activeIdx: activeIdx,
+          currGroup: this._currGroup,
+          count: count,
+          display: display,
+          idx: idx,
+          item: item,
+          groupKey: key,
+          onHighlight: this.handleHighlight,
+          onItemSelection: this.handleItemSelection
+        });
       }));
+    });
+
+    dropdown_defineProperty(this, "renderShield", () => {
+      if (!this.props.shield) {
+        return null;
+      }
+
+      return external_commonjs_react_commonjs2_react_amd_React_root_React_default.a.createElement("div", {
+        style: {
+          position: 'absolute',
+          display: 'default',
+          top: 0,
+          left: 0,
+          width: '100%',
+          height: '100%',
+          textAlign: 'center',
+          justifyContent: 'center',
+          backgroundColor: '#F5F5F5',
+          zIndex: 100000,
+          opacity: 0.5,
+          userSelect: 'none'
+        },
+        onClick: this.props.onShieldClick
+      }, external_commonjs_react_commonjs2_react_amd_React_root_React_default.a.createElement("h3", {
+        style: {
+          position: 'absolute',
+          top: '50%',
+          left: '0',
+          textAlign: 'center',
+          margin: '-12px 0 0 0',
+          padding: 0,
+          width: '100%',
+          height: '100%'
+        }
+      }, "Loading ..."));
     });
 
     this._classNames = {
       wrapper: shared_default.a[wrapperClass] || wrapperClass,
       content: shared_default.a[contentClass] || contentClass,
       noOption: shared_default.a[noOptionClass] || noOptionClass,
-      option: shared_default.a[optionClass] || optionClass,
-      active: shared_default.a[activeClass] && `${shared_default.a[activeClass]} ${shared_default.a[optionClass]}` || `${activeClass} ${optionClass}`
+      option: shared_default.a[dropdown_optionClass] || dropdown_optionClass,
+      active: shared_default.a[dropdown_activeClass] && `${shared_default.a[dropdown_activeClass]} ${shared_default.a[dropdown_optionClass]}` || `${dropdown_activeClass} ${dropdown_optionClass}`
     };
+    this._groups = null;
+    this._currGroup = null;
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -1151,10 +1240,9 @@ class dropdown_Dropdown extends external_commonjs_react_commonjs2_react_amd_Reac
       return true;
     }
 
-    for (let i = 0; i < this.props.options.length; i++) {
-      if (this.props.options[i] !== nextProps.options[i]) {
-        return true;
-      }
+    if (nextProps.options !== this.props.options) {
+      this._groups = null;
+      return true;
     }
 
     return false;
@@ -1166,29 +1254,22 @@ class dropdown_Dropdown extends external_commonjs_react_commonjs2_react_amd_Reac
     }
 
     let contents;
+    let shieldOffset;
 
     if (this.props.options.length > 0) {
       contents = this.renderList(this.props.options);
+      shieldOffset = -10;
     } else {
       contents = external_commonjs_react_commonjs2_react_amd_React_root_React_default.a.createElement("div", {
         className: this._classNames.noOption
       }, "No options");
+      shieldOffset = -28;
     }
 
     return external_commonjs_react_commonjs2_react_amd_React_root_React_default.a.createElement("div", {
       onClick: this.props.onClick,
       className: this._classNames.wrapper + " " + this.props.className
-    }, external_commonjs_react_commonjs2_react_amd_React_root_React_default.a.createElement("div", {
-      style: {
-        display: this.props.shield ? 'default' : 'none',
-        width: '100%',
-        height: '100%',
-        position: "absolute",
-        top: 0,
-        left: 0,
-        zIndex: 100000
-      }
-    }), external_commonjs_react_commonjs2_react_amd_React_root_React_default.a.createElement("div", {
+    }, this.renderShield(), external_commonjs_react_commonjs2_react_amd_React_root_React_default.a.createElement("div", {
       className: this._classNames.content
     }, contents));
   }
@@ -1202,6 +1283,7 @@ dropdown_defineProperty(dropdown_Dropdown, "propTypes", {
   options: prop_types_default.a.arrayOf(prop_types_default.a.object),
   onClick: prop_types_default.a.func,
   onLoadMore: prop_types_default.a.func,
+  onShieldClick: prop_types_default.a.func,
   shield: prop_types_default.a.bool
 });
 
@@ -1394,7 +1476,7 @@ const ActionIcons = props => {
 
       case 38:
       case 40:
-        props.onSpecialKey && props.onSpecialKey('move', keyCode === 38);
+        props.onSpecialKey && props.onSpecialKey('move', keyCode === 38 ? 'up' : 'down');
         break;
 
       case 9:
@@ -1530,6 +1612,14 @@ class src_ReactAhead extends external_commonjs_react_commonjs2_react_amd_React_r
       });
     });
 
+    src_defineProperty(this, "moveCursor", side => {
+      if (!this.state.dropdownOpen || !side) {
+        return;
+      }
+
+      this._dropdown && this._dropdown.current && this._dropdown.current.handleCursorMove(side);
+    });
+
     src_defineProperty(this, "handleEntryChanged", (_evt, value, width) => {
       // console.log('entry change???', value);
       if (typeof value !== 'string') {
@@ -1538,6 +1628,12 @@ class src_ReactAhead extends external_commonjs_react_commonjs2_react_amd_React_r
 
       if (value === this.state.value) {
         // nothing has changed
+        if (this.state.shield) {
+          this.setState({
+            shield: false
+          });
+        }
+
         return;
       }
 
@@ -1570,17 +1666,10 @@ class src_ReactAhead extends external_commonjs_react_commonjs2_react_amd_React_r
           value,
           options: state['options']
         };
+        state['shield'] = false;
       }
 
       this.setState(state);
-    });
-
-    src_defineProperty(this, "handleSelectionMove", (_evt, side) => {
-      if (!this.state.dropdownOpen) {
-        return;
-      }
-
-      this._dropdown && this._dropdown.current && this._dropdown.current.handleCursorMove(side);
     });
 
     src_defineProperty(this, "handleKeepFocus", evt => {
@@ -1603,12 +1692,17 @@ class src_ReactAhead extends external_commonjs_react_commonjs2_react_amd_React_r
           this._focusType = 4;
           break;
 
+        case 'up':
+        case 'down':
+          this.moveCursor(key);
+          break;
+
         case 'move':
           this.handleControlFocus();
 
           if (this.state.dropdownOpen) {
             // only respect the cursor move if the dropdown is still open
-            setTimeout(() => this.handleSelectionMove(info ? 'up' : 'down'), 0);
+            setTimeout(() => this.moveCursor(info), 0);
           }
 
           break;
@@ -1807,8 +1901,7 @@ class src_ReactAhead extends external_commonjs_react_commonjs2_react_amd_React_r
     });
 
     src_defineProperty(this, "handleDropdownOpen", force => {
-      console.log('drop down action:', force, this._initDropdownState);
-
+      // console.log('drop down action:', force, this._initDropdownState);
       if (force) {
         // only happens when clicking / typing on the dropdown menu button
         const {
@@ -1836,6 +1929,12 @@ class src_ReactAhead extends external_commonjs_react_commonjs2_react_amd_React_r
           });
         }, 0);
       }
+    });
+
+    src_defineProperty(this, "handleShieldClick", evt => {
+      evt && evt.preventDefault();
+      this._focusType = 4;
+      this.handleControlFocus();
     });
 
     src_defineProperty(this, "handleLoadMore", () => {//todo: if there are more to load for the options, communicate with the remote
@@ -1886,7 +1985,6 @@ class src_ReactAhead extends external_commonjs_react_commonjs2_react_amd_React_r
         ref: this._input,
         onEntryChange: this.handleEntryChanged,
         onSpecialKey: this.handleKeyAction,
-        onSelectionMove: this.handleSelectionMove,
         value: value
       }));
     });
@@ -1981,7 +2079,8 @@ class src_ReactAhead extends external_commonjs_react_commonjs2_react_amd_React_r
         top: 0,
         left: 0,
         zIndex: 100000
-      }
+      },
+      onClick: this.handleShieldClick
     }), external_commonjs_react_commonjs2_react_amd_React_root_React_default.a.createElement("div", {
       className: inputClassName,
       onClick: this.handleControlFocus,
@@ -2000,6 +2099,7 @@ class src_ReactAhead extends external_commonjs_react_commonjs2_react_amd_React_r
       options: options,
       onSelection: this.handleSelectionAddition,
       onLoadMore: this.handleLoadMore,
+      onShieldClick: this.handleShieldClick,
       shield: shield
     }));
   }

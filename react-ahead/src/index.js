@@ -241,6 +241,10 @@ export default class ReactAhead extends React.Component {
 
     if (value === this.state.value) {
       // nothing has changed
+      if (this.state.shield) {
+        this.setState({ shield: false });
+      }
+
       return;
     }
 
@@ -279,6 +283,8 @@ export default class ReactAhead extends React.Component {
         value,
         options: state['options'],
       };
+
+      state['shield'] = false;
     }
 
     this.setState(state);
@@ -530,7 +536,7 @@ export default class ReactAhead extends React.Component {
   };
 
   handleDropdownOpen = force => {
-    console.log('drop down action:', force, this._initDropdownState);
+    // console.log('drop down action:', force, this._initDropdownState);
 
     if (force) {
       // only happens when clicking / typing on the dropdown menu button
@@ -559,6 +565,13 @@ export default class ReactAhead extends React.Component {
       }, 0);
     }
   };
+
+  handleShieldClick = evt => {
+    evt && evt.preventDefault();
+
+    this._focusType = 4;
+    this.handleControlFocus();
+  }
 
   handleLoadMore = () => {
     //todo: if there are more to load for the options, communicate with the remote
@@ -687,6 +700,7 @@ export default class ReactAhead extends React.Component {
             left: 0,
             zIndex: 100000,
           }}
+          onClick={this.handleShieldClick}
         >
         </div>
         <div
@@ -711,6 +725,7 @@ export default class ReactAhead extends React.Component {
           options={options}
           onSelection={this.handleSelectionAddition}
           onLoadMore={this.handleLoadMore}
+          onShieldClick={this.handleShieldClick}
           shield={shield}
         />
       </div>
