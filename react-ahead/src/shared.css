@@ -186,17 +186,9 @@
   padding: 4px 12px;
 }
 
-.react-ahead__menu-option:hover,
 .react-ahead__menu-option.react-head__menu-active-option {
   background-color: rgb(222, 235, 255);
-  /* animation: highlight 100ms; */
-  /* animation-fill-mode: forwards; */
 }
-
-/* @keyframes highlight {
-  from { background-color: rgb(255, 255, 255); }
-  to { background-color: rgb(222, 235, 255); }
-} */
 
 .react-ahead__group-label {
   color: rgb(153, 153, 153);

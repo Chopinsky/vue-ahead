@@ -25,6 +25,7 @@
     "babel-eslint": "^10.0.3",
     "babel-jest": "^24.9.0",
     "babel-loader": "^8.0.6",
+    "axios": "^0.19.2",
     "css-loader": "^3.4.1",
     "eslint": "^6.7.2",
     "eslint-config-standard": "^14.1.0",

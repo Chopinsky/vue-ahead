@@ -2,7 +2,28 @@ import React from 'react';
 import './App.css';
 import ReactAhead from 'react-ahead';
 
+const parser = data => {
+  return data.map(item => {
+    return {
+      source: item['name'],
+      extraData: item,
+    };
+  });
+};
+
 function App() {
+  const remote = {
+    method: 'get',
+    url: 'https://typeahead-js-twitter-api-proxy.herokuapp.com/demo/search',
+    headers: {
+      // 'Sec-Fetch-Dest': 'empty',
+      // 'Sec-Fetch-Mode': 'cors',
+      // 'Sec-Fetch-Site': 'cross-site',
+    },
+    timeout: 1000,
+    dataParser: parser,
+  };
+
   return (
     <div className={"app-wrapper"}>
       <ReactAhead 
@@ -40,6 +61,16 @@ function App() {
           { source: 'white' },
           { source: 'many-many-colors-that-have-no-names' }
         ]}
+      />
+      <ReactAhead
+        className={"app-control"}
+        customClassNames={{
+          input: "app-control-input",
+          dropdown: "app-control-dropdown",
+          active: "app-control-active",
+        }}
+        remote={remote}
+        placeholder={"Find Twitter Handle ... "}
       />
       <div className={"app-control"}>
         <input 

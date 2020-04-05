@@ -130,7 +130,7 @@ export default class ReactAhead extends React.Component {
     this._initDropdownState = false;
     this._selKeys = {};
 
-    this._engine = new Engine();
+    this._engine = new Engine({ remote: props.remote });
 
     if (Array.isArray(props.initOptions) && props.initOptions.length > 0) {
       this.state.options = 
@@ -154,6 +154,10 @@ export default class ReactAhead extends React.Component {
       this.setState({
         options: this.groupOptions(options),
       });
+    }
+
+    if (prevProps.remote !== this.props.remote) {
+      this._engine.setOption('remote', remote);
     }
   }
 
@@ -200,9 +204,13 @@ export default class ReactAhead extends React.Component {
     return options;
   }
 
-  getOptions = (options, selection, group) => {
+  getOptions = (options = [], selection, group) => {
     if (!selection) {
       selection = this.state.selection;
+    }
+
+    if (options.length === 0) {
+      return options;
     }
 
     if (group) {
@@ -258,23 +266,27 @@ export default class ReactAhead extends React.Component {
     };
 
     if (value !== '') {
-      this._engine.find(value.trimEnd(), options => {
-        // cache the original search results, before being filtered
-        this._lastSearch = options;
+      this._engine.find(
+        value.trimEnd(), 
+        !!this.props.remote, 
+        options => {
+          // cache the original search results, before being filtered
+          this._lastSearch = options;
 
-        // filter 
-        options = this.getOptions(options);        
+          // filter 
+          options = this.getOptions(options);        
 
-        this._lastVal = {
-          value,
-          options,
-        };
+          this._lastVal = {
+            value,
+            options,
+          };
 
-        this.setState({
-          options,
-          shield: false,
-        });
-      });      
+          this.setState({
+            options,
+            shield: false,
+          });
+        }
+      );      
     } else {
       state['options'] = 
         this.getOptions(this.props.initOptions, null, this.props.grouped);
@@ -456,7 +468,7 @@ export default class ReactAhead extends React.Component {
     this._focusType = 1;
     this.handleControlFocus(evt);
 
-    console.log('addition', selection, source, item, this._selKeys);
+    // console.log('addition', selection, source, item, this._selKeys);
 
     // close the dropdown for now
     this.setState({
@@ -498,8 +510,6 @@ export default class ReactAhead extends React.Component {
       value,
       options,
     };
-
-    console.log('remove', selection);
 
     // update state
     this.setState({
@@ -653,6 +663,7 @@ export default class ReactAhead extends React.Component {
     const {
       dropdownOpen,
       shield,
+      value,
     } = this.state;
 
     let options;
@@ -727,6 +738,7 @@ export default class ReactAhead extends React.Component {
           onLoadMore={this.handleLoadMore}
           onShieldClick={this.handleShieldClick}
           shield={shield}
+          showRemoteMessage={!!this.props.remote && !value}
         />
       </div>
     );

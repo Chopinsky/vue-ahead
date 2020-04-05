@@ -78,7 +78,7 @@ export default class MultiSelection extends React.Component {
       return null;
     }
 
-    console.log(selection);
+    // console.log(selection);
 
     return (
       <>

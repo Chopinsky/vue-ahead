@@ -14,12 +14,13 @@ export default class Dropdown extends React.Component {
   static propTypes = {
     display: PropTypes.func,
     grouped: PropTypes.bool,
-    isCreateable: PropTypes.bool,
+    open: PropTypes.bool,
     options: PropTypes.arrayOf(PropTypes.object),
     onClick: PropTypes.func,
     onLoadMore: PropTypes.func,
     onShieldClick: PropTypes.func,
     shield: PropTypes.bool,
+    showRemoteMessage: PropTypes.bool,
   };
 
   static defaultProps = {
@@ -43,6 +44,9 @@ export default class Dropdown extends React.Component {
 
     this._groups = null;
     this._currGroup = null;
+    this._manualMove = '';
+
+    this._contentWrapper = React.createRef();
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -78,6 +82,10 @@ export default class Dropdown extends React.Component {
   }
 
   shouldComponentUpdate(nextProps, nextState) {
+    if (this.props.shield !== nextProps.shield) {
+      return true;  
+    }
+
     if (!nextState || this.state.activeIdx !== nextState.activeIdx) {
       return true;
     }
@@ -132,6 +140,8 @@ export default class Dropdown extends React.Component {
     }
 
     if (activeIdx !== this.state.activeIdx) {
+      this._manualMove = type;
+
       this.setState({
         activeIdx,
       });
@@ -162,9 +172,31 @@ export default class Dropdown extends React.Component {
     this.props.onSelection(evt, source, item);
   };
 
+  handleActiveItemRendered = offsetTop => {
+    if (this.props.options.length < 8 || !this._manualMove) {
+      return;
+    }
+
+    let wrapper = this._contentWrapper.current;
+
+    if (!wrapper) {
+      this._manualMove = '';
+      return;
+    }
+
+    let { height } = wrapper.getBoundingClientRect();
+
+    if (offsetTop > height - 40 && this._manualMove === 'down') {
+      wrapper.scrollTo(0, offsetTop + 40 - height);
+    } else if (offsetTop < wrapper.scrollTop && this._manualMove === 'up') {
+      wrapper.scrollTo(0, wrapper.scrollTop - 30);
+    }
+
+    this._manualMove = '';
+  };
+
   renderList = options => {
     // the caller has guaranteed that the options is a non-null array
-
     const {
       display,
       grouped
@@ -203,18 +235,20 @@ export default class Dropdown extends React.Component {
             }
 
             return (
-              <DropdownItem 
-                activeIdx={activeIdx}
+              <DropdownItem                  
+                key={`__option_item_${idx}`}
                 currGroup={this._currGroup}
                 count={count}
                 display={display}
                 idx={idx}
+                isActive={activeIdx === idx}
                 item={item}
                 groupKey={key}
                 onHighlight={this.handleHighlight}
                 onItemSelection={this.handleItemSelection}
+                onActiveItemRendered={this.handleActiveItemRendered}
               />
-            )
+            );
           })
         }
       </Fragment>
@@ -257,7 +291,7 @@ export default class Dropdown extends React.Component {
           }}
         >
           Loading ...
-          </h3>
+        </h3>
       </div>
     );
   }
@@ -268,17 +302,15 @@ export default class Dropdown extends React.Component {
     }
 
     let contents;
-    let shieldOffset;
 
     if (this.props.options.length > 0) {
       contents = this.renderList(this.props.options);
-      shieldOffset = -10;
     } else {
-      contents = (
-        <div className={this._classNames.noOption}>No options</div>
-      );
+      const message = this.props.showRemoteMessage ? "Type to search" : "No options";
 
-      shieldOffset = -28;
+      contents = (
+        <div className={this._classNames.noOption}>{message}</div>
+      );
     }
 
     return (
@@ -287,7 +319,10 @@ export default class Dropdown extends React.Component {
         className={this._classNames.wrapper + " " + this.props.className}
       >
         {this.renderShield()}
-        <div className={this._classNames.content}>
+        <div 
+          className={this._classNames.content}
+          ref={this._contentWrapper}
+        >
           {contents}
         </div>
       </div>
