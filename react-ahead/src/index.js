@@ -48,7 +48,7 @@ export default class ReactAhead extends React.Component {
      * The index number of the option that shall be treated as the default value
      * to the control.
      */
-    default: PropTypes.number,
+    defaultSelection: PropTypes.number,
 
     /**
      * A callback function for generating display text for options and values. 
@@ -61,14 +61,14 @@ export default class ReactAhead extends React.Component {
      * b) when a selection has been made;
      * 
      * The function takes 2 parameters:
-     * 
-     * 1) `item` -- the item (either string, number, or object, whichever provided
-     *              by the `initOption` or fetched from remote) that to be 
-     *              rendered.
-     * 2) `type` -- enumerate, possible values: 'display' or 'option', the former 
-     *              indeicates that the rendered content will be for the selected
-     *              item, while the later denotes to the items to be rendered in 
-     *              the dropdown options menu.
+     * 1) `source` -- the default source value from the item definition
+     * 2) `item`   -- the item (either string, number, or object, whichever provided
+     *                by the `initOption` or fetched from remote) that to be 
+     *                rendered.
+     * 3) `type`   -- enumerate, possible values: 'selection' or 'option', the former 
+     *                indeicates that the rendered content will be for the selected
+     *                item, while the later denotes to the items to be rendered in 
+     *                the dropdown options menu.
      */
     displayFormatter: PropTypes.func,
 
@@ -595,6 +595,10 @@ export default class ReactAhead extends React.Component {
     }
 
     this.handleControlFocus();
+    
+    this._dropdown
+    && this._dropdown.current
+    && this._dropdown.current.resetCursor();
 
     this.setState(state);
   };
@@ -662,7 +666,7 @@ export default class ReactAhead extends React.Component {
       text = getItemLabel(selection[0]);
 
       if (displayFormatter) {
-        text = displayFormatter(text, selection[0], 'display');
+        text = displayFormatter(text, selection[0], 'selection');
       }
     } else {
       text = placeholder;
@@ -674,7 +678,7 @@ export default class ReactAhead extends React.Component {
           show={
             (placeholder && selection.length === 0 && !value)
             || (singleSelDone && !value)
-          } 
+          }
           text={text}
           valueDisplayMode={singleSelDone}
         />
@@ -703,6 +707,7 @@ export default class ReactAhead extends React.Component {
     const {
       className,
       customClassNames,
+      defaultSelection,
       displayFormatter,
       grouped,
       isCreateable,
@@ -780,6 +785,7 @@ export default class ReactAhead extends React.Component {
         <Dropdown
           ref={this._dropdown}
           className={customClassNames.dropdown}
+          defaultSelection={defaultSelection}
           display={displayFormatter}
           grouped={grouped}
           open={dropdownOpen}

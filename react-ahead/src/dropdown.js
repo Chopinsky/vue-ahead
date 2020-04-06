@@ -16,6 +16,7 @@ const classNames = {
 
 export default class Dropdown extends React.Component {
   static propTypes = {
+    defaultSelection: PropTypes.number,
     display: PropTypes.func,
     grouped: PropTypes.bool,
     open: PropTypes.bool,
@@ -28,6 +29,7 @@ export default class Dropdown extends React.Component {
   };
 
   static defaultProps = {
+    defaultSelection: 0,
     options: [],
   }
 
@@ -41,20 +43,48 @@ export default class Dropdown extends React.Component {
     this._groups = null;
     this._currGroup = null;
     this._manualMove = '';
+    this._resetCursor = false;
 
     this._contentWrapper = React.createRef();
+
+    if (
+      typeof props.defaultSelection === 'number' 
+      && props.defaultSelection < props.options.length
+    ) {
+      this.state.activeIdx = props.defaultSelection;
+      
+      if (this.state.activeIdx > 0) {
+        // let the menu scroll to the activated item
+        this._manualMove = 'up';
+      }
+    }
   }
 
   componentDidUpdate(prevProps, prevState) {
-    let { length } = this.props.options;
     let idx = -1;
 
-    if (prevProps.options.length !== length) {
-      const item = prevProps.options[prevState.activeIdx];
+    if (this._resetCursor) {
+      // default to reset to 0
+      idx = 0;
 
-      if (item) {
+      if (
+        typeof this.props.defaultSelection === 'number'
+        && this.props.defaultSelection < this.props.options.length
+      ) {
+        // if a default index is given, move to this item
+        idx = this.props.defaultSelection;
+      }
+
+      // let the window scroll if manually set
+      this._manualMove = 'up';
+      this._resetCursor = false;
+    } else {
+      let { length } = this.props.options;
+
+      if (prevProps.options.length !== length && prevProps.options.length > 0) {
+        const item = prevProps.options[prevState.activeIdx];
         const lastSource = getItemLabel(item);
-
+        
         for (let i = 0; i < length; i++) {
           const source = getItemLabel(this.props.options[i])
 
@@ -64,10 +94,13 @@ export default class Dropdown extends React.Component {
           }
         }
       }
-    }
 
-    if (prevState.activeIdx >= length) {
-      idx = length - 1;
+      // if the cursor element is selected (and thus removed from the dropdown menu),
+      // we check if the active index is still in the range; if it's still present, we 
+      // also check if the index is still in the range.
+      if ((idx < 0 && prevState.activeIdx >= length) || idx >= length) {
+        idx = length - 1;
+      }
     }
 
     if (idx >= 0) {
@@ -114,6 +147,10 @@ export default class Dropdown extends React.Component {
     const source = getItemLabel(item);
     
     this.handleItemSelection(evt, source, item);
+  };
+
+  resetCursor = () => {
+    this._resetCursor = true;
   };
 
   handleCursorMove = (type) => {
@@ -169,12 +206,11 @@ export default class Dropdown extends React.Component {
   };
 
   handleActiveItemRendered = offsetTop => {
-    if (this.props.options.length < 8 || !this._manualMove) {
+    if (this.props.options.length < 4 || !this._manualMove) {
       return;
     }
 
     let wrapper = this._contentWrapper.current;
-
     if (!wrapper) {
       this._manualMove = '';
       return;

@@ -3066,6 +3066,10 @@ class dropdown_Dropdown extends external_commonjs_react_commonjs2_react_amd_Reac
       this.handleItemSelection(evt, source, item);
     });
 
+    dropdown_defineProperty(this, "resetCursor", () => {
+      this._resetCursor = true;
+    });
+
     dropdown_defineProperty(this, "handleCursorMove", type => {
       let {
         activeIdx
@@ -3120,7 +3124,7 @@ class dropdown_Dropdown extends external_commonjs_react_commonjs2_react_amd_Reac
     });
 
     dropdown_defineProperty(this, "handleActiveItemRendered", offsetTop => {
-      if (this.props.options.length < 8 || !this._manualMove) {
+      if (this.props.options.length < 4 || !this._manualMove) {
         return;
       }
 
@@ -3231,19 +3235,41 @@ class dropdown_Dropdown extends external_commonjs_react_commonjs2_react_amd_Reac
     this._groups = null;
     this._currGroup = null;
     this._manualMove = '';
+    this._resetCursor = false;
     this._contentWrapper = external_commonjs_react_commonjs2_react_amd_React_root_React_default.a.createRef();
+
+    if (typeof props.defaultSelection === 'number' && props.defaultSelection < props.options.length) {
+      this.state.activeIdx = props.defaultSelection;
+
+      if (this.state.activeIdx > 0) {
+        // let the menu scroll to the activated item
+        this._manualMove = 'up';
+      }
+    }
   }
 
   componentDidUpdate(prevProps, prevState) {
-    let {
-      length
-    } = this.props.options;
     let idx = -1;
 
-    if (prevProps.options.length !== length) {
-      const item = prevProps.options[prevState.activeIdx];
+    if (this._resetCursor) {
+      // default to reset to 0
+      idx = 0;
 
-      if (item) {
+      if (typeof this.props.defaultSelection === 'number' && this.props.defaultSelection < this.props.options.length) {
+        // if a default index is given, move to this item
+        idx = this.props.defaultSelection;
+      } // let the window scroll if manually set
+
+
+      this._manualMove = 'up';
+      this._resetCursor = false;
+    } else {
+      let {
+        length
+      } = this.props.options;
+
+      if (prevProps.options.length !== length && prevProps.options.length > 0) {
+        const item = prevProps.options[prevState.activeIdx];
         const lastSource = Object(utils["getItemLabel"])(item);
 
         for (let i = 0; i < length; i++) {
@@ -3254,11 +3280,14 @@ class dropdown_Dropdown extends external_commonjs_react_commonjs2_react_amd_Reac
             break;
           }
         }
-      }
-    }
+      } // if the cursor element is selected (and thus removed from the dropdown menu),
+      // we check if the active index is still in the range; if it's still present, we 
+      // also check if the index is still in the range.
 
-    if (prevState.activeIdx >= length) {
-      idx = length - 1;
+
+      if (idx < 0 && prevState.activeIdx >= length || idx >= length) {
+        idx = length - 1;
+      }
     }
 
     if (idx >= 0) {
@@ -3317,6 +3346,7 @@ class dropdown_Dropdown extends external_commonjs_react_commonjs2_react_amd_Reac
 }
 
 dropdown_defineProperty(dropdown_Dropdown, "propTypes", {
+  defaultSelection: prop_types_default.a.number,
   display: prop_types_default.a.func,
   grouped: prop_types_default.a.bool,
   open: prop_types_default.a.bool,
@@ -3329,6 +3359,7 @@ dropdown_defineProperty(dropdown_Dropdown, "propTypes", {
 });
 
 dropdown_defineProperty(dropdown_Dropdown, "defaultProps", {
+  defaultSelection: 0,
   options: []
 });
 // CONCATENATED MODULE: ./src/placeholder.js
@@ -3982,6 +4013,7 @@ class src_ReactAhead extends external_commonjs_react_commonjs2_react_amd_React_r
       }
 
       this.handleControlFocus();
+      this._dropdown && this._dropdown.current && this._dropdown.current.resetCursor();
       this.setState(state);
     });
 
@@ -4121,6 +4153,7 @@ class src_ReactAhead extends external_commonjs_react_commonjs2_react_amd_React_r
     const {
       className,
       customClassNames,
+      defaultSelection,
       displayFormatter,
       grouped,
       isCreateable
@@ -4190,6 +4223,7 @@ class src_ReactAhead extends external_commonjs_react_commonjs2_react_amd_React_r
     })), external_commonjs_react_commonjs2_react_amd_React_root_React_default.a.createElement(dropdown_Dropdown, {
       ref: this._dropdown,
       className: customClassNames.dropdown,
+      defaultSelection: defaultSelection,
       display: displayFormatter,
       grouped: grouped,
       open: dropdownOpen,
@@ -4227,7 +4261,7 @@ src_defineProperty(src_ReactAhead, "propTypes", {
    * The index number of the option that shall be treated as the default value
    * to the control.
    */
-  default: prop_types_default.a.number,
+  defaultSelection: prop_types_default.a.number,
 
   /**
    * A callback function for generating display text for options and values. 
