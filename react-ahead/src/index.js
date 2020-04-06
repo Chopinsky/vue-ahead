@@ -151,10 +151,18 @@ export default class ReactAhead extends React.Component {
 
       if (props.sort) {
         options = props.sort(options);
-        this.state.options = options;
       }
-
+      
+      this.state.options = options;
       this._engine.add(this.state.options);
+    }
+  }
+
+  componentDidMount() {
+    if (this.props.remote && this.props.remote.prefetch) {
+      this.props.remote.prefetch(
+        options => this.findOptionsCallback(options, '')
+      );
     }
   }
 
@@ -169,6 +177,12 @@ export default class ReactAhead extends React.Component {
 
     if (prevProps.remote !== this.props.remote) {
       this._engine.setOption('remote', remote);
+
+      if (this.props.remote && this.props.remote.prefetch) {
+        this.props.remote.prefetch(
+          options => this.findOptionsCallback(options, '')
+        );
+      }
     }
   }
 
@@ -241,6 +255,34 @@ export default class ReactAhead extends React.Component {
     });
   };
 
+  getOptionsSource = () => {
+    return !this.props.remote ? this.props.initOptions : this._lastSearch;
+  };
+
+  findOptionsCallback = (options, value) => {
+    if (this.props.grouped) {
+      options = this.groupOptions(options);
+    }
+
+    // cache the original search results, before being filtered
+    this._lastSearch = options;
+
+    // filter: against current selections, and since we've alraedy
+    //         handled the grouping use case, always set group parameter 
+    //         to false.
+    options = this.getOptions(options, this.state.selection, false);
+
+    this._lastDispVal = {
+      value,
+      options,
+    };
+
+    this.setState({
+      options,
+      shield: false,
+    });
+  };
+
   moveCursor = side => {
     if (!this.state.dropdownOpen || !side) {
       return;
@@ -280,29 +322,7 @@ export default class ReactAhead extends React.Component {
       this._engine.find(
         value.trimEnd(), 
         !!this.props.remote, 
-        options => {
-          if (this.props.grouped) {
-            options = this.groupOptions(options);            
-          }
-
-          // cache the original search results, before being filtered
-          this._lastSearch = options;
-
-          // filter: against current selections, and since we've alraedy
-          //         handled the grouping use case, always set group parameter 
-          //         to false.
-          options = this.getOptions(options, this.state.selection, false);        
-
-          this._lastDispVal = {
-            value,
-            options,
-          };
-
-          this.setState({
-            options,
-            shield: false,
-          });
-        }
+        options => this.findOptionsCallback(options, value)
       );      
     } else {
       state['options'] = 
@@ -388,7 +408,7 @@ export default class ReactAhead extends React.Component {
         if (this._lastDispVal) {
           value = this._lastDispVal['value'];
           options = this._lastDispVal['options'];
-        } 
+        }
 
         this.setState({
           value,
@@ -485,9 +505,9 @@ export default class ReactAhead extends React.Component {
     this._focusType = 1;
     this.handleControlFocus(evt);
 
-    // close the dropdown for now
+    const optionsSource = this.getOptionsSource();
     this.setState({
-      options: this.getOptions(this.props.initOptions, selection, this.props.grouped),
+      options: this.getOptions(optionsSource, selection, this.props.grouped),
       selection,
       value: '',
     });
@@ -538,15 +558,34 @@ export default class ReactAhead extends React.Component {
 
   handleClear = () => {
     this._focusType = 2;
+    this._lastSearch = null;
     this._lastDispVal = null;
     this._selKeys = {};
 
     let state = {
       value: '',
       selection: [],
-      options: this.getOptions(this.props.initOptions, null, this.props.grouped) ,
       inputWidth: this.state.inputWidth,
     };
+
+    if (this.props.remote && this.props.remote.prefetch) {
+      // pushing the prefetch to the back of the event loop so we 
+      // won't run into the 'locked-out-shield', because prefetch may
+      // not always be an async IO, and it could return immediately, hence
+      // lower the shield first, before the shield state is set at the end
+      // of this function call.
+      setTimeout(() => {
+        this.props.remote.prefetch(
+          options => this.findOptionsCallback(options, '')
+        );        
+      }, 0);
+
+      // running prefetch, bring up the shield
+      state['shield'] = true;
+    } else {
+      // using default options in the dropdown menu after clearing the selections
+      state['options'] = this.getOptions(this.props.initOptions, null, this.props.grouped);
+    }
 
     if (this.state.value !== '') {
       state.inputWidth = 

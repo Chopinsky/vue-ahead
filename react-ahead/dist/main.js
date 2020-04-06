@@ -183,7 +183,7 @@ module.exports = {
 "use strict";
 
 
-var bind = __webpack_require__(5);
+var bind = __webpack_require__(6);
 
 /*global toString:true*/
 
@@ -531,6 +531,12 @@ module.exports = {
 /* 5 */
 /***/ (function(module, exports, __webpack_require__) {
 
+module.exports = __webpack_require__(16);
+
+/***/ }),
+/* 6 */
+/***/ (function(module, exports, __webpack_require__) {
+
 "use strict";
 
 
@@ -546,7 +552,7 @@ module.exports = function bind(fn, thisArg) {
 
 
 /***/ }),
-/* 6 */
+/* 7 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -624,7 +630,7 @@ module.exports = function buildURL(url, params, paramsSerializer) {
 
 
 /***/ }),
-/* 7 */
+/* 8 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -636,7 +642,7 @@ module.exports = function isCancel(value) {
 
 
 /***/ }),
-/* 8 */
+/* 9 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -659,10 +665,10 @@ function getDefaultAdapter() {
   var adapter;
   if (typeof XMLHttpRequest !== 'undefined') {
     // For browsers use XHR adapter
-    adapter = __webpack_require__(9);
+    adapter = __webpack_require__(10);
   } else if (typeof process !== 'undefined' && Object.prototype.toString.call(process) === '[object process]') {
     // For node use HTTP adapter
-    adapter = __webpack_require__(9);
+    adapter = __webpack_require__(10);
   }
   return adapter;
 }
@@ -741,7 +747,7 @@ module.exports = defaults;
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(21)))
 
 /***/ }),
-/* 9 */
+/* 10 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -749,11 +755,11 @@ module.exports = defaults;
 
 var utils = __webpack_require__(4);
 var settle = __webpack_require__(23);
-var buildURL = __webpack_require__(6);
+var buildURL = __webpack_require__(7);
 var buildFullPath = __webpack_require__(25);
 var parseHeaders = __webpack_require__(28);
 var isURLSameOrigin = __webpack_require__(29);
-var createError = __webpack_require__(10);
+var createError = __webpack_require__(11);
 
 module.exports = function xhrAdapter(config) {
   return new Promise(function dispatchXhrRequest(resolve, reject) {
@@ -928,7 +934,7 @@ module.exports = function xhrAdapter(config) {
 
 
 /***/ }),
-/* 10 */
+/* 11 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -953,7 +959,7 @@ module.exports = function createError(message, config, code, request, response) 
 
 
 /***/ }),
-/* 11 */
+/* 12 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1033,7 +1039,7 @@ module.exports = function mergeConfig(config1, config2) {
 
 
 /***/ }),
-/* 12 */
+/* 13 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1057,12 +1063,6 @@ Cancel.prototype.__CANCEL__ = true;
 
 module.exports = Cancel;
 
-
-/***/ }),
-/* 13 */
-/***/ (function(module, exports, __webpack_require__) {
-
-module.exports = __webpack_require__(16);
 
 /***/ }),
 /* 14 */
@@ -1162,10 +1162,10 @@ module.exports = ReactPropTypesSecret;
 
 
 var utils = __webpack_require__(4);
-var bind = __webpack_require__(5);
+var bind = __webpack_require__(6);
 var Axios = __webpack_require__(17);
-var mergeConfig = __webpack_require__(11);
-var defaults = __webpack_require__(8);
+var mergeConfig = __webpack_require__(12);
+var defaults = __webpack_require__(9);
 
 /**
  * Create an instance of Axios
@@ -1198,9 +1198,9 @@ axios.create = function create(instanceConfig) {
 };
 
 // Expose Cancel & CancelToken
-axios.Cancel = __webpack_require__(12);
+axios.Cancel = __webpack_require__(13);
 axios.CancelToken = __webpack_require__(31);
-axios.isCancel = __webpack_require__(7);
+axios.isCancel = __webpack_require__(8);
 
 // Expose all/spread
 axios.all = function all(promises) {
@@ -1222,10 +1222,10 @@ module.exports.default = axios;
 
 
 var utils = __webpack_require__(4);
-var buildURL = __webpack_require__(6);
+var buildURL = __webpack_require__(7);
 var InterceptorManager = __webpack_require__(18);
 var dispatchRequest = __webpack_require__(19);
-var mergeConfig = __webpack_require__(11);
+var mergeConfig = __webpack_require__(12);
 
 /**
  * Create a new instance of Axios
@@ -1383,8 +1383,8 @@ module.exports = InterceptorManager;
 
 var utils = __webpack_require__(4);
 var transformData = __webpack_require__(20);
-var isCancel = __webpack_require__(7);
-var defaults = __webpack_require__(8);
+var isCancel = __webpack_require__(8);
+var defaults = __webpack_require__(9);
 
 /**
  * Throws a `Cancel` if cancellation has been requested.
@@ -1703,7 +1703,7 @@ module.exports = function normalizeHeaderName(headers, normalizedName) {
 "use strict";
 
 
-var createError = __webpack_require__(10);
+var createError = __webpack_require__(11);
 
 /**
  * Resolve or reject a Promise based on response status.
@@ -2048,7 +2048,7 @@ module.exports = (
 "use strict";
 
 
-var Cancel = __webpack_require__(12);
+var Cancel = __webpack_require__(13);
 
 /**
  * A `CancelToken` is an object that can be used to request cancellation of an operation.
@@ -2566,7 +2566,7 @@ var prop_types = __webpack_require__(1);
 var prop_types_default = /*#__PURE__*/__webpack_require__.n(prop_types);
 
 // EXTERNAL MODULE: ./node_modules/axios/index.js
-var axios = __webpack_require__(13);
+var axios = __webpack_require__(5);
 var axios_default = /*#__PURE__*/__webpack_require__.n(axios);
 
 // CONCATENATED MODULE: ./src/engine.js
@@ -2619,7 +2619,7 @@ class engine_NativeEngine {
         };
         const {
           dataParser,
-          ...settings
+          settings
         } = this._props.remote;
         axios_default()(Object.assign({}, settings, {
           params
@@ -2634,6 +2634,30 @@ class engine_NativeEngine {
       }
 
       return cb(data, val);
+    });
+
+    _defineProperty(this, "prefetch", cb => {
+      if (!this._props.remote) {
+        return;
+      }
+
+      const params = {
+        q: '',
+        t: 'prefetch'
+      };
+      const {
+        dataParser,
+        settings
+      } = this._props.remote;
+      axios_default()(Object.assign({}, settings, {
+        params
+      })).then(resp => {
+        // format data if a formatter is passed
+        let data = typeof dataParser === 'function' ? dataParser(resp.data) : resp.data;
+        cb(data);
+      }).catch(err => {
+        console.error("[error] failed to fetch data from remote server:", err);
+      });
     });
 
     _defineProperty(this, "setOptions", options => {
@@ -2703,6 +2727,10 @@ class SearchEngine {
 
         this._engine.query(val, cb);
       }, timeout);
+    });
+
+    _defineProperty(this, "prefetch", cb => {
+      this._engine.prefetch && this._engine.prefetch(cb);
     });
 
     _defineProperty(this, "setOptions", options => {
@@ -3626,6 +3654,10 @@ class src_ReactAhead extends external_commonjs_react_commonjs2_react_amd_React_r
         return options;
       }
 
+      if (this.props.sort) {
+        options = this.props.sort(options);
+      }
+
       if (group) {
         options = this.groupOptions(options);
       }
@@ -3635,8 +3667,32 @@ class src_ReactAhead extends external_commonjs_react_commonjs2_react_amd_React_r
       }
 
       return options.filter(item => {
-        const label = Object(utils["getItemLabel"])(item);
-        return !this._selKeys.hasOwnProperty(label);
+        return !this._selKeys.hasOwnProperty(Object(utils["getItemLabel"])(item));
+      });
+    });
+
+    src_defineProperty(this, "getOptionsSource", () => {
+      return !this.props.remote ? this.props.initOptions : this._lastSearch;
+    });
+
+    src_defineProperty(this, "findOptionsCallback", (options, value) => {
+      if (this.props.grouped) {
+        options = this.groupOptions(options);
+      } // cache the original search results, before being filtered
+
+
+      this._lastSearch = options; // filter: against current selections, and since we've alraedy
+      //         handled the grouping use case, always set group parameter 
+      //         to false.
+
+      options = this.getOptions(options, this.state.selection, false);
+      this._lastDispVal = {
+        value,
+        options
+      };
+      this.setState({
+        options,
+        shield: false
       });
     });
 
@@ -3674,29 +3730,10 @@ class src_ReactAhead extends external_commonjs_react_commonjs2_react_amd_React_r
       };
 
       if (value !== '') {
-        this._engine.find(value.trimEnd(), !!this.props.remote, options => {
-          if (this.props.grouped) {
-            options = this.groupOptions(options);
-          } // cache the original search results, before being filtered
-
-
-          this._lastSearch = options; // filter: against current selections, and since we've alraedy
-          //         handled the grouping use case, always set group parameter 
-          //         to false.
-
-          options = this.getOptions(options, this.state.selection, false);
-          this._lastVal = {
-            value,
-            options
-          };
-          this.setState({
-            options,
-            shield: false
-          });
-        });
+        this._engine.find(value.trimEnd(), !!this.props.remote, options => this.findOptionsCallback(options, value));
       } else {
         state['options'] = this.getOptions(this.props.initOptions, null, this.props.grouped);
-        this._lastVal = {
+        this._lastDispVal = {
           value,
           options: state['options']
         };
@@ -3768,9 +3805,9 @@ class src_ReactAhead extends external_commonjs_react_commonjs2_react_amd_React_r
           let value,
               options = this.state.options;
 
-          if (this._lastVal) {
-            value = this._lastVal['value'];
-            options = this._lastVal['options'];
+          if (this._lastDispVal) {
+            value = this._lastDispVal['value'];
+            options = this._lastDispVal['options'];
           }
 
           this.setState({
@@ -3836,7 +3873,7 @@ class src_ReactAhead extends external_commonjs_react_commonjs2_react_amd_React_r
       let {
         selection
       } = this.state;
-      this._lastVal = null;
+      this._lastDispVal = null;
 
       if (this.props.isCreateable && item['__itemType'] === 'created' && this.props.onItemCreated) {
         // adding any extra information to the created item
@@ -3859,11 +3896,10 @@ class src_ReactAhead extends external_commonjs_react_commonjs2_react_amd_React_r
 
 
       this._focusType = 1;
-      this.handleControlFocus(evt); // console.log('addition', selection, source, item, this._selKeys);
-      // close the dropdown for now
-
+      this.handleControlFocus(evt);
+      const optionsSource = this.getOptionsSource();
       this.setState({
-        options: this.getOptions(this.props.initOptions, selection, this.props.grouped),
+        options: this.getOptions(optionsSource, selection, this.props.grouped),
         selection,
         value: ''
       }); // acknowledge the selection change
@@ -3901,7 +3937,7 @@ class src_ReactAhead extends external_commonjs_react_commonjs2_react_amd_React_r
         this._focusType = 4;
       }
 
-      this._lastVal = {
+      this._lastDispVal = {
         value,
         options
       }; // update state
@@ -3916,14 +3952,30 @@ class src_ReactAhead extends external_commonjs_react_commonjs2_react_amd_React_r
 
     src_defineProperty(this, "handleClear", () => {
       this._focusType = 2;
-      this._lastVal = null;
+      this._lastSearch = null;
+      this._lastDispVal = null;
       this._selKeys = {};
       let state = {
         value: '',
         selection: [],
-        options: !this.props.grouped ? this.props.initOptions : this.groupOptions(this.props.initOptions),
         inputWidth: this.state.inputWidth
       };
+
+      if (this.props.remote && this.props.remote.prefetch) {
+        // pushing the prefetch to the back of the event loop so we 
+        // won't run into the 'locked-out-shield', because prefetch may
+        // not always be an async IO, and it could return immediately, hence
+        // lower the shield first, before the shield state is set at the end
+        // of this function call.
+        setTimeout(() => {
+          this.props.remote.prefetch(options => this.findOptionsCallback(options, ''));
+        }, 0); // running prefetch, bring up the shield
+
+        state['shield'] = true;
+      } else {
+        // using default options in the dropdown menu after clearing the selections
+        state['options'] = this.getOptions(this.props.initOptions, null, this.props.grouped);
+      }
 
       if (this.state.value !== '') {
         state.inputWidth = this._input && this._input.current && this._input.current.clear();
@@ -3952,7 +4004,7 @@ class src_ReactAhead extends external_commonjs_react_commonjs2_react_amd_React_r
           options
         } = this.state;
         setTimeout(() => {
-          this._lastVal = {
+          this._lastDispVal = {
             value,
             options
           };
@@ -4019,7 +4071,7 @@ class src_ReactAhead extends external_commonjs_react_commonjs2_react_amd_React_r
     this._input = external_commonjs_react_commonjs2_react_amd_React_root_React_default.a.createRef();
     this._dropdown = external_commonjs_react_commonjs2_react_amd_React_root_React_default.a.createRef();
     this._focusType = 0;
-    this._lastVal = null;
+    this._lastDispVal = null;
     this._lastSearch = null;
     this._initDropdownState = false;
     this._selKeys = {};
@@ -4028,9 +4080,21 @@ class src_ReactAhead extends external_commonjs_react_commonjs2_react_amd_React_r
     });
 
     if (Array.isArray(props.initOptions) && props.initOptions.length > 0) {
-      this.state.options = !props.grouped ? props.initOptions : this.groupOptions(props.initOptions);
+      let options = !props.grouped ? props.initOptions : this.groupOptions(props.initOptions);
+
+      if (props.sort) {
+        options = props.sort(options);
+      }
+
+      this.state.options = options;
 
       this._engine.add(this.state.options);
+    }
+  }
+
+  componentDidMount() {
+    if (this.props.remote && this.props.remote.prefetch) {
+      this.props.remote.prefetch(options => this.findOptionsCallback(options, ''));
     }
   }
 
@@ -4046,6 +4110,10 @@ class src_ReactAhead extends external_commonjs_react_commonjs2_react_amd_React_r
 
     if (prevProps.remote !== this.props.remote) {
       this._engine.setOption('remote', remote);
+
+      if (this.props.remote && this.props.remote.prefetch) {
+        this.props.remote.prefetch(options => this.findOptionsCallback(options, ''));
+      }
     }
   }
 
@@ -4070,7 +4138,9 @@ class src_ReactAhead extends external_commonjs_react_commonjs2_react_amd_React_r
       let exactMatch = false;
 
       for (let i = 0; i < options.length; i++) {
-        if (this.state.value === options[i]['source']) {
+        const label = Object(utils["getItemLabel"])(options[i]);
+
+        if (this.state.value === label) {
           exactMatch = true;
           break;
         }
@@ -4214,7 +4284,13 @@ src_defineProperty(src_ReactAhead, "propTypes", {
    * An object containing the necessary information to contact a remote server for
    * options. TODO: more info ...
    */
-  remote: prop_types_default.a.object
+  remote: prop_types_default.a.object,
+
+  /**
+   * Callback function which will decide the order of the options to be displayed
+   * in the dropdown menu
+   */
+  sort: prop_types_default.a.func
 });
 
 src_defineProperty(src_ReactAhead, "defaultProps", {

@@ -14,13 +14,13 @@ class NativeEngine {
     }
   }
 
-  add = data => {
+  add = (data) => {
     if (!Array.isArray(data) || !data.length) {
       return;
     }
 
     this._store.push(...data);
-  }
+  };
 
   query = (val, cb) => {
     if (typeof val !== 'string') {
@@ -58,7 +58,7 @@ class NativeEngine {
 
       const {
         dataParser,
-        ...settings
+        settings,
       } = this._props.remote;
 
       axios(Object.assign({}, settings, { params }))
@@ -79,9 +79,39 @@ class NativeEngine {
     }
 
     return cb(data, val);
-  } 
+  };
 
-  setOptions = options => {
+  prefetch = (cb) => {
+    if (!this._props.remote) {
+      return;
+    }
+
+    const params = {
+      q: '',
+      t: 'prefetch',
+    };
+
+    const {
+      dataParser,
+      settings,
+    } = this._props.remote;
+
+    axios(Object.assign({}, settings, { params }))
+      .then(resp => {
+        // format data if a formatter is passed
+        let data =
+          typeof dataParser === 'function'
+            ? dataParser(resp.data)
+            : resp.data;
+
+        cb(data);
+      })
+      .catch(err => {
+        console.error("[error] failed to fetch data from remote server:", err);
+      });
+  };
+
+  setOptions = (options) => {
     this._props = options;
   };
 
@@ -142,6 +172,10 @@ export default class SearchEngine {
       this._engine.query(val, cb);
     }, timeout);
   };
+
+  prefetch = (cb) => {
+    this._engine.prefetch && this._engine.prefetch(cb);
+  }
 
   setOptions = options => {
     this._engine.setOptions(options);

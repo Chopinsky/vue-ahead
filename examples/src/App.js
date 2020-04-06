@@ -2,7 +2,7 @@ import React from 'react';
 import './App.css';
 import ReactAhead from 'react-ahead';
 
-const parser = data => {
+const parser = (data) => {
   return data.map(item => {
     return {
       source: item['name'],
@@ -11,17 +11,27 @@ const parser = data => {
   });
 };
 
+const prefetcher = (cb) => cb([
+  { source: 'ab' },
+  { source: 'bc' },
+  { source: 'cd' },
+  { source: 'de' },
+]);
+
+const sorter = options => {
+  options.sort((a, b) => a['source'] < b['source'] ? -1 : 1);
+  return options;
+};
+
 function App() {
   const remote = {
-    method: 'get',
-    url: 'https://typeahead-js-twitter-api-proxy.herokuapp.com/demo/search',
-    headers: {
-      // 'Sec-Fetch-Dest': 'empty',
-      // 'Sec-Fetch-Mode': 'cors',
-      // 'Sec-Fetch-Site': 'cross-site',
+    settings: {
+      method: 'get',
+      url: 'https://typeahead-js-twitter-api-proxy.herokuapp.com/demo/search',
+      timeout: 1000,      
     },
-    timeout: 1000,
     dataParser: parser,
+    prefetch: prefetcher,
   };
 
   return (
@@ -61,6 +71,7 @@ function App() {
           { source: 'white' },
           { source: 'many-many-colors-that-have-no-names' }
         ]}
+        sort={sorter}
       />
       <ReactAhead
         className={"app-control"}
