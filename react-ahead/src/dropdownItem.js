@@ -1,4 +1,5 @@
 import React, { Fragment } from 'react';
+import PropTypes from 'prop-types';
 import GroupLabel from './groupLabel';
 import { getItemLabel } from './utils';
 import styles from './shared.css';
@@ -6,21 +7,24 @@ import styles from './shared.css';
 const optionClass = "react-ahead__menu-option";
 const activeClass = "react-head__menu-active-option";
 
-const getClassNames = () => {
-  const option = styles[optionClass] || optionClass;
-  const active =
-    (styles[activeClass] && `${styles[activeClass]} ${styles[optionClass]}`)
-    || `${activeClass} ${optionClass}`;
-
-  return {
-    active,
-    option,
-  };
+const classNames = {
+  active: (styles[activeClass] && `${styles[activeClass]} ${styles[optionClass]}`) || `${activeClass} ${optionClass}`,
+  option: styles[optionClass] || optionClass,
 };
 
-const classNames = getClassNames();
-
 export default class DropdownItem extends React.Component {
+  static propTypes = {
+    count: PropTypes.number,
+    display: PropTypes.func,
+    groupKey: PropTypes.string,
+    idx: PropTypes.number,
+    isActive: PropTypes.bool,
+    item: PropTypes.object,
+    onHighlight: PropTypes.func,
+    onItemSelection: PropTypes.func,
+    onActiveItemRendered: PropTypes.func,
+  };
+
   constructor(props) {
     super(props);
     
@@ -44,7 +48,7 @@ export default class DropdownItem extends React.Component {
     } = this.props;
 
     const source = getItemLabel(item);
-    const content = display ? display(item, 'option') : source;
+    const content = display ? display(source, item, 'option') : source;
 
     return (
       <div

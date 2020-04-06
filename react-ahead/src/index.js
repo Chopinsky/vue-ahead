@@ -14,6 +14,13 @@ const wrapperClass = "react-ahead__control-wrapper";
 const activeClass = "react-ahead__control-active";
 const inputWrapperClass = "react-ahead__input-wrapper";
 
+const classNames = {
+  container: styles[containerClass] || containerClass,
+  wrapper: styles[wrapperClass] || wrapperClass,
+  active: styles[activeClass] || activeClass,
+  inputWrapper: styles[inputWrapperClass] || inputWrapperClass,
+};
+
 /**
  * The React UI for the auto-complete control
  */
@@ -99,6 +106,12 @@ export default class ReactAhead extends React.Component {
      * options. TODO: more info ...
      */
     remote: PropTypes.object,
+
+    /**
+     * Callback function which will decide the order of the options to be displayed
+     * in the dropdown menu
+     */
+    sort: PropTypes.func,
   };
 
   static defaultProps = {
@@ -125,7 +138,7 @@ export default class ReactAhead extends React.Component {
     this._dropdown = React.createRef();
 
     this._focusType = 0;
-    this._lastVal = null;
+    this._lastDispVal = null;
     this._lastSearch = null;
     this._initDropdownState = false;
     this._selKeys = {};
@@ -133,17 +146,15 @@ export default class ReactAhead extends React.Component {
     this._engine = new Engine({ remote: props.remote });
 
     if (Array.isArray(props.initOptions) && props.initOptions.length > 0) {
-      this.state.options = 
+      let options = 
         !props.grouped ? props.initOptions : this.groupOptions(props.initOptions);
 
-      this._engine.add(this.state.options);
-    }
+      if (props.sort) {
+        options = props.sort(options);
+        this.state.options = options;
+      }
 
-    this._classNames = {
-      container: styles[containerClass] || containerClass,
-      wrapper: styles[wrapperClass] || wrapperClass,
-      active: styles[activeClass] || activeClass,
-      inputWrapper: styles[inputWrapperClass] || inputWrapperClass,
+      this._engine.add(this.state.options);
     }
   }
 
@@ -213,6 +224,10 @@ export default class ReactAhead extends React.Component {
       return options;
     }
 
+    if (this.props.sort) {
+      options = this.props.sort(options);
+    }
+
     if (group) {
       options = this.groupOptions(options);
     }
@@ -222,11 +237,7 @@ export default class ReactAhead extends React.Component {
     }
 
     return options.filter(item => {
-      if (typeof item === 'object') {
-        return !this._selKeys.hasOwnProperty(item['source']);
-      }
-
-      return !this._selKeys.hasOwnProperty(item);
+      return !this._selKeys.hasOwnProperty(getItemLabel(item));
     });
   };
 
@@ -270,13 +281,19 @@ export default class ReactAhead extends React.Component {
         value.trimEnd(), 
         !!this.props.remote, 
         options => {
+          if (this.props.grouped) {
+            options = this.groupOptions(options);            
+          }
+
           // cache the original search results, before being filtered
           this._lastSearch = options;
 
-          // filter 
-          options = this.getOptions(options);        
+          // filter: against current selections, and since we've alraedy
+          //         handled the grouping use case, always set group parameter 
+          //         to false.
+          options = this.getOptions(options, this.state.selection, false);        
 
-          this._lastVal = {
+          this._lastDispVal = {
             value,
             options,
           };
@@ -291,7 +308,7 @@ export default class ReactAhead extends React.Component {
       state['options'] = 
         this.getOptions(this.props.initOptions, null, this.props.grouped);
       
-      this._lastVal = {
+      this._lastDispVal = {
         value,
         options: state['options'],
       };
@@ -368,9 +385,9 @@ export default class ReactAhead extends React.Component {
         this._focusType = 1;
         let value, options = this.state.options;
 
-        if (this._lastVal) {
-          value = this._lastVal['value'];
-          options = this._lastVal['options'];
+        if (this._lastDispVal) {
+          value = this._lastDispVal['value'];
+          options = this._lastDispVal['options'];
         } 
 
         this.setState({
@@ -437,7 +454,7 @@ export default class ReactAhead extends React.Component {
     }
 
     let { selection } = this.state;
-    this._lastVal = null;
+    this._lastDispVal = null;
 
     if (
       this.props.isCreateable 
@@ -467,8 +484,6 @@ export default class ReactAhead extends React.Component {
     // set focus type to prepare for transferring the focus
     this._focusType = 1;
     this.handleControlFocus(evt);
-
-    // console.log('addition', selection, source, item, this._selKeys);
 
     // close the dropdown for now
     this.setState({
@@ -506,7 +521,7 @@ export default class ReactAhead extends React.Component {
       this._focusType = 4;      
     }
 
-    this._lastVal = {
+    this._lastDispVal = {
       value,
       options,
     };
@@ -523,13 +538,13 @@ export default class ReactAhead extends React.Component {
 
   handleClear = () => {
     this._focusType = 2;
-    this._lastVal = null;
+    this._lastDispVal = null;
     this._selKeys = {};
 
     let state = {
       value: '',
       selection: [],
-      options: !this.props.grouped ? this.props.initOptions : this.groupOptions(this.props.initOptions) ,
+      options: this.getOptions(this.props.initOptions, null, this.props.grouped) ,
       inputWidth: this.state.inputWidth,
     };
 
@@ -563,7 +578,7 @@ export default class ReactAhead extends React.Component {
       let { value, options } = this.state;
 
       setTimeout(() => {
-        this._lastVal = {
+        this._lastDispVal = {
           value,
           options,
         };
@@ -605,23 +620,17 @@ export default class ReactAhead extends React.Component {
     
     let text;
     if (singleSelDone) {
-      text = selection[0];
-
-      if (typeof text === 'object') {
-        text = text['source'].toString();
-      } else {
-        text = text.toString();
-      }
+      text = getItemLabel(selection[0]);
 
       if (displayFormatter) {
-        text = displayFormatter(text, 'display');
+        text = displayFormatter(text, selection[0], 'display');
       }
     } else {
       text = placeholder;
     }
 
     return (
-      <div className={this._classNames.inputWrapper}>
+      <div className={classNames.inputWrapper}>
         <Placeholder 
           show={
             (placeholder && selection.length === 0 && !value)
@@ -673,7 +682,8 @@ export default class ReactAhead extends React.Component {
       // don't add the createable if there're exact matches
       let exactMatch = false;
       for (let i = 0; i < options.length; i++) {
-        if (this.state.value === options[i]['source']) {
+        const label = getItemLabel(options[i]);
+        if (this.state.value === label) {
           exactMatch = true;
           break; 
         }
@@ -690,10 +700,11 @@ export default class ReactAhead extends React.Component {
       options = this.state.options || [];
     }
 
-    let wrapperClassName = (className || '') + " " + this._classNames.container;
-    let inputClassName = (customClassNames.input || '') + " " + this._classNames.wrapper;
+    let wrapperClassName = (className || '') + " " + classNames.container;
+    let inputClassName = (customClassNames.input || '') + " " + classNames.wrapper;
+
     if (this._focusType !== 0) {
-      inputClassName = (customClassNames.active || this._classNames.active) + " " + inputClassName;
+      inputClassName = (customClassNames.active || classNames.active) + " " + inputClassName;
     }
 
     return (

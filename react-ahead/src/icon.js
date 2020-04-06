@@ -3,9 +3,11 @@ import styles from './shared.css';
 
 const iconClass = "react-ahead__action-icon";
 
-const ControlIcon = props => {
-  const iconStyle = styles[iconClass] || iconClass;
+const classNames = {
+  iconStyle: styles[iconClass] || iconClass,
+};
 
+const ControlIcon = props => {
   let { size, viewBox } = props;
   
   if (!size) {
@@ -32,7 +34,7 @@ const ControlIcon = props => {
         viewBox={viewBox}
         focusable="false"
         aria-hidden="true"
-        className={iconStyle}
+        className={classNames.iconStyle}
       >
         <path d={props.path} />
       </svg>

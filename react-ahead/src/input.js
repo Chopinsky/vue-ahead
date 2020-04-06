@@ -4,6 +4,10 @@ import styles from "./shared.css";
 
 const inputClass = "react-ahead__input-inner-wrapper";
 
+const classNames = {
+  inputStyle: styles[inputClass] || inputClass,
+};
+
 export default class Input extends React.Component {
   static propTypes = {
     inputWidth: PropTypes.number,
@@ -22,8 +26,6 @@ export default class Input extends React.Component {
 
     this._div = React.createRef();
     this._input = React.createRef();
-
-    this._inputStyle = styles[inputClass] || inputClass;
   }
 
   focus = () => {
@@ -117,7 +119,7 @@ export default class Input extends React.Component {
         style={{
           display: "inline-block",
         }}
-        className={this._inputStyle}
+        className={classNames.inputStyle}
       >
         <input
           autoCapitalize="none"

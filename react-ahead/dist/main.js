@@ -104,6 +104,24 @@ module.exports = __WEBPACK_EXTERNAL_MODULE__0__;
 /* 1 */
 /***/ (function(module, exports, __webpack_require__) {
 
+/**
+ * Copyright (c) 2013-present, Facebook, Inc.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
+
+if (false) { var throwOnDirectAccess, ReactIs; } else {
+  // By explicitly using `prop-types` you are opting into new production behavior.
+  // http://fb.me/prop-types-in-prod
+  module.exports = __webpack_require__(14)();
+}
+
+
+/***/ }),
+/* 2 */
+/***/ (function(module, exports, __webpack_require__) {
+
 var api = __webpack_require__(33);
             var content = __webpack_require__(34);
 
@@ -127,25 +145,39 @@ var exported = content.locals ? content.locals : {};
 module.exports = exported;
 
 /***/ }),
-/* 2 */
-/***/ (function(module, exports, __webpack_require__) {
+/* 3 */
+/***/ (function(module, exports) {
 
-/**
- * Copyright (c) 2013-present, Facebook, Inc.
- *
- * This source code is licensed under the MIT license found in the
- * LICENSE file in the root directory of this source tree.
- */
+const defaultGroupName = 'default';
 
-if (false) { var throwOnDirectAccess, ReactIs; } else {
-  // By explicitly using `prop-types` you are opting into new production behavior.
-  // http://fb.me/prop-types-in-prod
-  module.exports = __webpack_require__(14)();
-}
+const getItemLabel = item => {
+  let src = typeof item === 'object' ? item['source'] : item;
 
+  if (typeof src !== 'string') {
+    src = src.toString();
+  }
+
+  return src;
+};
+
+const getGroupKey = item => {
+  let groupKey = typeof item === 'object' ? item['group'] : defaultGroupName;
+
+  if (typeof groupKey !== 'string' && typeof groupKey !== 'number') {
+    groupKey = defaultGroupName;
+  }
+
+  groupKey = groupKey.toString() || defaultGroupName;
+  return groupKey.toUpperCase();
+};
+
+module.exports = {
+  getItemLabel,
+  getGroupKey
+};
 
 /***/ }),
-/* 3 */
+/* 4 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -496,38 +528,6 @@ module.exports = {
 
 
 /***/ }),
-/* 4 */
-/***/ (function(module, exports) {
-
-const defaultGroupName = 'default';
-
-const getItemLabel = item => {
-  let src = typeof item === 'object' ? item['source'] : item;
-
-  if (typeof src !== 'string') {
-    src = src.toString();
-  }
-
-  return src;
-};
-
-const getGroupKey = item => {
-  let groupKey = typeof item === 'object' ? item['group'] : defaultGroupName;
-
-  if (typeof groupKey !== 'string' && typeof groupKey !== 'number') {
-    groupKey = defaultGroupName;
-  }
-
-  groupKey = groupKey.toString() || defaultGroupName;
-  return groupKey.toUpperCase();
-};
-
-module.exports = {
-  getItemLabel,
-  getGroupKey
-};
-
-/***/ }),
 /* 5 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -552,7 +552,7 @@ module.exports = function bind(fn, thisArg) {
 "use strict";
 
 
-var utils = __webpack_require__(3);
+var utils = __webpack_require__(4);
 
 function encode(val) {
   return encodeURIComponent(val).
@@ -642,7 +642,7 @@ module.exports = function isCancel(value) {
 "use strict";
 /* WEBPACK VAR INJECTION */(function(process) {
 
-var utils = __webpack_require__(3);
+var utils = __webpack_require__(4);
 var normalizeHeaderName = __webpack_require__(22);
 
 var DEFAULT_CONTENT_TYPE = {
@@ -747,7 +747,7 @@ module.exports = defaults;
 "use strict";
 
 
-var utils = __webpack_require__(3);
+var utils = __webpack_require__(4);
 var settle = __webpack_require__(23);
 var buildURL = __webpack_require__(6);
 var buildFullPath = __webpack_require__(25);
@@ -959,7 +959,7 @@ module.exports = function createError(message, config, code, request, response) 
 "use strict";
 
 
-var utils = __webpack_require__(3);
+var utils = __webpack_require__(4);
 
 /**
  * Config-specific merge-function which creates a new config-object
@@ -1161,7 +1161,7 @@ module.exports = ReactPropTypesSecret;
 "use strict";
 
 
-var utils = __webpack_require__(3);
+var utils = __webpack_require__(4);
 var bind = __webpack_require__(5);
 var Axios = __webpack_require__(17);
 var mergeConfig = __webpack_require__(11);
@@ -1221,7 +1221,7 @@ module.exports.default = axios;
 "use strict";
 
 
-var utils = __webpack_require__(3);
+var utils = __webpack_require__(4);
 var buildURL = __webpack_require__(6);
 var InterceptorManager = __webpack_require__(18);
 var dispatchRequest = __webpack_require__(19);
@@ -1322,7 +1322,7 @@ module.exports = Axios;
 "use strict";
 
 
-var utils = __webpack_require__(3);
+var utils = __webpack_require__(4);
 
 function InterceptorManager() {
   this.handlers = [];
@@ -1381,7 +1381,7 @@ module.exports = InterceptorManager;
 "use strict";
 
 
-var utils = __webpack_require__(3);
+var utils = __webpack_require__(4);
 var transformData = __webpack_require__(20);
 var isCancel = __webpack_require__(7);
 var defaults = __webpack_require__(8);
@@ -1467,7 +1467,7 @@ module.exports = function dispatchRequest(config) {
 "use strict";
 
 
-var utils = __webpack_require__(3);
+var utils = __webpack_require__(4);
 
 /**
  * Transform the data for a request or a response
@@ -1684,7 +1684,7 @@ process.umask = function() { return 0; };
 "use strict";
 
 
-var utils = __webpack_require__(3);
+var utils = __webpack_require__(4);
 
 module.exports = function normalizeHeaderName(headers, normalizedName) {
   utils.forEach(headers, function processHeader(value, name) {
@@ -1853,7 +1853,7 @@ module.exports = function combineURLs(baseURL, relativeURL) {
 "use strict";
 
 
-var utils = __webpack_require__(3);
+var utils = __webpack_require__(4);
 
 // Headers whose duplicates are ignored by node
 // c.f. https://nodejs.org/api/http.html#http_message_headers
@@ -1913,7 +1913,7 @@ module.exports = function parseHeaders(headers) {
 "use strict";
 
 
-var utils = __webpack_require__(3);
+var utils = __webpack_require__(4);
 
 module.exports = (
   utils.isStandardBrowserEnv() ?
@@ -1988,7 +1988,7 @@ module.exports = (
 "use strict";
 
 
-var utils = __webpack_require__(3);
+var utils = __webpack_require__(4);
 
 module.exports = (
   utils.isStandardBrowserEnv() ?
@@ -2562,7 +2562,7 @@ var external_commonjs_react_commonjs2_react_amd_React_root_React_ = __webpack_re
 var external_commonjs_react_commonjs2_react_amd_React_root_React_default = /*#__PURE__*/__webpack_require__.n(external_commonjs_react_commonjs2_react_amd_React_root_React_);
 
 // EXTERNAL MODULE: ./node_modules/prop-types/index.js
-var prop_types = __webpack_require__(2);
+var prop_types = __webpack_require__(1);
 var prop_types_default = /*#__PURE__*/__webpack_require__.n(prop_types);
 
 // EXTERNAL MODULE: ./node_modules/axios/index.js
@@ -2725,7 +2725,7 @@ class SearchEngine {
 
 }
 // EXTERNAL MODULE: ./src/shared.css
-var shared = __webpack_require__(1);
+var shared = __webpack_require__(2);
 var shared_default = /*#__PURE__*/__webpack_require__.n(shared);
 
 // CONCATENATED MODULE: ./src/input.js
@@ -2735,6 +2735,9 @@ function input_defineProperty(obj, key, value) { if (key in obj) { Object.define
 
 
 const inputClass = "react-ahead__input-inner-wrapper";
+const classNames = {
+  inputStyle: shared_default.a[inputClass] || inputClass
+};
 class input_Input extends external_commonjs_react_commonjs2_react_amd_React_root_React_default.a.Component {
   constructor(props) {
     super(props);
@@ -2825,7 +2828,6 @@ class input_Input extends external_commonjs_react_commonjs2_react_amd_React_root
 
     this._div = external_commonjs_react_commonjs2_react_amd_React_root_React_default.a.createRef();
     this._input = external_commonjs_react_commonjs2_react_amd_React_root_React_default.a.createRef();
-    this._inputStyle = shared_default.a[inputClass] || inputClass;
   }
 
   render() {
@@ -2833,7 +2835,7 @@ class input_Input extends external_commonjs_react_commonjs2_react_amd_React_root
       style: {
         display: "inline-block"
       },
-      className: this._inputStyle
+      className: classNames.inputStyle
     }, external_commonjs_react_commonjs2_react_amd_React_root_React_default.a.createElement("input", {
       autoCapitalize: "none",
       autoComplete: "off",
@@ -2896,20 +2898,26 @@ input_defineProperty(input_Input, "defaultProps", {
 
 const groupLabelClass = 'react-ahead__group-label';
 const groupLabelIconClass = 'react-ahead__group-label-icon';
+const groupLabel_classNames = {
+  groupStyles: shared_default.a[groupLabelClass] || groupLabelClass,
+  groupIconStyles: shared_default.a[groupLabelIconClass] || groupLabelIconClass
+};
 
 const GroupLabel = props => {
-  const groupStyles = shared_default.a[groupLabelClass] || groupLabelClass;
-  const groupIconStyles = shared_default.a[groupLabelIconClass] || groupLabelIconClass;
   return external_commonjs_react_commonjs2_react_amd_React_root_React_default.a.createElement("div", {
-    className: groupStyles
+    className: groupLabel_classNames.groupStyles
   }, external_commonjs_react_commonjs2_react_amd_React_root_React_default.a.createElement("span", null, props.label || 'Default'), external_commonjs_react_commonjs2_react_amd_React_root_React_default.a.createElement("span", {
-    className: groupIconStyles
+    className: groupLabel_classNames.groupIconStyles
   }, props.count || 0));
 };
 
+GroupLabel.propTypes = {
+  label: prop_types_default.a.string,
+  count: prop_types_default.a.number
+};
 /* harmony default export */ var groupLabel = (GroupLabel);
 // EXTERNAL MODULE: ./src/utils.js
-var utils = __webpack_require__(4);
+var utils = __webpack_require__(3);
 
 // CONCATENATED MODULE: ./src/dropdownItem.js
 function dropdownItem_defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
@@ -2918,19 +2926,13 @@ function dropdownItem_defineProperty(obj, key, value) { if (key in obj) { Object
 
 
 
+
 const optionClass = "react-ahead__menu-option";
 const activeClass = "react-head__menu-active-option";
-
-const getClassNames = () => {
-  const option = shared_default.a[optionClass] || optionClass;
-  const active = shared_default.a[activeClass] && `${shared_default.a[activeClass]} ${shared_default.a[optionClass]}` || `${activeClass} ${optionClass}`;
-  return {
-    active,
-    option
-  };
+const dropdownItem_classNames = {
+  active: shared_default.a[activeClass] && `${shared_default.a[activeClass]} ${shared_default.a[optionClass]}` || `${activeClass} ${optionClass}`,
+  option: shared_default.a[optionClass] || optionClass
 };
-
-const classNames = getClassNames();
 class dropdownItem_DropdownItem extends external_commonjs_react_commonjs2_react_amd_React_root_React_default.a.Component {
   constructor(props) {
     super(props);
@@ -2945,10 +2947,10 @@ class dropdownItem_DropdownItem extends external_commonjs_react_commonjs2_react_
         onItemSelection
       } = this.props;
       const source = Object(utils["getItemLabel"])(item);
-      const content = display ? display(item, 'option') : source;
+      const content = display ? display(source, item, 'option') : source;
       return external_commonjs_react_commonjs2_react_amd_React_root_React_default.a.createElement("div", {
         ref: this._elem,
-        className: isActive ? classNames.active : classNames.option,
+        className: isActive ? dropdownItem_classNames.active : dropdownItem_classNames.option,
         tabIndex: -1,
         onMouseOverCapture: evt => onHighlight(evt, idx),
         onClick: evt => onItemSelection(evt, source, item)
@@ -2983,6 +2985,18 @@ class dropdownItem_DropdownItem extends external_commonjs_react_commonjs2_react_
   }
 
 }
+
+dropdownItem_defineProperty(dropdownItem_DropdownItem, "propTypes", {
+  count: prop_types_default.a.number,
+  display: prop_types_default.a.func,
+  groupKey: prop_types_default.a.string,
+  idx: prop_types_default.a.number,
+  isActive: prop_types_default.a.bool,
+  item: prop_types_default.a.object,
+  onHighlight: prop_types_default.a.func,
+  onItemSelection: prop_types_default.a.func,
+  onActiveItemRendered: prop_types_default.a.func
+});
 // CONCATENATED MODULE: ./src/dropdown.js
 function dropdown_defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
@@ -2994,8 +3008,11 @@ function dropdown_defineProperty(obj, key, value) { if (key in obj) { Object.def
 const wrapperClass = "react-ahead__menu-wrapper";
 const contentClass = "react-ahead__menu-content";
 const noOptionClass = "react-ahead__menu-no-option";
-const dropdown_optionClass = "react-ahead__menu-option";
-const dropdown_activeClass = "react-head__menu-active-option";
+const dropdown_classNames = {
+  wrapper: shared_default.a[wrapperClass] || wrapperClass,
+  content: shared_default.a[contentClass] || contentClass,
+  noOption: shared_default.a[noOptionClass] || noOptionClass
+};
 class dropdown_Dropdown extends external_commonjs_react_commonjs2_react_amd_React_root_React_default.a.Component {
   constructor(props) {
     super(props);
@@ -3183,13 +3200,6 @@ class dropdown_Dropdown extends external_commonjs_react_commonjs2_react_amd_Reac
       }, "Loading ..."));
     });
 
-    this._classNames = {
-      wrapper: shared_default.a[wrapperClass] || wrapperClass,
-      content: shared_default.a[contentClass] || contentClass,
-      noOption: shared_default.a[noOptionClass] || noOptionClass,
-      option: shared_default.a[dropdown_optionClass] || dropdown_optionClass,
-      active: shared_default.a[dropdown_activeClass] && `${shared_default.a[dropdown_activeClass]} ${shared_default.a[dropdown_optionClass]}` || `${dropdown_activeClass} ${dropdown_optionClass}`
-    };
     this._groups = null;
     this._currGroup = null;
     this._manualMove = '';
@@ -3263,15 +3273,15 @@ class dropdown_Dropdown extends external_commonjs_react_commonjs2_react_amd_Reac
     } else {
       const message = this.props.showRemoteMessage ? "Type to search" : "No options";
       contents = external_commonjs_react_commonjs2_react_amd_React_root_React_default.a.createElement("div", {
-        className: this._classNames.noOption
+        className: dropdown_classNames.noOption
       }, message);
     }
 
     return external_commonjs_react_commonjs2_react_amd_React_root_React_default.a.createElement("div", {
       onClick: this.props.onClick,
-      className: this._classNames.wrapper + " " + this.props.className
+      className: dropdown_classNames.wrapper + " " + this.props.className
     }, this.renderShield(), external_commonjs_react_commonjs2_react_amd_React_root_React_default.a.createElement("div", {
-      className: this._classNames.content,
+      className: dropdown_classNames.content,
       ref: this._contentWrapper
     }, contents));
   }
@@ -3298,16 +3308,20 @@ dropdown_defineProperty(dropdown_Dropdown, "defaultProps", {
 
 const placeholderClass = "react-ahead__placeholder";
 const valueModeClass = "react-ahead__placeholder-value-mode";
+const placeholder_classNames = {
+  wrapperStyle: shared_default.a[placeholderClass] || placeholderClass,
+  valueModeStyle: shared_default.a[valueModeClass] || valueModeClass
+};
 
 const Placeholder = props => {
   if (!props.show || !props.text) {
     return null;
   }
 
-  let wrapperStyle = shared_default.a[placeholderClass] || placeholderClass;
+  let wrapperStyle = placeholder_classNames.wrapperStyle;
 
   if (props.valueDisplayMode) {
-    wrapperStyle += " " + (shared_default.a[valueModeClass] || valueModeClass);
+    wrapperStyle += " " + placeholder_classNames.valueModeStyle;
   }
 
   return external_commonjs_react_commonjs2_react_amd_React_root_React_default.a.createElement("div", {
@@ -3320,9 +3334,11 @@ const Placeholder = props => {
 
 
 const iconClass = "react-ahead__action-icon";
+const icon_classNames = {
+  iconStyle: shared_default.a[iconClass] || iconClass
+};
 
 const ControlIcon = props => {
-  const iconStyle = shared_default.a[iconClass] || iconClass;
   let {
     size,
     viewBox
@@ -3350,7 +3366,7 @@ const ControlIcon = props => {
     viewBox: viewBox,
     focusable: "false",
     "aria-hidden": "true",
-    className: iconStyle
+    className: icon_classNames.iconStyle
   }, external_commonjs_react_commonjs2_react_amd_React_root_React_default.a.createElement("path", {
     d: props.path
   })));
@@ -3368,6 +3384,11 @@ function selection_defineProperty(obj, key, value) { if (key in obj) { Object.de
 const containerClass = "react-ahead__selection-container";
 const selection_contentClass = "react-ahead__selection-content";
 const removalClass = "react-ahead__selection-removal";
+const selection_classNames = {
+  containerStyle: shared_default.a[containerClass] || containerClass,
+  contentStyle: shared_default.a[selection_contentClass] || selection_contentClass,
+  removalStyle: shared_default.a[removalClass] || removalClass
+};
 class selection_MultiSelection extends external_commonjs_react_commonjs2_react_amd_React_root_React_default.a.Component {
   constructor(props) {
     super(props);
@@ -3403,22 +3424,18 @@ class selection_MultiSelection extends external_commonjs_react_commonjs2_react_a
         },
         key: key
       }, external_commonjs_react_commonjs2_react_amd_React_root_React_default.a.createElement("div", {
-        className: this._containerStyle
+        className: selection_classNames.containerStyle
       }, external_commonjs_react_commonjs2_react_amd_React_root_React_default.a.createElement("div", {
         title: title,
-        className: this._contentStyle
+        className: selection_classNames.contentStyle
       }, content), external_commonjs_react_commonjs2_react_amd_React_root_React_default.a.createElement(icon, {
-        className: this._removalStyle,
+        className: selection_classNames.removalStyle,
         path: "M 14.348 14.849 c -0.469 0.469 -1.229 0.469 -1.697 0 l -2.651 -3.03 l -2.651 3.029 c -0.469 0.469 -1.229 0.469 -1.697 0 c -0.469 -0.469 -0.469 -1.229 0 -1.697 l 2.758 -3.15 l -2.759 -3.152 c -0.469 -0.469 -0.469 -1.228 0 -1.697 s 1.228 -0.469 1.697 0 l 2.652 3.031 l 2.651 -3.031 c 0.469 -0.469 1.228 -0.469 1.697 0 s 0.469 1.229 0 1.697 l -2.758 3.152 l 2.758 3.15 c 0.469 0.469 0.469 1.229 0 1.698 Z",
         size: "12",
         onClick: evt => this.props.onSelectionRemoval(evt, idx),
         onKeyDown: evt => this.handleRemovalKeydown(evt, idx)
       })));
     });
-
-    this._containerStyle = shared_default.a[containerClass] || containerClass;
-    this._contentStyle = shared_default.a[selection_contentClass] || selection_contentClass;
-    this._removalStyle = shared_default.a[removalClass] || removalClass;
   }
 
   render() {
@@ -3451,12 +3468,13 @@ selection_defineProperty(selection_MultiSelection, "propTypes", {
 const actionIcons_containerClass = "react-ahead__action-icons-container";
 const separatorClass = "react-ahead__action-icons-separator";
 const iconWrapperClass = "react-ahead__action-icons";
+const actionIcons_classNames = {
+  containerStyle: shared_default.a[actionIcons_containerClass] || actionIcons_containerClass,
+  separatorStyle: shared_default.a[separatorClass] || separatorClass,
+  iconWrapperStyle: shared_default.a[iconWrapperClass] || iconWrapperClass
+};
 
 const ActionIcons = props => {
-  const containerStyle = shared_default.a[actionIcons_containerClass] || actionIcons_containerClass;
-  const separatorStyle = shared_default.a[separatorClass] || separatorClass;
-  const iconWrapperStyle = shared_default.a[iconWrapperClass] || iconWrapperClass;
-
   const handleKeyDown = (evt, action) => {
     const {
       keyCode
@@ -3495,16 +3513,16 @@ const ActionIcons = props => {
   };
 
   return external_commonjs_react_commonjs2_react_amd_React_root_React_default.a.createElement("div", {
-    className: containerStyle
+    className: actionIcons_classNames.containerStyle
   }, external_commonjs_react_commonjs2_react_amd_React_root_React_default.a.createElement(icon, {
-    className: iconWrapperStyle,
+    className: actionIcons_classNames.iconWrapperStyle,
     path: "M 14.348 14.849 c -0.469 0.469 -1.229 0.469 -1.697 0 l -2.651 -3.03 l -2.651 3.029 c -0.469 0.469 -1.229 0.469 -1.697 0 c -0.469 -0.469 -0.469 -1.229 0 -1.697 l 2.758 -3.15 l -2.759 -3.152 c -0.469 -0.469 -0.469 -1.228 0 -1.697 s 1.228 -0.469 1.697 0 l 2.652 3.031 l 2.651 -3.031 c 0.469 -0.469 1.228 -0.469 1.697 0 s 0.469 1.229 0 1.697 l -2.758 3.152 l 2.758 3.15 c 0.469 0.469 0.469 1.229 0 1.698 Z",
     onClick: _evt => props.onClear(),
     onKeyDown: evt => handleKeyDown(evt, 'clear')
   }), external_commonjs_react_commonjs2_react_amd_React_root_React_default.a.createElement("span", {
-    className: separatorStyle
+    className: actionIcons_classNames.separatorStyle
   }), external_commonjs_react_commonjs2_react_amd_React_root_React_default.a.createElement(icon, {
-    className: iconWrapperStyle,
+    className: actionIcons_classNames.iconWrapperStyle,
     path: "M 4.516 7.548 c 0.436 -0.446 1.043 -0.481 1.576 0 l 3.908 3.747 l 3.908 -3.747 c 0.533 -0.481 1.141 -0.446 1.574 0 c 0.436 0.445 0.408 1.197 0 1.615 c -0.406 0.418 -4.695 4.502 -4.695 4.502 c -0.217 0.223 -0.502 0.335 -0.787 0.335 s -0.57 -0.112 -0.789 -0.335 c 0 0 -4.287 -4.084 -4.695 -4.502 s -0.436 -1.17 0 -1.615 Z",
     onClick: _evt => props.onDropdown(),
     onKeyDown: evt => handleKeyDown(evt, 'dropdown')
@@ -3534,6 +3552,12 @@ const src_containerClass = "react-ahead__control-container";
 const src_wrapperClass = "react-ahead__control-wrapper";
 const src_activeClass = "react-ahead__control-active";
 const inputWrapperClass = "react-ahead__input-wrapper";
+const src_classNames = {
+  container: shared_default.a[src_containerClass] || src_containerClass,
+  wrapper: shared_default.a[src_wrapperClass] || src_wrapperClass,
+  active: shared_default.a[src_activeClass] || src_activeClass,
+  inputWrapper: shared_default.a[inputWrapperClass] || inputWrapperClass
+};
 /**
  * The React UI for the auto-complete control
  */
@@ -3611,11 +3635,8 @@ class src_ReactAhead extends external_commonjs_react_commonjs2_react_amd_React_r
       }
 
       return options.filter(item => {
-        if (typeof item === 'object') {
-          return !this._selKeys.hasOwnProperty(item['source']);
-        }
-
-        return !this._selKeys.hasOwnProperty(item);
+        const label = Object(utils["getItemLabel"])(item);
+        return !this._selKeys.hasOwnProperty(label);
       });
     });
 
@@ -3654,10 +3675,16 @@ class src_ReactAhead extends external_commonjs_react_commonjs2_react_amd_React_r
 
       if (value !== '') {
         this._engine.find(value.trimEnd(), !!this.props.remote, options => {
-          // cache the original search results, before being filtered
-          this._lastSearch = options; // filter 
+          if (this.props.grouped) {
+            options = this.groupOptions(options);
+          } // cache the original search results, before being filtered
 
-          options = this.getOptions(options);
+
+          this._lastSearch = options; // filter: against current selections, and since we've alraedy
+          //         handled the grouping use case, always set group parameter 
+          //         to false.
+
+          options = this.getOptions(options, this.state.selection, false);
           this._lastVal = {
             value,
             options
@@ -3962,23 +3989,17 @@ class src_ReactAhead extends external_commonjs_react_commonjs2_react_amd_React_r
       let text;
 
       if (singleSelDone) {
-        text = selection[0];
-
-        if (typeof text === 'object') {
-          text = text['source'].toString();
-        } else {
-          text = text.toString();
-        }
+        text = Object(utils["getItemLabel"])(selection[0]);
 
         if (displayFormatter) {
-          text = displayFormatter(text, 'display');
+          text = displayFormatter(text, selection[0], 'display');
         }
       } else {
         text = placeholder;
       }
 
       return external_commonjs_react_commonjs2_react_amd_React_root_React_default.a.createElement("div", {
-        className: this._classNames.inputWrapper
+        className: src_classNames.inputWrapper
       }, external_commonjs_react_commonjs2_react_amd_React_root_React_default.a.createElement(src_placeholder, {
         show: placeholder && selection.length === 0 && !value || singleSelDone && !value,
         text: text,
@@ -4011,13 +4032,6 @@ class src_ReactAhead extends external_commonjs_react_commonjs2_react_amd_React_r
 
       this._engine.add(this.state.options);
     }
-
-    this._classNames = {
-      container: shared_default.a[src_containerClass] || src_containerClass,
-      wrapper: shared_default.a[src_wrapperClass] || src_wrapperClass,
-      active: shared_default.a[src_activeClass] || src_activeClass,
-      inputWrapper: shared_default.a[inputWrapperClass] || inputWrapperClass
-    };
   }
 
   componentDidUpdate(prevProps) {
@@ -4073,11 +4087,11 @@ class src_ReactAhead extends external_commonjs_react_commonjs2_react_amd_React_r
       options = this.state.options || [];
     }
 
-    let wrapperClassName = (className || '') + " " + this._classNames.container;
-    let inputClassName = (customClassNames.input || '') + " " + this._classNames.wrapper;
+    let wrapperClassName = (className || '') + " " + src_classNames.container;
+    let inputClassName = (customClassNames.input || '') + " " + src_classNames.wrapper;
 
     if (this._focusType !== 0) {
-      inputClassName = (customClassNames.active || this._classNames.active) + " " + inputClassName;
+      inputClassName = (customClassNames.active || src_classNames.active) + " " + inputClassName;
     }
 
     return external_commonjs_react_commonjs2_react_amd_React_root_React_default.a.createElement("div", {

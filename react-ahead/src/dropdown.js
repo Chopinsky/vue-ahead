@@ -7,8 +7,12 @@ import styles from './shared.css';
 const wrapperClass = "react-ahead__menu-wrapper";
 const contentClass = "react-ahead__menu-content";
 const noOptionClass = "react-ahead__menu-no-option";
-const optionClass = "react-ahead__menu-option";
-const activeClass = "react-head__menu-active-option";
+
+const classNames = {
+  wrapper: styles[wrapperClass] || wrapperClass,
+  content: styles[contentClass] || contentClass,
+  noOption: styles[noOptionClass] || noOptionClass,
+};
 
 export default class Dropdown extends React.Component {
   static propTypes = {
@@ -33,14 +37,6 @@ export default class Dropdown extends React.Component {
 
   constructor(props) {
     super(props);
-
-    this._classNames = {
-      wrapper: styles[wrapperClass] || wrapperClass,
-      content: styles[contentClass] || contentClass,
-      noOption: styles[noOptionClass] || noOptionClass,
-      option: styles[optionClass] || optionClass,
-      active: (styles[activeClass] && `${styles[activeClass]} ${styles[optionClass]}`) || `${activeClass} ${optionClass}`,
-    };
 
     this._groups = null;
     this._currGroup = null;
@@ -309,18 +305,18 @@ export default class Dropdown extends React.Component {
       const message = this.props.showRemoteMessage ? "Type to search" : "No options";
 
       contents = (
-        <div className={this._classNames.noOption}>{message}</div>
+        <div className={classNames.noOption}>{message}</div>
       );
     }
 
     return (
       <div
         onClick={this.props.onClick}
-        className={this._classNames.wrapper + " " + this.props.className}
+        className={classNames.wrapper + " " + this.props.className}
       >
         {this.renderShield()}
         <div 
-          className={this._classNames.content}
+          className={classNames.content}
           ref={this._contentWrapper}
         >
           {contents}

@@ -8,6 +8,12 @@ const containerClass = "react-ahead__selection-container";
 const contentClass = "react-ahead__selection-content";
 const removalClass = "react-ahead__selection-removal";
 
+const classNames = {
+  containerStyle: styles[containerClass] || containerClass,
+  contentStyle: styles[contentClass] || contentClass,
+  removalStyle: styles[removalClass] || removalClass,
+};
+
 export default class MultiSelection extends React.Component {
   static propTypes = {
     display: PropTypes.func,
@@ -17,10 +23,6 @@ export default class MultiSelection extends React.Component {
 
   constructor(props) {
     super(props);
-
-    this._containerStyle = styles[containerClass] || containerClass;
-    this._contentStyle = styles[contentClass] || contentClass;
-    this._removalStyle = styles[removalClass] || removalClass;
   }
 
   handleRemovalKeydown = (evt, idx) => {
@@ -55,12 +57,12 @@ export default class MultiSelection extends React.Component {
         }}
         key={key}
       >
-        <div className={this._containerStyle}>
-          <div title={title} className={this._contentStyle}>
+        <div className={classNames.containerStyle}>
+          <div title={title} className={classNames.contentStyle}>
             {content}
           </div>
           <ControlIcon 
-            className={this._removalStyle}
+            className={classNames.removalStyle}
             path={"M 14.348 14.849 c -0.469 0.469 -1.229 0.469 -1.697 0 l -2.651 -3.03 l -2.651 3.029 c -0.469 0.469 -1.229 0.469 -1.697 0 c -0.469 -0.469 -0.469 -1.229 0 -1.697 l 2.758 -3.15 l -2.759 -3.152 c -0.469 -0.469 -0.469 -1.228 0 -1.697 s 1.228 -0.469 1.697 0 l 2.652 3.031 l 2.651 -3.031 c 0.469 -0.469 1.228 -0.469 1.697 0 s 0.469 1.229 0 1.697 l -2.758 3.152 l 2.758 3.15 c 0.469 0.469 0.469 1.229 0 1.698 Z"}
             size={"12"}
             onClick={evt => this.props.onSelectionRemoval(evt, idx)}
