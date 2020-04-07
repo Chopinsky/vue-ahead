@@ -1,0 +1,51 @@
+{
+  "name": "vue-ahead",
+  "version": "0.1.0",
+  "private": true,
+  "main": "./dist/vue-ahead.common.js",
+  "scripts": {
+    "start": "vue-cli-service serve",
+    "build": "vue-cli-service build --target lib --name vue-ahead src/main.js && rm ./dist/demo.html",
+    "build:watch": "vue-cli-service build --target lib --name vue-ahead src/main.js --watch",
+    "lint": "vue-cli-service lint"
+  },
+  "dependencies": {
+    "core-js": "^3.6.4",
+    "vue": "^2.6.11"
+  },
+  "devDependencies": {
+    "@babel/plugin-proposal-export-default-from": "^7.8.3",
+    "@vue/cli-plugin-babel": "~4.2.0",
+    "@vue/cli-plugin-eslint": "~4.2.0",
+    "@vue/cli-service": "~4.2.0",
+    "babel-eslint": "^10.0.3",
+    "eslint": "^6.7.2",
+    "eslint-plugin-vue": "^6.1.2",
+    "vue-template-compiler": "^2.6.11"
+  },
+  "eslintConfig": {
+    "root": true,
+    "env": {
+      "node": true
+    },
+    "extends": [
+      "plugin:vue/essential",
+      "eslint:recommended"
+    ],
+    "parserOptions": {
+      "parser": "babel-eslint"
+    },
+    "ignorePatterns": ["*.md", "node_modules/"],
+    "rules": {
+      "space-before-function-paren": 0,
+      "semi": [2, "always"],
+      "no-console": 1,
+      "indent": [1, "tab", { "SwitchCase": 1 }],
+      "no-tabs": [1, { "allowIndentationTabs": true }]
+    }
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions"
+  ]
+}

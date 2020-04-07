@@ -1,0 +1,1 @@
+export VueAhead from './control.vue';
