@@ -1,2 +1,7 @@
 /node_modules
+/dist
 *.md
+*.umd.js
+*.common.js
+*.unpkg.js
+*.min.js

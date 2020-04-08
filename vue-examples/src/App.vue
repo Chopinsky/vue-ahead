@@ -3,11 +3,13 @@
     <img alt="Vue logo" src="./assets/logo.png">
 		<br/>
 		<VueAhead />
+    <br/>
+    <VueAhead />
   </div>
 </template>
 
 <script>
-import { VueAhead } from 'vue-ahead';
+import VueAhead from 'vue-ahead';
 
 export default {
 	name: 'App',

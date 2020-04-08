@@ -1,3 +1,7 @@
 *.md
 *.common.js
+*.umd.js
+*.unpkg.js
+*.min.js
+dist/
 node_modules/
