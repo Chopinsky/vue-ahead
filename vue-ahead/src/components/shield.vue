@@ -1,0 +1,49 @@
+<template>
+<div
+  class="control_input_shield" 
+  :style="style"
+  @click="$emit('click', $event)"
+>  
+</div>
+</template>
+
+<script>
+const style = {
+  display: "none",
+  backgroundColor: "gray",
+  width: "100%",
+	height: "100%",
+	position: "absolute",
+	top: 0,
+	left: 0,
+	zIndex: 100000,
+};
+
+export default {
+  props: {
+    on: Boolean,
+  },
+  data: function () {
+    return {
+      style: Object.assign({}, style),
+    };
+  },
+  watch: {
+    on: function () {
+      this.style.display = this.on ? "inherit" : "none";
+    },
+  },
+}
+</script>
+
+<style scoped>
+.control_input_shield {
+	width: 100%;
+	height: 100%;
+	position: absolute;
+	top: 0;
+	left: 0;
+	z-index: 100000;
+}
+
+</style>

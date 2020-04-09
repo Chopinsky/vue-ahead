@@ -1,35 +1,111 @@
 <template>
-  <div class="control_container" @mousedown="onControlClick" >
-		<div class="control_input_shield" v-bind:style="{ display: shieldDisplay, backgroundColor: 'black' }"></div>
-    <h1>control ... </h1>
-		<div>content</div>
+  <div class="control_container">
+		<Shield 
+			v-bind:on="shield" 
+			@click="handleShieldClick" 
+		/>
+		<Input 
+			ref="inputControl"
+			:value="value"
+			@change="handleInputChange"
+			@click="handleInputClick"
+			@focus="handleFocus"
+			@blur="handleInputBlur"
+		/>
+		<Dropdown
+			v-if="open"
+			:open="open"
+			@click="handleDropdownClick"
+		/>
   </div>
 </template>
 
 <script>
+import Shield from './components/shield.vue';
+import Input from './components/input.vue';
+import Dropdown from './components/dropdown.vue';
+
+const focusStatus = {
+	None: 0,
+	Input: 1,
+	InputControl: 2,
+	Dropdown: 3,
+	Shield: 4,
+};
 
 export default {
 	inheritAttrs: false,
 	name: "VueAhead",
+	components: {
+		Shield,
+		Input,
+		Dropdown,
+	},
+	props: {
+		initOptions: Array,
+	},
 	data() {
 		this._initDropdownOpen = false;
 
 		return {
-			focuseStatus: 0,
+			focusStatus: focusStatus.None,
 			open: false,
 			shield: false,
 			shieldDisplay: "none",
+			value: '',
 		};
 	},
 	methods: {
-		onControlClick() {
-			this.focuseStatus = 2;
-			this._initDropdownOpen = this.open;
+		focusInput: function () {
+			setTimeout(() => {
+				console.log('moving focus to the input, before:', this.focusStatus);
 
-			this.shield = !this.shield;
-			this.shieldDisplay = this.shield ? "inherit" : "none";
+				if (this.focusStatus !== focusStatus.Input) {
+					this.$refs.inputControl.focus();
+					this.open = true;
+				}
 
-			console.log(this.shieldDisplay)
+				this.focusStatus = focusStatus.Input;
+			}, 0);
+		},
+		handleFocus: function (evt) {
+			console.log('control get focus ... ', this.focusStatus);
+
+			if (this.focusStatus === focusStatus.None) {
+				this.focusInput();	
+			}
+		},
+		handleShieldClick: function (evt) {
+			// move the cursor back to the input field
+			this.focusStatus = focusStatus.Shield;
+			this.focusInput();
+			
+			console.log("shield clicked ... ", evt);
+		},
+		handleInputClick: function (evt) {
+			this.focusStatus = focusStatus.InputControl;
+			this.focusInput();
+
+			console.log('input clicked ...', evt);
+		},
+		handleInputBlur: function (evt) {
+			if (this.focusStatus <= focusStatus.Input) {
+				this.focusStatus = focusStatus.None;
+
+				this.open = false;
+				this.value = '';
+			}
+
+			console.log('blur?', this.focusStatus);
+		},
+		handleInputChange: function (evt, value) {
+			this.value = value;
+		},
+		handleDropdownClick: function (evt) {
+			this.focusStatus = focusStatus.Dropdown;
+			this.focusInput();
+
+			console.log('dropdown clicked ...', evt);
 		},
 	},
 	computed: {
@@ -65,15 +141,6 @@ export default {
 
 .control_active {
   border: 1px solid blue;
-}
-
-.control_input_shield {
-	width: 100%;
-	height: 100%;
-	position: absolute;
-	top: 0;
-	left: 0;
-	z-index: 100000;
 }
 
 .input_container {	

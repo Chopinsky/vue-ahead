@@ -1,12 +1,5 @@
 import React from "react";
 import PropTypes from "prop-types";
-import styles from "./shared.css";
-
-const inputClass = "react-ahead__input-inner-wrapper";
-
-const classNames = {
-  inputStyle: styles[inputClass] || inputClass,
-};
 
 export default class Input extends React.Component {
   static propTypes = {
@@ -68,7 +61,7 @@ export default class Input extends React.Component {
 
     const { keyCode } = evt;
 
-    console.log('key pressed:', keyCode);
+    // console.log('key pressed:', keyCode);
     
     switch (keyCode) {
       case 8:
@@ -115,12 +108,7 @@ export default class Input extends React.Component {
 
   render() {
     return (
-      <div
-        style={{
-          display: "inline-block",
-        }}
-        className={classNames.inputStyle}
-      >
+      <div style={{ display: "inline-block", }}>
         <input
           autoCapitalize="none"
           autoComplete="off"
@@ -162,7 +150,8 @@ export default class Input extends React.Component {
             letterSpacing: "normal",
             textTransform: "none"
           }}
-        ></div>
+        >
+        </div>
       </div>
     );
   }
