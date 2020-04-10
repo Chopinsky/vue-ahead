@@ -660,6 +660,7 @@ export default class ReactAhead extends React.Component {
     } = this.state;
 
     const singleSelDone = !isMulti && selection.length === 1;
+    const show = value === '' && singleSelDone || (placeholder && selection.length === 0);
     
     let text;
     if (singleSelDone) {
@@ -674,22 +675,24 @@ export default class ReactAhead extends React.Component {
 
     return (
       <div className={classNames.inputWrapper}>
-        <Placeholder 
-          show={
-            (placeholder && selection.length === 0 && !value)
-            || (singleSelDone && !value)
-          }
-          text={text}
-          valueDisplayMode={singleSelDone}
-        />
+        {
+          show
+          ?
+            <Placeholder
+              text={text}
+              valueDisplayMode={singleSelDone}
+            />
+          :
+            null
+        }
         {
           isMulti
-            ?
+          ?
             <MultiSelection
               selection={selection}
               onSelectionRemoval={this.handleSelectionRemoval}
             />
-            :
+          :
             null
         }
         <Input

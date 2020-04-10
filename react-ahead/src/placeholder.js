@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import styles from './shared.css';
 
 const placeholderClass = "react-ahead__placeholder";
@@ -10,7 +11,7 @@ const classNames = {
 };
 
 const Placeholder = props => {
-  if (!props.show || !props.text) {
+  if (!props.text) {
     return null;
   }
 
@@ -25,5 +26,10 @@ const Placeholder = props => {
     </div>
   );
 };
+
+Placeholder.propTypes = {
+  text: PropTypes.string.isRequired,
+  valueDisplayMode: PropTypes.bool,
+}
 
 export default Placeholder;

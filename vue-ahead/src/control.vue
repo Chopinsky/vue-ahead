@@ -6,11 +6,15 @@
 		/>
 		<Input 
 			ref="inputControl"
+			:placeholder="placeholder"
+			:selection="selection"
 			:value="value"
+			:singleSelection="!isMulti && selection.length === 1"
 			@change="handleInputChange"
-			@click="handleInputClick"
+			@mousedown="handleInputClick"
 			@focus="handleFocus"
 			@blur="handleInputBlur"
+			@special-key="handleSpecialKey"
 		/>
 		<Dropdown
 			v-if="open"
@@ -28,9 +32,10 @@ import Dropdown from './components/dropdown.vue';
 const focusStatus = {
 	None: 0,
 	Input: 1,
-	InputControl: 2,
-	Dropdown: 3,
-	Shield: 4,
+	Container: 2,
+	Icon: 3,
+	Dropdown: 4,
+	Shield: 5,
 };
 
 export default {
@@ -43,6 +48,8 @@ export default {
 	},
 	props: {
 		initOptions: Array,
+		isMulti: Boolean,
+		placeholder: String,
 	},
 	data() {
 		this._initDropdownOpen = false;
@@ -50,6 +57,7 @@ export default {
 		return {
 			focusStatus: focusStatus.None,
 			open: false,
+			selection: [],
 			shield: false,
 			shieldDisplay: "none",
 			value: '',
@@ -58,7 +66,7 @@ export default {
 	methods: {
 		focusInput: function () {
 			setTimeout(() => {
-				console.log('moving focus to the input, before:', this.focusStatus);
+				// console.log('moving focus to the input, before:', this.focusStatus);
 
 				if (this.focusStatus !== focusStatus.Input) {
 					this.$refs.inputControl.focus();
@@ -68,35 +76,36 @@ export default {
 				this.focusStatus = focusStatus.Input;
 			}, 0);
 		},
-		handleFocus: function (evt) {
-			console.log('control get focus ... ', this.focusStatus);
+		focuseReset: function () {
+			this.focusStatus = focusStatus.None;
+			this.open = false;
+			this.value = '';
+		},
+		handleFocus: function (evt, targetType) {
+			this.open = true;
+			this.focusStatus = targetType === "input" ? focusStatus.Input : focusStatus.Icon;
 
-			if (this.focusStatus === focusStatus.None) {
-				this.focusInput();	
-			}
+			// console.log('control get focus ... ', this.focusStatus, targetType);
 		},
 		handleShieldClick: function (evt) {
 			// move the cursor back to the input field
 			this.focusStatus = focusStatus.Shield;
 			this.focusInput();
 			
-			console.log("shield clicked ... ", evt);
+			// console.log("shield clicked ... ", evt);
 		},
 		handleInputClick: function (evt) {
-			this.focusStatus = focusStatus.InputControl;
+			this.focusStatus = focusStatus.Container;
 			this.focusInput();
 
-			console.log('input clicked ...', evt);
+			// console.log('input clicked ...', evt);
 		},
-		handleInputBlur: function (evt) {
-			if (this.focusStatus <= focusStatus.Input) {
-				this.focusStatus = focusStatus.None;
+		handleInputBlur: function (evt, force) {
+			// console.log('blur?', this.focusStatus);
 
-				this.open = false;
-				this.value = '';
+			if (this.focusStatus <= focusStatus.Input || force) {
+				this.focuseReset();
 			}
-
-			console.log('blur?', this.focusStatus);
 		},
 		handleInputChange: function (evt, value) {
 			this.value = value;
@@ -105,7 +114,23 @@ export default {
 			this.focusStatus = focusStatus.Dropdown;
 			this.focusInput();
 
-			console.log('dropdown clicked ...', evt);
+			// console.log('dropdown clicked ...', evt);
+		},
+		handleSpecialKey: function (key) {
+			// console.log('getting special key: ', key);
+
+			switch (key) {
+				case 'tab':
+					this.focusStatus = focusStatus.Icon;
+					break;
+
+				case 'tab-out':
+					this.focuseReset();
+					break;
+			
+				default:
+					break;
+			}
 		},
 	},
 	computed: {

@@ -122,12 +122,9 @@
   outline: 2px dotted gray;
 }
 
-.react-ahead__action-icon {
-  display: inline-block;
-  fill: currentcolor;
-  line-height: 1;
-  stroke: currentcolor;
-  stroke-width: 0;
+.react-ahead__action-icons:active {
+  outline: none !important;
+  color: rgb(92, 92, 92);
 }
 
 .react-ahead__action-icons-separator {
@@ -137,6 +134,14 @@
   margin-top: 8px;
   width: 1px;
   box-sizing: border-box;
+}
+
+.react-ahead__action-icon {
+  display: inline-block;
+  fill: currentcolor;
+  line-height: 1;
+  stroke: currentcolor;
+  stroke-width: 0;
 }
 
 .react-ahead__menu-wrapper {

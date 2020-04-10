@@ -3,11 +3,16 @@
     <img alt="Vue logo" src="./assets/logo.png">
 		<br/>
     <div class="control">
-			<VueAhead />
+			<VueAhead 
+        :initOptions="colors"
+				placeholder="select a color"
+      />
     </div>
     <br/>
     <div class="control">
-      <VueAhead />
+      <VueAhead 
+				placeholder="select a number"
+			/>
     </div>
   </div>
 </template>
@@ -20,7 +25,19 @@ export default {
 	components: {
 		VueAhead,
 	},
-	mounted: () => {
+	data: function () {
+		return {
+			colors: [
+				{ label: 'white' },
+				{ label: 'blue' },
+				{ label: 'green' },
+				{ label: 'gray' },
+				{ label: 'black' },
+				{ label: 'yellow' },
+			],
+		};
+	},
+	mounted: function () {
 		console.log(VueAhead);
 	},
 	methods: {
