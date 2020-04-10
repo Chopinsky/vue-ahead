@@ -9,20 +9,22 @@
   <div class="input_container">
 
     <div 
-      v-if="value === '' && singleSelection || (placeholder && selection.length === 0)"
+      v-if="phText !== ''"
       :class="classes.placeholder"
     >
       {{ phText }}
     </div>
 
-    <div 
-      v-for="(item, index) in selection" 
-      :key="(index.toString() + '#' + item.label)"
-    >
-      <SelectionItem 
-        :item="item"
-        :index="index"
-      />
+    <div v-if="isMulti && selection.length > 0">
+      <div
+        v-for="(item, index) in selection" 
+        :key="getSelectionKey(item, index)"
+      >
+        <SelectionItem 
+          :item="item"
+          :index="index"
+        />
+      </div>
     </div>
 
     <div style="display: 'inline-block';">
@@ -54,14 +56,14 @@
     <ControlIcon 
       class="action_icon"
       :path="path.clear"
-      @click="handleClear"
+      @mousedown.native.stop="$emit('icon-event', $event, 'clear')"
       @keydown.stop="handleIconKeydown($event, 'clear')"
     />
     <span class="action_icon_separator"></span>
     <ControlIcon
       class="action_icon" 
       :path="path.dropdown"
-      @click="handleDropdown"
+      @mousedown.native.stop="$emit('icon-event', $event, 'dropdown')"
       @keydown.stop="handleIconKeydown($event, 'dropdown')"
     />
   </div>
@@ -72,7 +74,7 @@
 <script>
 import SelectionItem from './selectionItem.vue';
 import ControlIcon from './controlIcon.vue';
-import { getItemLabel } from '../helpers/utils';
+import { getItemLabel, getDisplay } from '../helpers/utils';
 
 const inputStyle = {
   boxSizing: "content-box",
@@ -111,28 +113,29 @@ export default {
   props: {
     display: Function,
     isMulti: Boolean,
-    placeholder: String,
-    selection: Array,
-    singleSelection: Boolean,
-    value: String,
+    placeholder: {
+      type: String,
+      default: '',
+    },
+    selection: { 
+      type: Array,
+      default: [],
+    },
+    value: {
+      type: String,
+      default: '',
+    },
   },
   components: {
     ControlIcon,
     SelectionItem,
   },
-  mounted: function () {
-    console.log('selection?', this.singleSelection, this.selection, this.selection.length);
-  },
   data: function () {
     let placeholder, phText;
 
-    if (this.singleSelection) {
+    if (!this.isMulti && this.selection.length === 1) {
       placeholder = "placeholder placeholder_values";
-      phText = getItemLabel(this.selection[0]);
-
-      if (this.display) {
-        phText = this.display(phText, this.selection[0], 'selection');
-      }
+      phText = getDisplay(this.selection[0], this.display, 'selection');
     } else {
       placeholder = "placeholder";
       phText = this.placeholder || '';
@@ -161,6 +164,9 @@ export default {
     },
     focus: function () {
       this.$refs.input.focus();
+    },
+    getSelectionKey: function (item, index) {
+      return index.toString() + '#' + getItemLabel(item).substr(0, 5);
     },
     handleFocus: function (evt) {
       // check if it's the icons that get the focus
@@ -230,11 +236,9 @@ export default {
           break;
       }
     },
-    handleClear: function (evt) {
-      console.log('clear clicked ... ');
-    },
     handleDropdown: function (evt) {
-      console.log('dropdown clicked ...');
+      
+      this.$emit('icon-event', evt, 'dropdown');
     },
     handleIconKeydown: function (evt, type) {
       const {keyCode} = evt;
@@ -251,7 +255,7 @@ export default {
           // up
         case 40:
           // down
-          
+
           break;
       
         case 9:
@@ -269,17 +273,21 @@ export default {
   },
   watch: {
     value: function () {
-      if (this.value === '') {        
+      if (this.value === '') {
+        // reset the input control width
         this.clear();
-      }
-    },
-    singleSelection: function () {
-      if (this.singleSelection) {
-        this.classes.placeholder = "placeholder placeholder_values";
-        this.phText = this.selection[0].toString();
-      } else {
-        this.classes.placeholder = "placeholder";
-        this.phText = this.placeholder || '';
+
+        // update the display style and/or content
+        if (!isMulti && this.selection.length === 1) {
+          this.classes.placeholder = "placeholder placeholder_values";
+          this.phText = getDisplay(this.selection[0], this.display, 'selection');
+        } else {
+          this.classes.placeholder = "placeholder";
+          this.phText = this.placeholder || '';
+        }
+      } else if (this.phText) {
+        // reset the placeholder text
+        this.phText = '';
       }
     },
   }

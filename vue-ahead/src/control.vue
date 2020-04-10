@@ -7,13 +7,14 @@
 		<Input 
 			ref="inputControl"
 			:placeholder="placeholder"
+			:isMulti="isMulti"
 			:selection="selection"
 			:value="value"
-			:singleSelection="!isMulti && selection.length === 1"
 			@change="handleInputChange"
 			@mousedown="handleInputClick"
 			@focus="handleFocus"
 			@blur="handleInputBlur"
+			@icon-event="handleIconEvent"
 			@special-key="handleSpecialKey"
 		/>
 		<Dropdown
@@ -57,20 +58,20 @@ export default {
 		return {
 			focusStatus: focusStatus.None,
 			open: false,
-			selection: [],
+			selection: [{ label: 'ab' }, { label: 'cd' }],
 			shield: false,
 			shieldDisplay: "none",
 			value: '',
 		};
 	},
 	methods: {
-		focusInput: function () {
+		focusInput: function (dropdownState = null) {
 			setTimeout(() => {
 				// console.log('moving focus to the input, before:', this.focusStatus);
 
 				if (this.focusStatus !== focusStatus.Input) {
 					this.$refs.inputControl.focus();
-					this.open = true;
+					this.open = dropdownState === null ? true : dropdownState;
 				}
 
 				this.focusStatus = focusStatus.Input;
@@ -99,6 +100,33 @@ export default {
 			this.focusInput();
 
 			// console.log('input clicked ...', evt);
+		},
+		handleIconEvent: function (evt, type) {
+			// handle icon's click event, this event will NOT be bubbled up and thus
+			// we need to work on state setups we should do from the 
+			// 'handleInputClick' handler.
+			this.focusStatus = focusStatus.Container;
+
+			switch (type) {
+				case "clear":
+					this.value = '';
+
+					//todo: reset the options
+
+					break;
+
+				case "dropdown":
+					this.open = !this.open;
+
+					break;
+			
+				default:
+					break;
+			}
+
+			// if the dropdown icon is clicked, toggle the dropdown menu, otherwise,
+			// keep it open.
+			this.focusInput(type === "dropdown" ? this.open : null);
 		},
 		handleInputBlur: function (evt, force) {
 			// console.log('blur?', this.focusStatus);

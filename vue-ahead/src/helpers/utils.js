@@ -1,6 +1,6 @@
 const defaultGroupName = 'default';
 
-const getItemLabel = item => {
+const getItemLabel = (item) => {
   let src = typeof item === 'object' ? item['label'] : item;
 
   if (typeof src !== 'string') {
@@ -10,7 +10,17 @@ const getItemLabel = item => {
   return src
 };
 
-const getGroupKey = item => {
+const getDisplay = (item, display, type) => {
+  let label = getItemLabel(item);
+
+  if (display) {
+    label = display(label, item, type);
+  }
+
+  return label;
+};
+
+const getGroupKey = (item) => {
   let groupKey =
     typeof item === 'object' ? item['group'] : defaultGroupName;
 
@@ -23,6 +33,7 @@ const getGroupKey = item => {
 };
 
 module.exports = {
-  getItemLabel,
+  getDisplay,
   getGroupKey,
+  getItemLabel,
 };
