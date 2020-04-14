@@ -1,28 +1,32 @@
 <template>
-  <div class="control_container">
-		<Shield 
-			v-bind:on="shield" 
-			@click="handleShieldClick" 
-		/>
-		<Input 
-			ref="inputControl"
-			:placeholder="placeholder"
-			:isMulti="isMulti"
-			:selection="selection"
-			:value="value"
-			@change="handleInputChange"
-			@mousedown="handleInputClick"
-			@focus="handleFocus"
-			@blur="handleInputBlur"
-			@icon-event="handleIconEvent"
-			@special-key="handleSpecialKey"
-		/>
-		<Dropdown
-			v-if="open"
-			:open="open"
-			@click="handleDropdownClick"
-		/>
-  </div>
+<div :class="className">
+	<Shield 
+		v-bind:on="shield" 
+		@click="handleShieldClick" 
+	/>
+	<Input 
+		ref="inputControl"
+		:active="focusStatus !== 0"
+		:customClassName="customClassName"
+		:isMulti="isMulti"
+		:placeholder="placeholder"
+		:selection="selection"
+		:value="value"
+		@change="handleInputChange"
+		@mousedown="handleInputClick"
+		@focus="handleFocus"
+		@blur="handleInputBlur"
+		@icon-event="handleIconEvent"
+		@special-key="handleSpecialKey"
+	/>
+	<Dropdown
+		v-if="open"
+		:className="(customClassName && customClassName.dropdown) || ''"
+ 		:open="open"
+		:options="initOptions"
+		@item-selection="handleItemSelection"
+	/>
+</div>
 </template>
 
 <script>
@@ -48,6 +52,7 @@ export default {
 		Dropdown,
 	},
 	props: {
+		customClassName: Object,
 		initOptions: Array,
 		isMulti: Boolean,
 		placeholder: String,
@@ -56,6 +61,7 @@ export default {
 		this._initDropdownOpen = false;
 
 		return {
+			className: this.getClassName(),
 			focusStatus: focusStatus.None,
 			open: false,
 			selection: [{ label: 'ab' }, { label: 'cd' }],
@@ -81,6 +87,19 @@ export default {
 			this.focusStatus = focusStatus.None;
 			this.open = false;
 			this.value = '';
+		},
+		getClassName: function () {
+			let className = "control_container";
+
+			if (this.class) {
+				className += " " + this.class;
+			}
+
+			if (this.customClassName && this.customClassName.control) {
+				className += " " + this.customClassName.control;
+			}
+
+			return className;
 		},
 		handleFocus: function (evt, targetType) {
 			this.open = true;
@@ -138,11 +157,12 @@ export default {
 		handleInputChange: function (evt, value) {
 			this.value = value;
 		},
-		handleDropdownClick: function (evt) {
+		handleItemSelection: function (evt) {
+			// console.log('dropdown clicked ...', evt);
+
 			this.focusStatus = focusStatus.Dropdown;
 			this.focusInput();
 
-			// console.log('dropdown clicked ...', evt);
 		},
 		handleSpecialKey: function (key) {
 			// console.log('getting special key: ', key);
@@ -161,7 +181,13 @@ export default {
 			}
 		},
 	},
-	computed: {
+	watch: {
+		class: function () {
+			this.className = this.getClassName();
+		},
+		customClasses: function () {
+			this.className = this.getClassName();
+		},
 	},
 };
 </script>

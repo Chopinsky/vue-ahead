@@ -5,7 +5,7 @@ import { getItemLabel } from './utils';
 import styles from './shared.css';
 
 const optionClass = "react-ahead__menu-option";
-const activeClass = "react-head__menu-active-option";
+const activeClass = "react-ahead__menu-active-option";
 
 const classNames = {
   active: (styles[activeClass] && `${styles[activeClass]} ${styles[optionClass]}`) || `${activeClass} ${optionClass}`,

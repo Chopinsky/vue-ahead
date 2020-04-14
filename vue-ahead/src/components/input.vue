@@ -1,11 +1,10 @@
 <template>
 <div 
-  class="control_wrapper" 
+  :class="classes.wrapper" 
   @mousedown.stop="$emit('mousedown', $event)"
   @focus.capture="handleFocus"
   @blur.capture="$emit('blur', $event)"
 >
-
   <div class="input_container">
 
     <div 
@@ -25,8 +24,8 @@
           :index="index"
         />
       </div>
-    </div>
 
+    </div>
     <div style="display: 'inline-block';">
 
       <input           
@@ -49,25 +48,26 @@
       </div>
 
     </div>
-
   </div>
-
   <div class="icons_container">
+
     <ControlIcon 
       class="action_icon"
       :path="path.clear"
       @mousedown.native.stop="$emit('icon-event', $event, 'clear')"
       @keydown.stop="handleIconKeydown($event, 'clear')"
     />
+
     <span class="action_icon_separator"></span>
+
     <ControlIcon
       class="action_icon" 
       :path="path.dropdown"
       @mousedown.native.stop="$emit('icon-event', $event, 'dropdown')"
       @keydown.stop="handleIconKeydown($event, 'dropdown')"
     />
-  </div>
 
+  </div>
 </div>
 </template>
 
@@ -111,6 +111,8 @@ const dropdownIconPath = "M 4.516 7.548 c 0.436 -0.446 1.043 -0.481 1.576 0 l 3.
 
 export default {
   props: {
+    active: Boolean,
+    customClassName: Object,
     display: Function,
     isMulti: Boolean,
     placeholder: {
@@ -147,6 +149,7 @@ export default {
         input: Object.assign({}, inputStyle),
       },
       classes: {
+        wrapper: this.getWrapperClassName(),
         placeholder,
       },
       path: {
@@ -164,6 +167,21 @@ export default {
     },
     focus: function () {
       this.$refs.input.focus();
+    },
+    getWrapperClassName: function () {
+      let wrapperClassName = "control_wrapper";
+
+      if (this.active) {
+        if (this.customClassName && this.customClassName.active) {
+          wrapperClassName += " " + this.customClassName.active;
+        } else {
+          wrapperClassName += " control_active";
+        }
+      } else if (this.customClassName && this.customClassName.input) {
+        wrapperClassName += " " + this.customClassName.input;
+      }
+
+      return wrapperClassName;
     },
     getSelectionKey: function (item, index) {
       return index.toString() + '#' + getItemLabel(item).substr(0, 5);
@@ -236,8 +254,7 @@ export default {
           break;
       }
     },
-    handleDropdown: function (evt) {
-      
+    handleDropdown: function (evt) {      
       this.$emit('icon-event', evt, 'dropdown');
     },
     handleIconKeydown: function (evt, type) {
@@ -248,20 +265,20 @@ export default {
           // space
         case 32:
           // enter
-
+          this.$emit('special-key', type);
           break;
 
         case 38:
           // up
         case 40:
           // down
-
+          this.$emit('special-key', keyCode === 38 ? 'mv-up' : 'mv-down');
           break;
       
         case 9:
           // tab
           if (type === 'dropdown' && !evt.shiftKey) {
-            this.$emit('special-key', 'tab-out')
+            this.$emit('special-key', 'tab-out');
           }
 
           break;
@@ -278,7 +295,7 @@ export default {
         this.clear();
 
         // update the display style and/or content
-        if (!isMulti && this.selection.length === 1) {
+        if (!this.isMulti && this.selection.length === 1) {
           this.classes.placeholder = "placeholder placeholder_values";
           this.phText = getDisplay(this.selection[0], this.display, 'selection');
         } else {
@@ -289,6 +306,12 @@ export default {
         // reset the placeholder text
         this.phText = '';
       }
+    },
+    active: function () {
+      this.classes.wrapper = this.getWrapperClassName();
+    },
+    customClassName: function () {
+      this.classes.wrapper = this.getWrapperClassName();
     },
   }
 }
@@ -313,6 +336,10 @@ export default {
   justify-content: space-between;
   transition: all 100ms ease 0s;
   outline: 0px !important;
+}
+
+.control_wrapper.control_active {
+  border: 1px solid blue;
 }
 
 .input_container {
