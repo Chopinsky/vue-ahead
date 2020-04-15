@@ -5,13 +5,17 @@
     <div class="control">
 			<VueAhead 
         :initOptions="colors"
+				:initSelections="[1]"
 				placeholder="select a color"
       />
     </div>
     <br/>
     <div class="control">
       <VueAhead 
-				placeholder="select a number"
+				:isMulti="true"
+				:initOptions="majors"
+				:initSelections="[1, 2]"
+				placeholder="select a major"
 			/>
     </div>
   </div>
@@ -34,17 +38,23 @@ export default {
 				{ label: 'gray' },
 				{ label: 'black' },
 				{ label: 'yellow' },
+				{ label: 'many-many-colors-that-dont-yet-have-a-name-for-whatever-it-is-and-to-be' },
 			],
+			majors: [
+				{ label: 'science' },
+				{ label: 'physics' },
+				{ label: 'math' },
+				{ label: 'technology' },
+				{ label: 'engineering' },
+				{ label: 'arts' },
+				{ label: 'meds' },
+				{ label: 'biology' },
+				{ label: 'architecture' },
+			]
 		};
 	},
-	mounted: function () {
-		console.log(VueAhead);
-	},
 	methods: {
-		handleClick() {
-			console.log('done ....');
-		}
-	}
+	},
 };
 </script>
 

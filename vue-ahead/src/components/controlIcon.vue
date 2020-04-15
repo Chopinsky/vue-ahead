@@ -22,21 +22,21 @@
 
 <script>
 export default {
-  props: {
-    path: {
-      type: String,
-      required: true,
-    },
-    size: {
-      type: String,
-      default: "16",
-    },
-    viewBox: {
-      type: String,
-      default: "0 0 18 18",
-    },
-  },
-}
+	props: {
+		path: {
+			type: String,
+			required: true,
+		},
+		size: {
+			type: String,
+			default: "16",
+		},
+		viewBox: {
+			type: String,
+			default: "0 0 18 18",
+		},
+	},
+};
 </script>
 
 <style scoped>

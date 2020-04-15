@@ -673,6 +673,10 @@ export default class ReactAhead extends React.Component {
       text = placeholder;
     }
 
+    if (text && text.length > 24) {
+      text = text.substr(0, 21) + " ...";
+    }
+
     return (
       <div className={classNames.inputWrapper}>
         {

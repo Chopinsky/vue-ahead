@@ -1,8 +1,8 @@
 <template>
 <div :class="className">
 	<Shield 
-		v-bind:on="shield" 
-		@click="handleShieldClick" 
+		:on="shield" 
+		@mousedown.capture.stop="handleShieldClick" 
 	/>
 	<Input 
 		ref="inputControl"
@@ -10,7 +10,7 @@
 		:customClassName="customClassName"
 		:isMulti="isMulti"
 		:placeholder="placeholder"
-		:selection="selection"
+		:selection="selection.items"
 		:value="value"
 		@change="handleInputChange"
 		@mousedown="handleInputClick"
@@ -18,12 +18,14 @@
 		@blur="handleInputBlur"
 		@icon-event="handleIconEvent"
 		@special-key="handleSpecialKey"
+		@item-removal="handleItemRemoval"
 	/>
 	<Dropdown
 		v-if="open"
 		:className="(customClassName && customClassName.dropdown) || ''"
- 		:open="open"
-		:options="initOptions"
+		:open="open"
+		:options="options"
+		:shield="shield"
 		@item-selection="handleItemSelection"
 	/>
 </div>
@@ -33,6 +35,7 @@
 import Shield from './components/shield.vue';
 import Input from './components/input.vue';
 import Dropdown from './components/dropdown.vue';
+import { hasProperty, randomSuffix } from './helpers/common';
 
 const focusStatus = {
 	None: 0,
@@ -54,17 +57,25 @@ export default {
 	props: {
 		customClassName: Object,
 		initOptions: Array,
+		initSelections: Array,
 		isMulti: Boolean,
 		placeholder: String,
 	},
 	data() {
-		this._initDropdownOpen = false;
+		let initState = null;
+		const source = this.prepareOptions(this.initOptions);
+
+		if (this.initSelections && this.initSelections.length > 0) {
+			initState = this.prepareInitState(source);
+		}
 
 		return {
 			className: this.getClassName(),
 			focusStatus: focusStatus.None,
 			open: false,
-			selection: [{ label: 'ab' }, { label: 'cd' }],
+			options: initState ? initState.options : source,
+			selection: initState ? initState.selection : { items: [], indices: {}, },
+			source,
 			shield: false,
 			shieldDisplay: "none",
 			value: '',
@@ -101,6 +112,102 @@ export default {
 
 			return className;
 		},
+		getOptions: function () {
+			return this.source;
+		},
+		prepareOptions: function (options = []) {
+			const keys = {};
+
+			const result = 
+				options
+					.filter(item => item !== null && item !== undefined)
+					.map((item, idx) => {
+						if (!hasProperty(item, 'key')) {
+							item['key'] = idx.toString();
+						}
+
+						let key = item['key'];
+						if (typeof key !== 'string') {							
+							if (key === null || key === undefined) {
+								key = randomSuffix();
+							} else {
+								key = key.toString();
+							}
+						}
+
+						while (hasProperty(keys, key)) {
+							key += randomSuffix();
+						}
+
+						item['key'] = key;
+						keys[key] = null;
+
+						return item;
+					});
+
+			// console.log('keys:', keys);
+
+			return result || [];
+		},
+		prepareInitState: function (options) {
+			const indices = {};
+
+			for (let i = 0; i < this.initSelections.length; i++) {
+				let key = this.initSelections[i];
+
+				if (typeof key !== 'string') {
+					key = key.toString();
+				}
+
+				indices[key] = null;
+
+				if (!this.isMulti) {
+					break;
+				}
+			}
+
+			const remainder = [];
+			const items = [];
+
+			for (let i = 0; i < options.length; i++) {
+				if (
+					hasProperty(indices, options[i]['key']) 
+					&& (this.isMulti || items.length === 0)
+				) {
+					items.push(options[i]);
+				} else {
+					remainder.push(options[i]);
+				}				
+			}
+
+			return {
+				options: remainder,
+				selection: {
+					items,
+					indices,
+				}
+			};
+		},
+		reset: function () {
+			this.value = '';
+			this.source = this.prepareOptions(this.initOptions);
+
+			let options = this.source;
+			let selection = {
+				items: [],
+				indices: {},
+			};
+
+			if (this.initSelections && this.initSelections.length > 0) {
+				const initState = this.prepareInitState(options);
+				
+				options = initState.options;
+				selection = initState.selection;
+			}
+
+			this.options = options;
+			this.selection = selection;
+		},
 		handleFocus: function (evt, targetType) {
 			this.open = true;
 			this.focusStatus = targetType === "input" ? focusStatus.Input : focusStatus.Icon;
@@ -130,13 +237,19 @@ export default {
 				case "clear":
 					this.value = '';
 
-					//todo: reset the options
+					//todo: reset the options with the remote
+
+					this.selection = {
+						items: [],
+						indices: {},
+					};
+
+					this.options = this.getOptions();
 
 					break;
 
 				case "dropdown":
 					this.open = !this.open;
-
 					break;
 			
 				default:
@@ -157,12 +270,76 @@ export default {
 		handleInputChange: function (evt, value) {
 			this.value = value;
 		},
-		handleItemSelection: function (evt) {
+		handleItemSelection: function (evt, key) {
 			// console.log('dropdown clicked ...', evt);
+			if (hasProperty(this.selection.indices, key)) {
+				return;
+			}
+
+			const options = this.getOptions();
+			let { items, indices } = this.selection;
+
+			if (!this.isMulti) {
+				items = [];
+				indices = {};
+			}
+
+			for (let i = 0; i < options.length; i++) {
+				if (options[i].key !== key) {
+					continue;
+				}
+			
+				items.push(options[i]);
+				indices[key] = null;
+
+				break;					
+			}
+
+			this.selection = {
+				items,
+				indices,
+			};
+
+			// reset the value to empty after a selection
+			if (this.value !== '') {
+				this.value = '';
+			}
+
+			this.options = 
+				this.getOptions().filter(item => !hasProperty(indices, item.key));
+			
+
+			// console.log(idx, this.selection.items, this.selection.indices);
 
 			this.focusStatus = focusStatus.Dropdown;
 			this.focusInput();
+		},
+		handleItemRemoval: function (evt, item) {
+			// invalid item removal
+			if (!this.isMulti || !item || !item.key) {
+				return;
+			}
 
+			const { key } = item;
+			let { items, indices } = this.selection;
+			let { options } = this;
+
+			items = items.filter(item => item.key !== key);
+			delete indices[key];
+
+			this.selection = {
+				items,
+				indices,
+			};
+
+			// filter the options against the original list
+			this.options = 
+				this.getOptions().filter(item => !hasProperty(indices, item.key));
+
+			// console.log(this.options);
+
+			this.focusStatus = focusStatus.Icon;
+			this.focusInput();
 		},
 		handleSpecialKey: function (key) {
 			// console.log('getting special key: ', key);
@@ -188,6 +365,12 @@ export default {
 		customClasses: function () {
 			this.className = this.getClassName();
 		},
+		initOptions: function () {
+			this.reset();
+		},
+		initSelections: function () {
+			this.reset();
+		},
 	},
 };
 </script>
@@ -198,7 +381,7 @@ export default {
   box-sizing: border-box;
 }
 
-.control_wrapper {	
+.control_wrapper {
   -webkit-box-align: center;
   -webkit-box-pack: justify;
   padding-left: 6px;
@@ -222,7 +405,7 @@ export default {
   border: 1px solid blue;
 }
 
-.input_container {	
+.input_container {
   padding: 2px;
   color: rgb(51, 51, 51);
   position: relative;

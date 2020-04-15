@@ -1,11 +1,67 @@
 <template>
-  
+<div class="selection_container">
+  <div class="selection_content" :title="title">
+    {{ text }}
+  </div>
+  <ControlIcon 
+    class="selection_removal"
+    title="remove selection"
+    :path="iconPath"
+    @mousedown.native.stop="$emit('item-removal', $event)"
+    @keydown.prevent.stop="handleRemovalKeydown($event)"
+  />
+</div>
 </template>
 
 <script>
-export default {
+import ControlIcon from './controlIcon.vue';
 
-}
+const clearIconPath = "M 14.348 14.849 c -0.469 0.469 -1.229 0.469 -1.697 0 l -2.651 -3.03 l -2.651 3.029 c -0.469 0.469 -1.229 0.469 -1.697 0 c -0.469 -0.469 -0.469 -1.229 0 -1.697 l 2.758 -3.15 l -2.759 -3.152 c -0.469 -0.469 -0.469 -1.228 0 -1.697 s 1.228 -0.469 1.697 0 l 2.652 3.031 l 2.651 -3.031 c 0.469 -0.469 1.228 -0.469 1.697 0 s 0.469 1.229 0 1.697 l -2.758 3.152 l 2.758 3.15 c 0.469 0.469 0.469 1.229 0 1.698 Z";
+
+export default {
+	props: {
+		display: Function,
+		item: Object,
+		index: Number,
+	},
+	components: {
+		ControlIcon,
+	},
+	data: function () {
+		const { text, title } = this.getDisplayText();
+		return {
+			text,
+			title,
+			iconPath: clearIconPath,
+		};
+	},
+	methods: {
+		getDisplayText: function () {
+			const title = this.item.label || "...";
+			let text = title;
+
+			if (text && text.length > 10) {
+				text = text.substr(0, 8) + "...";
+			}
+
+			return {
+				text,
+				title,
+			};
+		},
+		handleRemovalKeydown: function (evt, key) {
+			if (!evt) {
+				return;
+			}
+
+			const { keyCode } = evt;
+
+			if (keyCode === 13 || keyCode === 32) {
+				this.$emit('item-removal', evt, key);
+			}
+		},
+	},
+};
 </script>
 
 <style>
@@ -26,7 +82,7 @@ export default {
   box-sizing: border-box;
   border-radius: 2px;
   overflow: hidden;
-  padding: 2px 3px 4px 6px;
+  padding: 2px 2px 2px 4px;
 }
 
 .selection_removal {
@@ -34,8 +90,8 @@ export default {
   align-items: center;
   cursor: pointer;
   display: flex;
-  padding-left: 4px;
-  padding-right: 4px;
+  padding-left: 0;
+  padding-right: 2px;
   box-sizing: border-box;
   border-radius: 2px;
 }

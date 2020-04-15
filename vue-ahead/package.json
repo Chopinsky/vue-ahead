@@ -9,9 +9,10 @@
     "build:watch": "vue-cli-service build --target lib --name vue-ahead src/main.js --watch",
     "prepare": "npm run build:umd & npm run build:es & npm run build:unpkg",
     "rollup": "yarn rollup:umd --watch",
+    "rollup:all": "yarn rollup:umd && yarn rollup:es && yarn rollup:unpkg",
     "rollup:umd": "rollup --config rollup.config.js --format umd --file dist/vue-ahead.umd.js",
     "rollup:es": "rollup --config rollup.config.js --format es --file dist/vue-ahead.esm.js",
-    "build:unpkg": "rollup --config rollup.config.js --format iife --file dist/vue-ahead.min.js",
+    "rollup:unpkg": "rollup --config rollup.config.js --format iife --file dist/vue-ahead.min.js",
     "lint": "vue-cli-service lint"
   },
   "dependencies": {

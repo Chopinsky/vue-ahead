@@ -1,17 +1,26 @@
 <template>
-<div :class="classes" @click="$emit('click', $event)">
+<div :class="classes">
+  <div
+    v-if="shield"
+    :style="styles.shield"
+    @mousedown.capture.stop="$emit('shield-click', $event)"
+  >
+  <h3 :style="styles.title">
+    Loading ...
+  </h3>
+</div>
   <div 
     class="dropdown_content"
     ref="contentWrapper"
   >
-    <div v-for="(item, idx) in options" :key="getItemKey(item, idx)">
+    <div v-for="(item, idx) in options" :key="item.key">
       <GroupLabel
         v-if="groups && groups.hasOwnProperty(idx)"
         :data="groups[idx]"
       />
       <Item
         @mouseover="handleMouseOver"
-        @mousedown.stop="handleItemClick"
+        @mousedown.stop="$emit('item-selection', $event, item.key);"
         :active="activeIdx === idx"
         :item="item"
         :index="idx"
@@ -30,52 +39,76 @@
 <script>
 import Item from "./dropdownItem.vue";
 
+const shieldStyle = {
+	position: 'absolute',
+	display:  'default',
+	top: 0,
+	left: 0,
+	width: '100%',
+	height: '100%',
+	textAlign: 'center',
+	justifyContent: 'center',
+	backgroundColor: '#F5F5F5',
+	zIndex: 100000,
+	opacity: 0.5,
+	userSelect: 'none',
+};
+
+const shieldTitleStyle = {
+	position: 'absolute',
+	top: '50%',
+	left: '0',
+	textAlign: 'center',
+	margin: '-12px 0 0 0',
+	padding: 0,
+	width: '100%',
+	height: '100%',
+};
+
 export default {
-  props: {
-    className: String,
-    grouped: Boolean,
-    options: Array,
-    groups: Object,
-  },
-  components: {
-    Item,
-  },
-  data: function () {
-    return {
-      activeIdx: 0,
-      classes: this.getClassName(),
-    };
-  },
-  methods: {
-    getClassName: function () {
-      let className = "dropdown_container";
+	props: {
+		className: String,
+		groups: Object,
+		options: Array,
+		shield: Boolean,
+	},
+	components: {
+		Item,
+	},
+	data: function () {
+		return {
+			activeIdx: 0,
+			classes: this.getClassName(),
+			styles: {
+				shield: shieldStyle,
+				title: shieldTitleStyle,
+			}
+		};
+	},
+	methods: {
+		getClassName: function () {
+			let className = "dropdown_container";
 
-      if (this.className && this.className.dropdown) {
-        className += " " + this.className.dropdown;
-      }
+			if (this.className && this.className.dropdown) {
+				className += " " + this.className.dropdown;
+			}
 
-      return className;
-    },
-    getItemKey: function (item, idx) {
-      return idx.toString() + "#" + item.label;
-    },
-    handleMouseOver: function (evt, idx) {
-      if (idx < this.options.length) {
-        this.activeIdx = idx;        
-      } else {
-        this.activeIdx = this.options.length - 1;
-      }
-    },
-    handleItemClick: function (evt, idx) {
-      this.$emit('item-selection', evt, idx);
-    },
-  },
-  watch: {
-    className: function () {
-      this.classes = this.getClassName();
-    },
-  }
-}
+			return className;
+		},
+		handleMouseOver: function (evt, idx) {
+			if (idx < this.options.length) {
+				this.activeIdx = idx;        
+			} else {
+				this.activeIdx = this.options.length - 1;
+			}
+		},
+	},
+	watch: {
+		className: function () {
+			this.classes = this.getClassName();
+		},
+	}
+};
 </script>
 
 <style scoped>

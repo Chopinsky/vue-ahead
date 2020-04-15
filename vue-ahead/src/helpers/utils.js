@@ -1,39 +1,43 @@
 const defaultGroupName = 'default';
 
 const getItemLabel = (item) => {
-  let src = typeof item === 'object' ? item['label'] : item;
+	let src = typeof item === 'object' ? item['label'] : item;
 
-  if (typeof src !== 'string') {
-    src = src.toString();
-  }
+	if (typeof src !== 'string') {
+		src = src.toString();
+	}
 
-  return src
+	return src;
 };
 
 const getDisplay = (item, display, type) => {
-  let label = getItemLabel(item);
+	let label = getItemLabel(item);
 
-  if (display) {
-    label = display(label, item, type);
-  }
+	if (display) {
+		label = display(label, item, type);
+	}
 
-  return label;
+	if (typeof label !== 'string') {
+		return "...";
+	}
+
+	return label;
 };
 
 const getGroupKey = (item) => {
-  let groupKey =
+	let groupKey =
     typeof item === 'object' ? item['group'] : defaultGroupName;
 
-  if (typeof groupKey !== 'string' && typeof groupKey !== 'number') {
-    groupKey = defaultGroupName;
-  }
+	if (typeof groupKey !== 'string' && typeof groupKey !== 'number') {
+		groupKey = defaultGroupName;
+	}
 
-  groupKey = (groupKey.toString() || defaultGroupName);
-  return groupKey.toUpperCase();
+	groupKey = (groupKey.toString() || defaultGroupName);
+	return groupKey.toUpperCase();
 };
 
 module.exports = {
-  getDisplay,
-  getGroupKey,
-  getItemLabel,
+	getDisplay,
+	getGroupKey,
+	getItemLabel,
 };

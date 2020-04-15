@@ -2,16 +2,16 @@
 <div
   class="control_input_shield" 
   :style="style"
-  @click="$emit('click', $event)"
+  @mousedown="$emit('mousedown', $event)"
 >  
 </div>
 </template>
 
 <script>
 const style = {
-  display: "none",
-  backgroundColor: "gray",
-  width: "100%",
+	display: "none",
+	backgroundColor: "transparent",
+	width: "100%",
 	height: "100%",
 	position: "absolute",
 	top: 0,
@@ -20,20 +20,20 @@ const style = {
 };
 
 export default {
-  props: {
-    on: Boolean,
-  },
-  data: function () {
-    return {
-      style: Object.assign({}, style),
-    };
-  },
-  watch: {
-    on: function () {
-      this.style.display = this.on ? "inherit" : "none";
-    },
-  },
-}
+	props: {
+		on: Boolean,
+	},
+	data: function () {
+		return {
+			style: Object.assign({}, style),
+		};
+	},
+	watch: {
+		on: function () {
+			this.style.display = this.on ? "inherit" : "none";
+		},
+	},
+};
 </script>
 
 <style scoped>

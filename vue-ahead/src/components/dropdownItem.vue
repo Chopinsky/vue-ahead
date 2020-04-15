@@ -14,28 +14,28 @@
 import { getItemLabel } from '../helpers/utils';
 
 export default {
-  props: {
-    active: Boolean,
-    item: Object,
-    index: Number,
-  },
-  data: function () {
-    return {
-      className: this.getClassName(),
-      content: getItemLabel(this.item),
-    };
-  },
-  methods: {
-    getClassName: function () {
-      return this.active ? "menu_option menu_option_active" : "menu_option";
-    },
-  },
-  watch: {
-    active: function () {
-      this.className = this.getClassName();
-    },
-  },
-}
+	props: {
+		active: Boolean,
+		item: Object,
+		index: Number,
+	},
+	data: function () {
+		return {
+			className: this.getClassName(),
+			content: getItemLabel(this.item),
+		};
+	},
+	methods: {
+		getClassName: function () {
+			return this.active ? "menu_option menu_option_active" : "menu_option";
+		},
+	},
+	watch: {
+		active: function () {
+			this.className = this.getClassName();
+		},
+	},
+};
 </script>
 
 <style scoped>
