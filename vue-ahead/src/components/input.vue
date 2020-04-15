@@ -25,10 +25,11 @@
         :item="item"
         :index="index"
         @item-removal="$emit('item-removal', $event, item)"
+        @special-key="$emit('special-key', $event, 'tab-out')"
       />
     </div>
 
-    <div style="display: 'inline-block';">
+    <div :style="styles.field">
       <input           
         autoCapitalize="none"
         autoComplete="off"
@@ -51,7 +52,7 @@
 
   <div class="icons_container">
     <ControlIcon 
-      class="action_icon"
+      class="action_icon clear_icon"
       title="clear all"
       :path="path.clear"
       @mousedown.native.stop="$emit('icon-event', $event, 'clear')"
@@ -104,6 +105,11 @@ const contentHolderStyle = {
 	textTransform: "none",
 };
 
+const fieldStyle = {
+  display: "inline-block",
+  padding: "0 0 1px 1px",
+};
+
 const clearIconPath = "M 14.348 14.849 c -0.469 0.469 -1.229 0.469 -1.697 0 l -2.651 -3.03 l -2.651 3.029 c -0.469 0.469 -1.229 0.469 -1.697 0 c -0.469 -0.469 -0.469 -1.229 0 -1.697 l 2.758 -3.15 l -2.759 -3.152 c -0.469 -0.469 -0.469 -1.228 0 -1.697 s 1.228 -0.469 1.697 0 l 2.652 3.031 l 2.651 -3.031 c 0.469 -0.469 1.228 -0.469 1.697 0 s 0.469 1.229 0 1.697 l -2.758 3.152 l 2.758 3.15 c 0.469 0.469 0.469 1.229 0 1.698 Z";
 const dropdownIconPath = "M 4.516 7.548 c 0.436 -0.446 1.043 -0.481 1.576 0 l 3.908 3.747 l 3.908 -3.747 c 0.533 -0.481 1.141 -0.446 1.574 0 c 0.436 0.445 0.408 1.197 0 1.615 c -0.406 0.418 -4.695 4.502 -4.695 4.502 c -0.217 0.223 -0.502 0.335 -0.787 0.335 s -0.57 -0.112 -0.789 -0.335 c 0 0 -4.287 -4.084 -4.695 -4.502 s -0.436 -1.17 0 -1.615 Z";
 
@@ -136,7 +142,8 @@ export default {
 		return {
 			styles: {
 				container: contentHolderStyle,
-				input: Object.assign({}, inputStyle),
+        input: Object.assign({}, inputStyle),
+        field: fieldStyle,
 			},
 			classes: {
 				wrapper: this.getWrapperClassName(),
@@ -341,7 +348,7 @@ export default {
   -webkit-box-pack: justify;
   padding-left: 6px;
   padding-right: 4px;
-  min-height: 38px;
+  min-height: 32px;
   align-items: center;
   background-color: rgb(255, 255, 255);
   border-radius: 2px;
@@ -361,7 +368,7 @@ export default {
 }
 
 .input_container {
-  padding: 6px 2px;
+  padding: 4px 0;
   color: rgb(51, 51, 51);
   position: relative;
   display: flex;
@@ -403,8 +410,12 @@ export default {
   color: rgb(204, 204, 204);
   display: flex;
   box-sizing: border-box;
-  padding: 10px 6px;
+  padding: 4px 2px;
   transition: color 150ms ease 0s;
+}
+
+.action_icon.clear_icon {
+  padding-right: 4px;
 }
 
 .action_icon:hover {
@@ -425,8 +436,7 @@ export default {
 .action_icon_separator {
   align-self: stretch;
   background-color: rgb(204, 204, 204);
-  margin-bottom: 8px;
-  margin-top: 8px;
+  margin: 8px 2px;
   width: 1px;
   box-sizing: border-box;
 }

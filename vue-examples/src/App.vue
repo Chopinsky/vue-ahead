@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
+    <img alt="Vue logo" src="./assets/logo.png" tabindex="0">
 		<br/>
     <div class="control">
 			<VueAhead 
@@ -32,24 +32,25 @@ export default {
 	data: function () {
 		return {
 			colors: [
-				{ label: 'white' },
-				{ label: 'blue' },
-				{ label: 'green' },
-				{ label: 'gray' },
-				{ label: 'black' },
-				{ label: 'yellow' },
+				{ label: 'White' },
+				{ label: 'Blue' },
+				{ label: 'Green' },
+				{ label: 'Gray' },
+				{ label: 'Black' },
+				{ label: 'Yellow' },
 				{ label: 'many-many-colors-that-dont-yet-have-a-name-for-whatever-it-is-and-to-be' },
 			],
 			majors: [
-				{ label: 'science' },
-				{ label: 'physics' },
-				{ label: 'math' },
-				{ label: 'technology' },
-				{ label: 'engineering' },
-				{ label: 'arts' },
-				{ label: 'meds' },
-				{ label: 'biology' },
-				{ label: 'architecture' },
+				{ label: 'Science' },
+				{ label: 'Physics' },
+				{ label: 'Math' },
+				{ label: 'Technology' },
+				{ label: 'Engineering' },
+				{ label: 'Arts' },
+				{ label: 'Meds' },
+				{ label: 'Biology' },
+				{ label: 'Architecture' },
+				{ label: 'Mythology' },
 			]
 		};
 	},

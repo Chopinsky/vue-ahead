@@ -40,10 +40,11 @@ import { hasProperty, randomSuffix } from './helpers/common';
 const focusStatus = {
 	None: 0,
 	Input: 1,
-	Container: 2,
-	Icon: 3,
+	Icon: 2,
+	Container: 3,
 	Dropdown: 4,
 	Shield: 5,
+	Pending: -1,
 };
 
 export default {
@@ -263,12 +264,22 @@ export default {
 		handleInputBlur: function (evt, force) {
 			// console.log('blur?', this.focusStatus);
 
-			if (this.focusStatus <= focusStatus.Input || force) {
-				this.focuseReset();
+			if (this.focusStatus <= focusStatus.Icon || force) {
+				this.focusStatus = focusStatus.Pending;
+
+				setTimeout(() => {
+					// if some other control has grabbed the focus, we're done
+					if (this.focusStatus !== focusStatus.Pending) {
+						return;
+					}
+
+					this.focuseReset();
+				}, 0);				
 			}
 		},
 		handleInputChange: function (evt, value) {
 			this.value = value;
+			this.open = true;
 		},
 		handleItemSelection: function (evt, key) {
 			// console.log('dropdown clicked ...', evt);
@@ -386,7 +397,7 @@ export default {
   -webkit-box-pack: justify;
   padding-left: 6px;
   padding-right: 2px;
-  min-height: 38px;
+  min-height: 32px;
   align-items: center;
   background-color: rgb(255, 255, 255);
   border-radius: 2px;
@@ -406,7 +417,7 @@ export default {
 }
 
 .input_container {
-  padding: 2px;
+  padding: 0 2px;
   color: rgb(51, 51, 51);
   position: relative;
   display: flex;

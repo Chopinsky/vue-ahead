@@ -4,7 +4,6 @@
   @mousedown="$emit('mousedown', $event, index)"
   :class="className"
   ref="elem"
-  tabIndex="-1"
 >
   {{ item.label }}
 </div>

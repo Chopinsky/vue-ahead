@@ -5,10 +5,10 @@
     :style="styles.shield"
     @mousedown.capture.stop="$emit('shield-click', $event)"
   >
-  <h3 :style="styles.title">
-    Loading ...
-  </h3>
-</div>
+    <h3 :style="styles.title">
+      Loading ...
+    </h3>
+  </div>
   <div 
     class="dropdown_content"
     ref="contentWrapper"

@@ -3,12 +3,12 @@
   <div class="selection_content" :title="title">
     {{ text }}
   </div>
-  <ControlIcon 
+  <ControlIcon
     class="selection_removal"
     title="remove selection"
     :path="iconPath"
     @mousedown.native.stop="$emit('item-removal', $event)"
-    @keydown.prevent.stop="handleRemovalKeydown($event)"
+    @keydown.stop="handleRemovalKeydown($event)"
   />
 </div>
 </template>
@@ -57,8 +57,13 @@ export default {
 			const { keyCode } = evt;
 
 			if (keyCode === 13 || keyCode === 32) {
-				this.$emit('item-removal', evt, key);
-			}
+        this.$emit('item-removal', evt, key);
+        evt.preventDefault();
+      }
+      
+      if (this.index === 0 && evt.shiftKey) {
+        this.$emit('special-key', 'tab-out');
+      }
 		},
 	},
 };
@@ -71,7 +76,7 @@ export default {
   min-width: 0px;
   box-sizing: border-box;
   border-radius: 2px;
-  margin: 2px 4px 2px 0;
+  margin: 2px;
 }
 
 .selection_content {
