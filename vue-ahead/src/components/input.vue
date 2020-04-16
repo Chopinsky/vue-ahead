@@ -25,7 +25,7 @@
         :item="item"
         :index="index"
         @item-removal="$emit('item-removal', $event, item)"
-        @special-key="$emit('special-key', $event, 'tab-out')"
+        @special-key="$emit('special-key', 'tab-out')"
       />
     </div>
 
@@ -229,20 +229,22 @@ export default {
 
 			this.$emit('change', evt, val);
 		},
-		handleKeydown: function (evt) {
-			if (!evt) {
-				return;
-			}
+		handleKeydown: function (evt, keyCode) {
+      if (!keyCode) {
+        if (!evt) {
+          return;
+        }
 
-			const keyCode = evt.keyCode || 0;
-
-			// console.log('key pressed:', keyCode, evt);
+        keyCode = evt.keyCode || 0;        
+      }
       
 			switch (keyCode) {
 				case 8:
 					// backspace
-					if (this.value === '') {
-						this.$emit('special-key', 'backspace');
+					if (this.isMulti && this.value === '' && this.selection.length > 0) {
+            // this.$emit('special-key', 'backspace');
+            const item = this.selection[this.selection.length - 1];
+            this.$emit('item-removal', evt, item);
 					}
 
 					break;
@@ -290,14 +292,14 @@ export default {
 					// space
 				case 32:
 					// enter
-					this.$emit('special-key', type);
+					this.$emit('special-key', type, type === 'clear' ? true : false);
 					break;
 
 				case 38:
 					// up
 				case 40:
 					// down
-					this.$emit('special-key', keyCode === 38 ? 'mv-up' : 'mv-down');
+					this.$emit('special-key', keyCode === 38 ? 'up' : 'down', true);
 					break;
       
 				case 9:

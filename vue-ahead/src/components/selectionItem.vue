@@ -40,8 +40,8 @@ export default {
 			const title = this.item.label || "...";
 			let text = title;
 
-			if (text && text.length > 10) {
-				text = text.substr(0, 8) + "...";
+			if (text && text.length > 8) {
+				text = text.substr(0, 6) + "...";
 			}
 
 			return {
@@ -61,8 +61,8 @@ export default {
         evt.preventDefault();
       }
       
-      if (this.index === 0 && evt.shiftKey) {
-        this.$emit('special-key', 'tab-out');
+      if (this.index === 0 && keyCode === 9 && evt.shiftKey) {
+        this.$emit('special-key');
       }
 		},
 	},

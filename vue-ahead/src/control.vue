@@ -22,6 +22,7 @@
 	/>
 	<Dropdown
 		v-if="open"
+		ref="dropdownControl"
 		:className="(customClassName && customClassName.dropdown) || ''"
 		:open="open"
 		:options="options"
@@ -36,6 +37,7 @@ import Shield from './components/shield.vue';
 import Input from './components/input.vue';
 import Dropdown from './components/dropdown.vue';
 import { hasProperty, randomSuffix } from './helpers/common';
+import Engine from './helpers/engine';
 
 const focusStatus = {
 	None: 0,
@@ -55,17 +57,44 @@ export default {
 		Input,
 		Dropdown,
 	},
+	beforeCreate: function () {
+		// this._engine = new Engine({});
+	},
+	beforeDestroy: function () {
+		//todo: send any remainder data to remote, if configured
+	},
 	props: {
 		customClassName: Object,
 		initOptions: Array,
 		initSelections: Array,
 		isMulti: Boolean,
 		placeholder: String,
+		remote: Object,
 	},
 	data() {
-		let initState = null;
 		const source = this.prepareOptions(this.initOptions);
+		const config = {};
 
+		if (this.remote) {
+			config['remote'] = this.remote;
+
+			if (typeof this.remote.prefetch === 'function') {
+				this.remote.prefetch(data => {
+					setTimeout(() => {
+						this.source = this.prepareOptions(data);
+						this.options = this.getOptions(data);
+					}, 0);
+				});
+			}
+		}
+
+		this._engine = new Engine(config);
+		this._engine.add(source);
+		
+		this._shieldId = null;
+		this._debounceId = null;
+
+		let initState = null;
 		if (this.initSelections && this.initSelections.length > 0) {
 			initState = this.prepareInitState(source);
 		}
@@ -113,8 +142,19 @@ export default {
 
 			return className;
 		},
-		getOptions: function () {
-			return this.source;
+		getOptions: function (source) {
+			if (!source) {
+				source = this.source;
+			}
+
+			const { indices } = this.selection || {};
+			if (!indices) {
+				return source;
+			}
+
+			console.log('filtering:', indices, source);
+
+			return source.filter(item => !hasProperty(indices, item.key));
 		},
 		prepareOptions: function (options = []) {
 			const keys = {};
@@ -129,11 +169,9 @@ export default {
 
 						let key = item['key'];
 						if (typeof key !== 'string') {							
-							if (key === null || key === undefined) {
-								key = randomSuffix();
-							} else {
-								key = key.toString();
-							}
+							key = (key === null || key === undefined) 
+								? randomSuffix() 
+								: key.toString();
 						}
 
 						while (hasProperty(keys, key)) {
@@ -143,10 +181,17 @@ export default {
 						item['key'] = key;
 						keys[key] = null;
 
+						let label = item['label'];
+						if (typeof label !== 'string') {				
+							label = (label === null || label === undefined) 
+								? ''
+								: label.toString();
+						}
+
+						item['label'] = label;
+
 						return item;
 					});
-
-			// console.log('keys:', keys);
 
 			return result || [];
 		},
@@ -189,6 +234,16 @@ export default {
 				}
 			};
 		},
+		clear: function () {
+			this.value = '';
+
+			this.selection = {
+				items: [],
+				indices: {},
+			};
+
+			this.options = this.getOptions();
+		},
 		reset: function () {
 			this.value = '';
 			this.source = this.prepareOptions(this.initOptions);
@@ -209,9 +264,26 @@ export default {
 			this.options = options;
 			this.selection = selection;
 		},
+		shieldAction: function (up) {
+			if (this._shieldId) {
+				clearTimeout(this._shieldId);
+			}
+
+			if (up) {
+				this._shieldId = setTimeout(() => {
+					this.shield = true;
+				}, 50);
+			} else {
+				this._shieldId = null;
+				this.shield = false;
+			}
+		},
 		handleFocus: function (evt, targetType) {
-			this.open = true;
 			this.focusStatus = targetType === "input" ? focusStatus.Input : focusStatus.Icon;
+
+			if (this.focusStatus === focusStatus.Input) {
+				this.open = true;
+			}
 
 			// console.log('control get focus ... ', this.focusStatus, targetType);
 		},
@@ -236,16 +308,9 @@ export default {
 
 			switch (type) {
 				case "clear":
-					this.value = '';
+					this.clear();
 
 					//todo: reset the options with the remote
-
-					this.selection = {
-						items: [],
-						indices: {},
-					};
-
-					this.options = this.getOptions();
 
 					break;
 
@@ -280,14 +345,35 @@ export default {
 		handleInputChange: function (evt, value) {
 			this.value = value;
 			this.open = true;
+
+			if (value === '') {
+				this.options = this.getOptions();
+				return;
+			}
+
+			this.shieldAction(true);
+
+			if (this._debounceId) {
+				clearTimeout(this._debounceId);
+			}
+
+			this._debounceId = setTimeout(() => {
+				this._engine.query(value, (data = []) => {
+					this.source = this.prepareOptions(data);
+					this.options = this.getOptions();
+					
+					this.shieldAction(false);
+					this._debounceId = null;
+				});
+			}, 200);
 		},
 		handleItemSelection: function (evt, key) {
-			// console.log('dropdown clicked ...', evt);
+			console.log('item selection ...', key, this.selection.indices);
+			
 			if (hasProperty(this.selection.indices, key)) {
 				return;
 			}
 
-			const options = this.getOptions();
 			let { items, indices } = this.selection;
 
 			if (!this.isMulti) {
@@ -295,12 +381,12 @@ export default {
 				indices = {};
 			}
 
-			for (let i = 0; i < options.length; i++) {
-				if (options[i].key !== key) {
+			for (let i = 0; i < this.options.length; i++) {
+				if (this.options[i].key !== key) {
 					continue;
 				}
 			
-				items.push(options[i]);
+				items.push(this.options[i]);
 				indices[key] = null;
 
 				break;					
@@ -316,9 +402,7 @@ export default {
 				this.value = '';
 			}
 
-			this.options = 
-				this.getOptions().filter(item => !hasProperty(indices, item.key));
-			
+			this.options = this.getOptions();
 
 			// console.log(idx, this.selection.items, this.selection.indices);
 
@@ -352,10 +436,39 @@ export default {
 			this.focusStatus = focusStatus.Icon;
 			this.focusInput();
 		},
-		handleSpecialKey: function (key) {
+		handleSpecialKey: function (key, focusInput) {
 			// console.log('getting special key: ', key);
 
 			switch (key) {
+				case 'enter':
+					this.$refs.dropdownControl
+						&& this.$refs.dropdownControl.select();
+
+					break;
+
+				case 'esc':
+					this.open = false;
+					break;
+
+				case 'clear':
+					this.clear();
+					break;
+
+				case 'dropdown':
+					this.open = !this.open;
+					break;
+
+				case 'up':
+				case 'down':
+					if (!this.open) {
+						this.open = true;
+					} else {
+						this.$refs.dropdownControl
+							&& this.$refs.dropdownControl.move(key);
+					}
+
+					break;
+
 				case 'tab':
 					this.focusStatus = focusStatus.Icon;
 					break;
@@ -366,6 +479,10 @@ export default {
 			
 				default:
 					break;
+			}
+
+			if (focusInput) {
+				this.focusInput();
 			}
 		},
 	},

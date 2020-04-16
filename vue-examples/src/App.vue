@@ -18,11 +18,46 @@
 				placeholder="select a major"
 			/>
     </div>
+    <br/>
+    <div class="control">
+      <VueAhead 
+				:remote="remote"
+				placeholder="select a twitter handle"
+			/>
+    </div>
   </div>
 </template>
 
 <script>
 import VueAhead from 'vue-ahead';
+
+const parser = function (data) {
+	return data.map(item => {
+		return {
+			label: item['name'],
+			extraData: item,
+		};
+	});
+};
+
+const prefetcher = async function (cb) {
+	await cb([
+		{ label: 'ab' },
+		{ label: 'bc' },
+		{ label: 'cd' },
+		{ label: 'de' },
+	]);
+};
+
+const remote = {
+	settings: {
+		method: 'get',
+		url: 'https://typeahead-js-twitter-api-proxy.herokuapp.com/demo/search',
+		timeout: 1000,      
+	},
+	dataParser: parser,
+	prefetch: prefetcher,
+};
 
 export default {
 	name: 'App',
@@ -47,11 +82,18 @@ export default {
 				{ label: 'Technology' },
 				{ label: 'Engineering' },
 				{ label: 'Arts' },
-				{ label: 'Meds' },
+				{ label: 'Medicine' },
+				{ label: 'Medical Equipment' },
 				{ label: 'Biology' },
 				{ label: 'Architecture' },
+				{ label: 'Earth' },
+				{ label: 'Moon' },
+				{ label: 'Mars' },
+				{ label: 'Sun' },
+				{ label: 'History' },
 				{ label: 'Mythology' },
-			]
+			],
+			remote,
 		};
 	},
 	methods: {

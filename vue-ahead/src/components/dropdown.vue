@@ -20,7 +20,7 @@
       />
       <Item
         @mouseover="handleMouseOver"
-        @mousedown.stop="$emit('item-selection', $event, item.key);"
+        @mousedown.stop="$emit('item-selection', $event, item.key)"
         :active="activeIdx === idx"
         :item="item"
         :index="idx"
@@ -69,7 +69,10 @@ export default {
 	props: {
 		className: String,
 		groups: Object,
-		options: Array,
+		options: {
+      type: Array,
+      default: new Array(),
+    },
 		shield: Boolean,
 	},
 	components: {
@@ -94,19 +97,55 @@ export default {
 			}
 
 			return className;
-		},
+    },
+    move: function (dir) {
+      if (dir === 'down') {
+        this.activeIdx++;
+      } else {
+        this.activeIdx--;
+      }
+
+      if (this.activeIdx >= this.options.length) {
+        this.activeIdx = this.options.length - 1;
+      }
+
+      if (this.activeIdx < 0) {
+        this.activeIdx = 0;
+      }
+    },
+    select: function () {
+      if (this.activeIdx < 0 || this.activeIdx >= this.options.length) {
+        return;
+      }
+
+      const item = this.options[this.activeIdx];
+      this.$emit('item-selection', null, item.key);
+    },
 		handleMouseOver: function (evt, idx) {
 			if (idx < this.options.length) {
 				this.activeIdx = idx;        
 			} else {
-				this.activeIdx = this.options.length - 1;
-			}
+        this.activeIdx = this.options.length - 1;
+      }
+      
+      if (this.activeIdx < 0) {
+        this.activeIdx = 0;
+      }
 		},
 	},
 	watch: {
 		className: function () {
 			this.classes = this.getClassName();
-		},
+    },
+    options: function () {
+      if (this.activeIdx >= this.options.length) {
+        this.activeIdx = this.options.length - 1;
+      } 
+      
+      if (this.activeIdx < 0) {
+        this.activeIdx = 0;
+      }
+    },
 	}
 };
 </script>

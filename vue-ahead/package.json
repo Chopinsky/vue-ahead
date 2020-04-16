@@ -7,7 +7,6 @@
     "start": "vue-cli-service serve",
     "build": "vue-cli-service build --target lib --name vue-ahead src/main.js && rm ./dist/demo.html",
     "build:watch": "vue-cli-service build --target lib --name vue-ahead src/main.js --watch",
-    "prepare": "npm run build:umd & npm run build:es & npm run build:unpkg",
     "rollup": "yarn rollup:umd --watch",
     "rollup:all": "yarn rollup:umd && yarn rollup:es && yarn rollup:unpkg",
     "rollup:umd": "rollup --config rollup.config.js --format umd --file dist/vue-ahead.umd.js",
@@ -16,6 +15,7 @@
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
+    "axios": "^0.19.2",
     "core-js": "^3.6.4",
     "vue": "^2.6.11"
   },
@@ -45,13 +45,30 @@
     "parserOptions": {
       "parser": "babel-eslint"
     },
-    "ignorePatterns": ["*.md", "node_modules/"],
+    "ignorePatterns": [
+      "*.md",
+      "node_modules/"
+    ],
     "rules": {
       "space-before-function-paren": 0,
-      "semi": [2, "always"],
+      "semi": [
+        2,
+        "always"
+      ],
       "no-console": 1,
-      "indent": [1, "tab", { "SwitchCase": 1 }],
-      "no-tabs": [1, { "allowIndentationTabs": true }]
+      "indent": [
+        1,
+        "tab",
+        {
+          "SwitchCase": 1
+        }
+      ],
+      "no-tabs": [
+        1,
+        {
+          "allowIndentationTabs": true
+        }
+      ]
     }
   },
   "browserslist": [
