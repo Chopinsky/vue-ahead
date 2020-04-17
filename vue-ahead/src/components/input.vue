@@ -1,6 +1,7 @@
 <template>
 <div 
-  :class="classes.wrapper" 
+  :class="classes.wrapper"
+	@dblclick.capture.stop="$emit('dblclick', $event)"
   @mousedown.stop="$emit('mousedown', $event)"
   @focus.capture="handleFocus"
   @blur.capture="$emit('blur', $event)"
@@ -164,6 +165,23 @@ export default {
 		},
 		focus: function () {
 			this.$refs.input.focus();
+		},
+		select: function () {
+			if (this.value === '') {
+				return;
+			}
+
+			const { input } = this.$refs;
+			const start = input.selectionStart;
+			const end = input.selectionEnd;
+
+			console.log(start, end);
+
+			if (start < end) {
+				input.setSelectionRange(this.value.length, this.value.length);
+			} else {
+				input.select();
+			}
 		},
 		getWrapperClassName: function () {
 			let wrapperClassName = "control_wrapper";

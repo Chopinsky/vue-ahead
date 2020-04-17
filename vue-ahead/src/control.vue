@@ -12,10 +12,11 @@
 		:placeholder="placeholder"
 		:selection="selection.items"
 		:value="value"
+		@dblclick="handleDbClick"
 		@change="handleInputChange"
-		@mousedown="handleInputClick"
-		@focus="handleFocus"
 		@blur="handleInputBlur"
+		@focus="handleFocus"
+		@mousedown="handleInputClick"
 		@icon-event="handleIconEvent"
 		@special-key="handleSpecialKey"
 		@item-removal="handleItemRemoval"
@@ -48,6 +49,8 @@ const focusStatus = {
 	Shield: 5,
 	Pending: -1,
 };
+
+const debounceTimeout = 150;
 
 export default {
 	inheritAttrs: false,
@@ -82,7 +85,7 @@ export default {
 				this.remote.prefetch(data => {
 					setTimeout(() => {
 						this.source = this.prepareOptions(data);
-						this.options = this.getOptions(data);
+						this.options = this.getOptions();
 					}, 0);
 				});
 			}
@@ -127,7 +130,9 @@ export default {
 		focuseReset: function () {
 			this.focusStatus = focusStatus.None;
 			this.open = false;
+
 			this.value = '';
+			this.options = this.getOptions();
 		},
 		getClassName: function () {
 			let className = "control_container";
@@ -143,6 +148,8 @@ export default {
 			return className;
 		},
 		getOptions: function (source) {
+			// console.log('filtering:', indices, source);
+
 			if (!source) {
 				source = this.source;
 			}
@@ -151,8 +158,6 @@ export default {
 			if (!indices) {
 				return source;
 			}
-
-			console.log('filtering:', indices, source);
 
 			return source.filter(item => !hasProperty(indices, item.key));
 		},
@@ -235,14 +240,28 @@ export default {
 			};
 		},
 		clear: function () {
-			this.value = '';
-
 			this.selection = {
 				items: [],
 				indices: {},
 			};
 
-			this.options = this.getOptions();
+			this.value = '';
+
+			if (!this.remote) {
+				this.options = this.getOptions();				
+			} else {
+				if (typeof this.remote.prefetch === 'function') {
+					this.remote.prefetch(data => {
+						setTimeout(() => {
+							this.source = this.prepareOptions(data);
+							this.options = this.getOptions();
+						}, 0);
+					});
+				} else {
+					this.source = [];
+					this.options = this.getOptions();
+				}
+			}
 		},
 		reset: function () {
 			this.value = '';
@@ -294,6 +313,13 @@ export default {
 			
 			// console.log("shield clicked ... ", evt);
 		},
+		handleDbClick: function (evt) {
+			// console.log('double click');
+
+			setTimeout(() => {
+				this.$refs.inputControl.select();
+			}, 0);
+		},
 		handleInputClick: function (evt) {
 			this.focusStatus = focusStatus.Container;
 			this.focusInput();
@@ -309,9 +335,6 @@ export default {
 			switch (type) {
 				case "clear":
 					this.clear();
-
-					//todo: reset the options with the remote
-
 					break;
 
 				case "dropdown":
@@ -359,16 +382,22 @@ export default {
 
 			this._debounceId = setTimeout(() => {
 				this._engine.query(value, (data = []) => {
-					this.source = this.prepareOptions(data);
-					this.options = this.getOptions();
+					// for remote search, the source change every time on a search
+					// term, hence we need to update the source all the time
+					if (this.remote) {
+						this.source = this.prepareOptions(data);
+						this.options = this.getOptions();
+					} else {
+						this.options = this.getOptions(data);
+					}					
 					
 					this.shieldAction(false);
 					this._debounceId = null;
 				});
-			}, 200);
+			}, debounceTimeout);
 		},
 		handleItemSelection: function (evt, key) {
-			console.log('item selection ...', key, this.selection.indices);
+			// console.log('item selection ...', key, this.selection.indices);
 			
 			if (hasProperty(this.selection.indices, key)) {
 				return;
@@ -410,6 +439,8 @@ export default {
 			this.focusInput();
 		},
 		handleItemRemoval: function (evt, item) {
+			// console.log('item removal: ', item);
+
 			// invalid item removal
 			if (!this.isMulti || !item || !item.key) {
 				return;
@@ -430,8 +461,6 @@ export default {
 			// filter the options against the original list
 			this.options = 
 				this.getOptions().filter(item => !hasProperty(indices, item.key));
-
-			// console.log(this.options);
 
 			this.focusStatus = focusStatus.Icon;
 			this.focusInput();

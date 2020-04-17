@@ -16,13 +16,17 @@ export default class NativeEngine {
   }
 
   add(data = []) {
-    if (!Array.isArray(data) || !data.length) {
-      const label = data.toString();
-      this._store.push({ label: label, key: label });
+    if (data.length === 0) {
       return;
     }
 
-    this._store.push(...data);
+    if (Array.isArray(data)) {
+      this._store.push(...data);
+      return;
+    }
+
+    const label = data.toString();
+    this._store.push({ label: label, key: label });
   };
 
   query(val, cb) {
@@ -30,7 +34,7 @@ export default class NativeEngine {
       val = val.toString();
     }
 
-    val = val.toLowerCase();
+    val = val.trim().toLowerCase();
 
     //TODO: implement load more option
 
@@ -58,7 +62,7 @@ export default class NativeEngine {
         settings,
       } = this._props.remote;
 
-      axios(Object.assign({}, settings, { params }))
+      return axios(Object.assign({}, settings, { params }))
         .then(resp => {
           // format data if a formatter is passed
           const data =
@@ -66,39 +70,26 @@ export default class NativeEngine {
               ? dataParser(resp.data)
               : resp.data;
 
-          cb(data, val);
+          if (this._store.length > 0) {
+            const extra = this._localSearch(val);
+            extra && extra.length > 0 && data.push(...extra);
+          }
+
+          this._updateCache(val, data);
+
+          return cb(data, val);
         })
         .catch(err => {
           console.error("[error] failed to fetch data from remote server:", err);
         });
-
-      return null;
-    } 
-
-    // normal search workflow
-    let { matchEval } = this._props;
-    if (typeof matchEval !== 'function') {
-      matchEval = null;
     }
 
-    const data = 
-      this._store
-        .filter(data => {
-          if (matchEval) {
-            return matchEval(val, data);
-          }
-
-          const label = data.label.toLowerCase();
-          return label && label.indexOf(val) >= 0;
-        });
-
-    this._cache.last.push(val);
-    this._cache.data[val] = data;
-
-    if (this._cache.last.length > this._props.cacheSize) {
-      let [delKey] = this._cache.last.splice(0, 1);
-      delete this._cache.data[delKey];
+    if (val === '') {
+      return cb(this._store, val);
     }
+
+    const data = this._localSearch(val);
+    this._updateCache(val, data);
 
     return cb(data, val);
   };
@@ -140,4 +131,33 @@ export default class NativeEngine {
   setOption(name, option) {
     this._props[name] = option;
   };
+
+  _updateCache(data, val) {
+    this._cache.last.push(val);
+    this._cache.data[val] = data;
+
+    if (this._cache.last.length > this._props.cacheSize) {
+      let [delKey] = this._cache.last.splice(0, 1);
+      delete this._cache.data[delKey];
+    }
+  }
+
+  _localSearch(val) {
+    // normal search workflow
+    let { matchEval } = this._props;
+    if (typeof matchEval !== 'function') {
+      matchEval = null;
+    }
+    
+    return this._store.filter(
+      item => {
+        if (matchEval) {
+          return matchEval(val, item);
+        }
+
+        const label = item.label.toLowerCase();
+        return label && label.indexOf(val) >= 0;
+      }
+    );
+  }
 }

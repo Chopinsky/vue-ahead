@@ -1,26 +1,25 @@
 <template>
-  <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png" tabindex="0">
-		<br/>
-    <div class="control">
-			<VueAhead 
+  <div id="app" class="container">
+		<div class="row d-flex justify-content-center">
+			<img alt="Vue logo" src="./assets/logo.png" tabindex="0">
+		</div>
+    <div class="control row">
+			<VueAhead
         :initOptions="colors"
 				:initSelections="[1]"
 				placeholder="select a color"
       />
     </div>
-    <br/>
-    <div class="control">
-      <VueAhead 
+    <div class="control row">
+      <VueAhead
 				:isMulti="true"
 				:initOptions="majors"
 				:initSelections="[1, 2]"
 				placeholder="select a major"
 			/>
     </div>
-    <br/>
-    <div class="control">
-      <VueAhead 
+    <div class="control row">
+      <VueAhead
 				:remote="remote"
 				placeholder="select a twitter handle"
 			/>
