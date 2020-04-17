@@ -80,7 +80,14 @@ export default class NativeEngine {
           return cb(data, val);
         })
         .catch(err => {
-          console.error("[error] failed to fetch data from remote server:", err);
+          console.error(
+            "[error] failed to fetch data from the remote server:",
+            err,
+            "\nremote settings:",
+            settings,
+          );
+
+          return cb([], val);
         });
     }
 

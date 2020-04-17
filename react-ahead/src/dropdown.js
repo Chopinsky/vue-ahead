@@ -47,6 +47,10 @@ export default class Dropdown extends React.Component {
 
     this._contentWrapper = React.createRef();
 
+    //todo: default selection is implemented in the wrong place, for the 
+    // wrong UX/UI it should be selected by default, instead of pointed 
+    // to by default.
+    
     if (
       typeof props.defaultSelection === 'number' 
       && props.defaultSelection < props.options.length

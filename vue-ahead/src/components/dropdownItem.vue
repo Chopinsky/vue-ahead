@@ -1,9 +1,9 @@
 <template>
 <div
+	ref="elem"
+  :class="className"
   @mouseover.capture="$emit('mouseover', $event, index)"
   @mousedown="$emit('mousedown', $event, index)"
-  :class="className"
-  ref="elem"
 >
   {{ item.label }}
 </div>
@@ -32,6 +32,11 @@ export default {
 	watch: {
 		active: function () {
 			this.className = this.getClassName();
+
+			if (this.active) {
+				const { offsetTop, offsetHeight } = this.$refs.elem;
+				this.$emit('item-activated', offsetTop, offsetHeight);
+			}
 		},
 	},
 };

@@ -21,6 +21,7 @@
     <div class="control row">
       <VueAhead
 				:remote="remote"
+				:itemRenderer="item"
 				placeholder="select a twitter handle"
 			/>
     </div>
@@ -29,6 +30,7 @@
 
 <script>
 import VueAhead from 'vue-ahead';
+import OptionItem from './Item.vue';
 
 const parser = function (data) {
 	return data.map(item => {
@@ -40,12 +42,13 @@ const parser = function (data) {
 };
 
 const prefetcher = async function (cb) {
-	await cb([
-		{ label: 'ab' },
-		{ label: 'bc' },
-		{ label: 'cd' },
-		{ label: 'de' },
-	]);
+	// await cb([
+	// 	{ label: 'ab' },
+	// 	{ label: 'bc' },
+	// 	{ label: 'cd' },
+	// 	{ label: 'de' },
+	// ]);
+	cb([]);
 };
 
 const remote = {
@@ -67,7 +70,7 @@ export default {
 		return {
 			colors: [
 				{ label: 'White' },
-				{ label: 'Blue' },
+				{ label: 'Blue', key: 1 },  // denote a specific key for initSelection
 				{ label: 'Green' },
 				{ label: 'Gray' },
 				{ label: 'Black' },
@@ -76,8 +79,8 @@ export default {
 			],
 			majors: [
 				{ label: 'Science' },
-				{ label: 'Physics' },
-				{ label: 'Math' },
+				{ label: 'Physics', key: 1 }, // denote a specific key for initSelection
+				{ label: 'Math', key:2 },     // denote a specific key for initSelection
 				{ label: 'Technology' },
 				{ label: 'Engineering' },
 				{ label: 'Arts' },
@@ -93,6 +96,7 @@ export default {
 				{ label: 'Mythology' },
 			],
 			remote,
+			item: OptionItem,
 		};
 	},
 	methods: {

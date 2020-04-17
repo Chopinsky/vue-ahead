@@ -27,6 +27,8 @@
 		:className="(customClassName && customClassName.dropdown) || ''"
 		:open="open"
 		:options="options"
+		:isRemoteInit="remote && value === ''"
+		:itemRenderer="itemRenderer"
 		:shield="shield"
 		@item-selection="handleItemSelection"
 	/>
@@ -50,7 +52,7 @@ const focusStatus = {
 	Pending: -1,
 };
 
-const debounceTimeout = 150;
+const debounceTimeout = 120;
 
 export default {
 	inheritAttrs: false,
@@ -60,8 +62,7 @@ export default {
 		Input,
 		Dropdown,
 	},
-	beforeCreate: function () {
-		// this._engine = new Engine({});
+	beforeMount: function () {
 	},
 	beforeDestroy: function () {
 		//todo: send any remainder data to remote, if configured
@@ -71,36 +72,21 @@ export default {
 		initOptions: Array,
 		initSelections: Array,
 		isMulti: Boolean,
+		itemRenderer: {
+			type: Object,
+			default: null,
+		},
 		placeholder: String,
 		remote: Object,
 	},
 	data() {
-		const source = this.prepareOptions(this.initOptions);
-		const config = {};
+		const { source, initState } = this.init();
 
-		if (this.remote) {
-			config['remote'] = this.remote;
-
-			if (typeof this.remote.prefetch === 'function') {
-				this.remote.prefetch(data => {
-					setTimeout(() => {
-						this.source = this.prepareOptions(data);
-						this.options = this.getOptions();
-					}, 0);
-				});
-			}
-		}
-
-		this._engine = new Engine(config);
+		this._engine = new Engine({ remote: this.remote || null });
 		this._engine.add(source);
 		
 		this._shieldId = null;
 		this._debounceId = null;
-
-		let initState = null;
-		if (this.initSelections && this.initSelections.length > 0) {
-			initState = this.prepareInitState(source);
-		}
 
 		return {
 			className: this.getClassName(),
@@ -115,6 +101,23 @@ export default {
 		};
 	},
 	methods: {
+		init: function () {
+			let source = [];
+			let initState = null;
+
+			if (this.remote) {
+				if (typeof this.remote.prefetch === 'function') {
+					this.runPrefetcher(this.remote.prefetch);
+				}
+			} else {
+				source = this.prepareOptions(this.initOptions);
+				if (this.initSelections && this.initSelections.length > 0) {
+					initState = this.prepareInitState(source);
+				}
+			}
+
+			return { source, initState, };
+		},
 		focusInput: function (dropdownState = null) {
 			setTimeout(() => {
 				// console.log('moving focus to the input, before:', this.focusStatus);
@@ -132,7 +135,7 @@ export default {
 			this.open = false;
 
 			this.value = '';
-			this.options = this.getOptions();
+			this.resetOptions();
 		},
 		getClassName: function () {
 			let className = "control_container";
@@ -147,9 +150,20 @@ export default {
 
 			return className;
 		},
+		resetOptions: function () {
+			if (this.remote) {
+				if (typeof this.remote.prefetch === 'function') {
+					this.runPrefetcher(this.remote.prefetch);
+				} else {
+					this.source = [];
+					this.options = this.getOptions();
+				}
+			} else {
+				this.options = this.getOptions();
+			}
+		},
 		getOptions: function (source) {
-			// console.log('filtering:', indices, source);
-
+			
 			if (!source) {
 				source = this.source;
 			}
@@ -158,6 +172,8 @@ export default {
 			if (!indices) {
 				return source;
 			}
+
+			// console.log('filtering:', indices, source);
 
 			return source.filter(item => !hasProperty(indices, item.key));
 		},
@@ -169,13 +185,13 @@ export default {
 					.filter(item => item !== null && item !== undefined)
 					.map((item, idx) => {
 						if (!hasProperty(item, 'key')) {
-							item['key'] = idx.toString();
+							item['key'] = idx.toString() + "#" + randomSuffix();
 						}
 
 						let key = item['key'];
 						if (typeof key !== 'string') {							
 							key = (key === null || key === undefined) 
-								? randomSuffix() 
+								? randomSuffix()
 								: key.toString();
 						}
 
@@ -251,12 +267,7 @@ export default {
 				this.options = this.getOptions();				
 			} else {
 				if (typeof this.remote.prefetch === 'function') {
-					this.remote.prefetch(data => {
-						setTimeout(() => {
-							this.source = this.prepareOptions(data);
-							this.options = this.getOptions();
-						}, 0);
-					});
+					this.runPrefetcher(this.remote.prefetch);
 				} else {
 					this.source = [];
 					this.options = this.getOptions();
@@ -264,24 +275,23 @@ export default {
 			}
 		},
 		reset: function () {
+			const { source, initState } = this.init();
+
 			this.value = '';
-			this.source = this.prepareOptions(this.initOptions);
 
-			let options = this.source;
-			let selection = {
-				items: [],
-				indices: {},
-			};
+			this.options = 
+				initState ? initState.options : source;
 
-			if (this.initSelections && this.initSelections.length > 0) {
-				const initState = this.prepareInitState(options);
-				
-				options = initState.options;
-				selection = initState.selection;
-			}
-
-			this.options = options;
-			this.selection = selection;
+			this.selection = 
+				initState ? initState.selection : { items: [], indices: {}, } ;
+		},
+		runPrefetcher: function (prefetcher) {
+			prefetcher(data => {
+				setTimeout(() => {
+					this.source = this.prepareOptions(data);
+					this.options = this.getOptions();
+				}, 0);
+			});
 		},
 		shieldAction: function (up) {
 			if (this._shieldId) {
@@ -370,7 +380,7 @@ export default {
 			this.open = true;
 
 			if (value === '') {
-				this.options = this.getOptions();
+				this.resetOptions();
 				return;
 			}
 
@@ -382,6 +392,8 @@ export default {
 
 			this._debounceId = setTimeout(() => {
 				this._engine.query(value, (data = []) => {
+					console.log(data);
+
 					// for remote search, the source change every time on a search
 					// term, hence we need to update the source all the time
 					if (this.remote) {
@@ -389,7 +401,7 @@ export default {
 						this.options = this.getOptions();
 					} else {
 						this.options = this.getOptions(data);
-					}					
+					}
 					
 					this.shieldAction(false);
 					this._debounceId = null;

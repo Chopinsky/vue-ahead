@@ -19,18 +19,33 @@
         :data="groups[idx]"
       />
       <Item
-        @mouseover="handleMouseOver"
-        @mousedown.stop="$emit('item-selection', $event, item.key)"
+        v-if="!$options.components.CustomItem"
         :active="activeIdx === idx"
         :item="item"
         :index="idx"
+        @mouseover="handleMouseOver"
+        @mousedown.stop="$emit('item-selection', $event, item.key)"
+        @item-activated="handleItemActivated"
       />
+      <div 
+        v-else
+        :ref="'item_' + idx.toString()"
+        @mouseover="handleMouseOver($event, idx)"
+        @mousedown.stop="$emit('item-selection', $event, item.key)"
+        @item-activated="handleItemActivated"
+      >
+        <CustomItem
+          :active="activeIdx === idx"
+          :item="item"
+          :index="idx"
+        />
+      </div>
     </div>
     <div
       v-if="!options || options.length === 0"
       class="dropdown_empty_options"
     >
-      No options
+      {{ emptyText }}
     </div>
   </div>
 </div>
@@ -73,19 +88,29 @@ export default {
       type: Array,
       default: new Array(),
     },
+    isRemoteInit: Boolean,
+    itemRenderer: Object,
 		shield: Boolean,
 	},
 	components: {
 		Item,
-	},
+  },
+  beforeMount() {    
+		if (this.itemRenderer) {
+      this.updateCustomItem();
+		}
+  },
 	data: function () {
+    this._manualMove = "";
+
 		return {
 			activeIdx: 0,
 			classes: this.getClassName(),
 			styles: {
 				shield: shieldStyle,
 				title: shieldTitleStyle,
-			}
+      },
+      emptyText: this.getEmptyText(),
 		};
 	},
 	methods: {
@@ -98,19 +123,34 @@ export default {
 
 			return className;
     },
+    getEmptyText: function () {
+      console.log('remote init?', this.isRemoteInit);
+
+      return this.isRemoteInit ? "Type to search" : "No option";
+    },
+    updateCustomItem: function () {
+			this.$options.components.CustomItem = this.itemRenderer;
+    },
     move: function (dir) {
+      let { activeIdx } = this;
+
       if (dir === 'down') {
-        this.activeIdx++;
+        activeIdx++;
       } else {
-        this.activeIdx--;
+        activeIdx--;
       }
 
-      if (this.activeIdx >= this.options.length) {
-        this.activeIdx = this.options.length - 1;
+      if (activeIdx >= this.options.length) {
+        activeIdx = this.options.length - 1;
       }
 
-      if (this.activeIdx < 0) {
-        this.activeIdx = 0;
+      if (activeIdx < 0) {
+        activeIdx = 0;
+      }
+
+      if (activeIdx !== this.activeIdx) {
+        this._manualMove = dir;
+        this.activeIdx = activeIdx;
       }
     },
     select: function () {
@@ -121,7 +161,28 @@ export default {
       const item = this.options[this.activeIdx];
       this.$emit('item-selection', null, item.key);
     },
+    handleItemActivated: function (offsetTop, offsetHeight = 30) {
+      // console.log('offset top: ', offsetTop, offsetHeight);
+
+      if (this.options.length < 4 || !this._manualMove) {
+        return;
+      }
+
+      const wrapper = this.$refs.contentWrapper;
+      const { height } = wrapper.getBoundingClientRect();
+      const adjustedHeight = offsetHeight + 10;
+
+      if (offsetTop > height - adjustedHeight && this._manualMove === 'down') {
+        wrapper.scrollTo(0, offsetTop + adjustedHeight - height);
+      } else if (offsetTop < wrapper.scrollTop && this._manualMove === 'up') {
+        wrapper.scrollTo(0, wrapper.scrollTop - offsetHeight);
+      }
+
+      this._manualMove = '';
+    },
 		handleMouseOver: function (evt, idx) {
+      // console.log('mouse over:', idx);
+
 			if (idx < this.options.length) {
 				this.activeIdx = idx;        
 			} else {
@@ -134,17 +195,30 @@ export default {
 		},
 	},
 	watch: {
+    activeIdx: function () {
+      if (!this.$options.components.CustomItem) {
+        return;
+      }
+
+      const itemKey = `item_${this.activeIdx}`;
+
+      if (this.$refs[itemKey] && this.$refs[itemKey].length === 1) {
+        const { offsetTop, offsetHeight } = this.$refs[itemKey][0];
+				this.handleItemActivated(offsetTop, offsetHeight);
+      }
+    },
 		className: function () {
 			this.classes = this.getClassName();
     },
+    isRemoteInit: function () {
+      this.emptyText = this.getEmptyText();
+    },
+    itemRenderer: function () {
+      this.updateCustomItem();
+    },
     options: function () {
-      if (this.activeIdx >= this.options.length) {
-        this.activeIdx = this.options.length - 1;
-      } 
-      
-      if (this.activeIdx < 0) {
-        this.activeIdx = 0;
-      }
+      this.activeIdx = 0;
+      this.$refs.contentWrapper.scrollTo(0, 0);
     },
 	}
 };
