@@ -1,24 +1,3 @@
-# iastate-theme-vue
+# Vue-Ahead: An Auto-Complete Control for Vue
 
-## Project setup
-```
-yarn install
-```
-
-### Compiles and hot-reloads for development
-```
-yarn serve
-```
-
-### Compiles and minifies for production
-```
-yarn build
-```
-
-### Lints and fixes files
-```
-yarn lint
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+This control provides a native auto-complete control built in VueJS. The control provides a wide arrange of funtionalities that aim to offer everything a TypeAhead jQuery plugin could provide to an application, and more. 

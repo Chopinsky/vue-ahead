@@ -18,15 +18,15 @@
 
 <script>
 export default {
-  props: {
-    active: Boolean,
-    item: Object,
-    index: Number,
-  },
-  data: function () {
+	props: {
+		active: Boolean,
+		item: Object,
+		index: Number,
+	},
+	data: function () {
 		return {
-      className: this.getClassName(),
-      info: this.item && this.item.extraData,
+			className: this.getClassName(),
+			info: this.item && this.item.extraData,
 		};
 	},
 	methods: {
@@ -38,9 +38,9 @@ export default {
 		active: function () {
 			this.className = this.getClassName();
 		},
-    item: function () {
-      this.info = (this.item && this.item.extraData) || null;
-    },
+		item: function () {
+			this.info = (this.item && this.item.extraData) || null;
+		},
 	},
 };
 </script>

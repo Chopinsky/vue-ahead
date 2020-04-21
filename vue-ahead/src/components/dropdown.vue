@@ -5,7 +5,7 @@
     :style="styles.shield"
     @mousedown.capture.stop="$emit('shield-click', $event)"
   >
-    <h3 :style="styles.title">
+    <h3 v-show="shieldVisible" :style="styles.title">
       Loading ...
     </h3>
   </div>
@@ -19,7 +19,7 @@
         :data="groups[idx]"
       />
       <Item
-        v-if="!$options.components.CustomItem"
+        v-if="!itemRenderer"
         :active="activeIdx === idx"
         :item="item"
         :index="idx"
@@ -53,6 +53,7 @@
 
 <script>
 import Item from "./dropdownItem.vue";
+import GroupLabel from './dropdownLabel.vue';
 
 const shieldStyle = {
 	position: 'absolute',
@@ -63,9 +64,10 @@ const shieldStyle = {
 	height: '100%',
 	textAlign: 'center',
 	justifyContent: 'center',
-	backgroundColor: '#F5F5F5',
 	zIndex: 100000,
-	opacity: 0.5,
+	backgroundColor: 'transparent',
+	// backgroundColor: '#F5F5F5',
+	// opacity: 0.5,
 	userSelect: 'none',
 };
 
@@ -78,39 +80,44 @@ const shieldTitleStyle = {
 	padding: 0,
 	width: '100%',
 	height: '100%',
+	opacity: 1,
 };
 
 export default {
 	props: {
 		className: String,
 		groups: Object,
+		isRemoteInit: Boolean,
+		itemRenderer: Object,
 		options: {
-      type: Array,
-      default: new Array(),
-    },
-    isRemoteInit: Boolean,
-    itemRenderer: Object,
+			type: Array,
+			default: new Array(),
+		},
+		reason: Number,  // 0 -- new results; 1 -- selection/removal;
 		shield: Boolean,
 	},
 	components: {
+		GroupLabel,
 		Item,
-  },
-  beforeMount() {    
+	},
+	beforeMount() {
 		if (this.itemRenderer) {
-      this.updateCustomItem();
+			this.updateCustomItem();
 		}
-  },
+	},
 	data: function () {
-    this._manualMove = "";
+		this._manualMove = "";
+		this._debounceId = null;
 
 		return {
 			activeIdx: 0,
 			classes: this.getClassName(),
+			shieldVisible: false,
 			styles: {
 				shield: shieldStyle,
 				title: shieldTitleStyle,
-      },
-      emptyText: this.getEmptyText(),
+			},
+			emptyText: this.getEmptyText(),
 		};
 	},
 	methods: {
@@ -122,104 +129,126 @@ export default {
 			}
 
 			return className;
-    },
-    getEmptyText: function () {
-      console.log('remote init?', this.isRemoteInit);
-
-      return this.isRemoteInit ? "Type to search" : "No option";
-    },
-    updateCustomItem: function () {
+		},
+		getEmptyText: function () {
+			return this.isRemoteInit ? "Type to search" : "No option";
+		},
+		updateCustomItem: function () {
 			this.$options.components.CustomItem = this.itemRenderer;
-    },
-    move: function (dir) {
-      let { activeIdx } = this;
+		},
+		move: function (dir) {
+			let { activeIdx } = this;
 
-      if (dir === 'down') {
-        activeIdx++;
-      } else {
-        activeIdx--;
-      }
+			if (dir === 'down') {
+				activeIdx++;
+			} else {
+				activeIdx--;
+			}
 
-      if (activeIdx >= this.options.length) {
-        activeIdx = this.options.length - 1;
-      }
+			if (activeIdx >= this.options.length) {
+				activeIdx = this.options.length - 1;
+			}
 
-      if (activeIdx < 0) {
-        activeIdx = 0;
-      }
+			if (activeIdx < 0) {
+				activeIdx = 0;
+			}
 
-      if (activeIdx !== this.activeIdx) {
-        this._manualMove = dir;
-        this.activeIdx = activeIdx;
-      }
-    },
-    select: function () {
-      if (this.activeIdx < 0 || this.activeIdx >= this.options.length) {
-        return;
-      }
+			if (activeIdx !== this.activeIdx) {
+				this._manualMove = dir;
+				this.activeIdx = activeIdx;
+			}
+		},
+		select: function () {
+			if (this.activeIdx < 0 || this.activeIdx >= this.options.length) {
+				return;
+			}
 
-      const item = this.options[this.activeIdx];
-      this.$emit('item-selection', null, item.key);
-    },
-    handleItemActivated: function (offsetTop, offsetHeight = 30) {
-      // console.log('offset top: ', offsetTop, offsetHeight);
+			const item = this.options[this.activeIdx];
+			this.$emit('item-selection', null, item.key);
+		},
+		handleItemActivated: function (offsetTop, offsetHeight = 30) {
+			// console.log('offset top: ', offsetTop, offsetHeight);
 
-      if (this.options.length < 4 || !this._manualMove) {
-        return;
-      }
+			if (this.options.length < 4 || !this._manualMove) {
+				return;
+			}
 
-      const wrapper = this.$refs.contentWrapper;
-      const { height } = wrapper.getBoundingClientRect();
-      const adjustedHeight = offsetHeight + 10;
+			const wrapper = this.$refs.contentWrapper;
+			const { height } = wrapper.getBoundingClientRect();
+			const adjustedHeight = offsetHeight + 10;
 
-      if (offsetTop > height - adjustedHeight && this._manualMove === 'down') {
-        wrapper.scrollTo(0, offsetTop + adjustedHeight - height);
-      } else if (offsetTop < wrapper.scrollTop && this._manualMove === 'up') {
-        wrapper.scrollTo(0, wrapper.scrollTop - offsetHeight);
-      }
+			if (offsetTop > height - adjustedHeight && this._manualMove === 'down') {
+				wrapper.scrollTo(0, offsetTop + adjustedHeight - height);
+			} else if (offsetTop < wrapper.scrollTop && this._manualMove === 'up') {
+				wrapper.scrollTo(0, wrapper.scrollTop - offsetHeight);
+			}
 
-      this._manualMove = '';
-    },
+			this._manualMove = '';
+		},
 		handleMouseOver: function (evt, idx) {
-      // console.log('mouse over:', idx);
+			// console.log('mouse over:', idx);
 
 			if (idx < this.options.length) {
 				this.activeIdx = idx;        
 			} else {
-        this.activeIdx = this.options.length - 1;
-      }
+				this.activeIdx = this.options.length - 1;
+			}
       
-      if (this.activeIdx < 0) {
-        this.activeIdx = 0;
-      }
+			if (this.activeIdx < 0) {
+				this.activeIdx = 0;
+			}
 		},
 	},
 	watch: {
-    activeIdx: function () {
-      if (!this.$options.components.CustomItem) {
-        return;
-      }
+		activeIdx: function () {
+			if (!this.itemRenderer) {
+				return;
+			}
 
-      const itemKey = `item_${this.activeIdx}`;
+			const itemKey = `item_${this.activeIdx}`;
 
-      if (this.$refs[itemKey] && this.$refs[itemKey].length === 1) {
-        const { offsetTop, offsetHeight } = this.$refs[itemKey][0];
+			if (this.$refs[itemKey] && this.$refs[itemKey].length === 1) {
+				const { offsetTop, offsetHeight } = this.$refs[itemKey][0];
 				this.handleItemActivated(offsetTop, offsetHeight);
-      }
-    },
+			}
+		},
 		className: function () {
 			this.classes = this.getClassName();
-    },
-    isRemoteInit: function () {
-      this.emptyText = this.getEmptyText();
-    },
-    itemRenderer: function () {
-      this.updateCustomItem();
-    },
-    options: function () {
-      this.activeIdx = 0;
-      this.$refs.contentWrapper.scrollTo(0, 0);
-    },
+		},
+		isRemoteInit: function () {
+			this.emptyText = this.getEmptyText();
+		},
+		itemRenderer: function () {
+			this.updateCustomItem();
+		},
+		options: function () {
+			if (this.reason === 0) {
+				this.activeIdx = 0;
+				this.$refs.contentWrapper.scrollTo(0, 0);
+			} else if (this.activeIdx >= this.options.length) {
+				this.activeIdx = this.options.length - 1;
+			}      
+		},
+		shield: function () {
+			if (this.shield) {
+				if (this._debounceId) {
+					clearTimeout(this._debounceId);
+				}
+
+				this._debounceId = setTimeout(() => {
+					this.shieldVisible = true;
+					this.styles.shield['opacity'] = 0.7;
+					this.styles.shield['backgroundColor'] = '#F5F5F5';
+				}, 200);				
+			} else {
+				clearTimeout(this._debounceId);
+				this._debounceId = null;
+
+				this.shieldVisible = false;
+				this.styles.shield['opacity'] = 1;
+				this.styles.shield['backgroundColor'] = 'transparent';
+			}
+		}
 	}
 };
 </script>
@@ -229,7 +258,7 @@ export default {
   top: 100%;
   background-color: rgb(255, 255, 255);
   box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 0px 1px, rgba(0, 0, 0, 0.1) 0px 4px 11px;
-  margin: 2px 0;
+  margin: 4px 0;
   position: absolute;
   width: 100%;
   z-index: 1;

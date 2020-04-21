@@ -25,10 +25,12 @@
 		v-if="open"
 		ref="dropdownControl"
 		:className="(customClassName && customClassName.dropdown) || ''"
-		:open="open"
-		:options="options"
+		:groups="groups"
 		:isRemoteInit="remote && value === ''"
 		:itemRenderer="itemRenderer"
+		:open="open"
+		:options="options"
+		:reason="reason"
 		:shield="shield"
 		@item-selection="handleItemSelection"
 	/>
@@ -69,6 +71,7 @@ export default {
 	},
 	props: {
 		customClassName: Object,
+		grouped: Boolean,
 		initOptions: Array,
 		initSelections: Array,
 		isMulti: Boolean,
@@ -80,7 +83,7 @@ export default {
 		remote: Object,
 	},
 	data() {
-		const { source, initState } = this.init();
+		const { source, options, selection, groups } = this.init();
 
 		this._engine = new Engine({ remote: this.remote || null });
 		this._engine.add(source);
@@ -91,9 +94,11 @@ export default {
 		return {
 			className: this.getClassName(),
 			focusStatus: focusStatus.None,
+			groups,
 			open: false,
-			options: initState ? initState.options : source,
-			selection: initState ? initState.selection : { items: [], indices: {}, },
+			options,
+			reason: 0,
+			selection,
 			source,
 			shield: false,
 			shieldDisplay: "none",
@@ -112,11 +117,16 @@ export default {
 			} else {
 				source = this.prepareOptions(this.initOptions);
 				if (this.initSelections && this.initSelections.length > 0) {
-					initState = this.prepareInitState(source);
+					initState = this.prepareInitState(source, this.initSelections);
 				}
 			}
 
-			return { source, initState, };
+			const initOptions = initState ? initState.options : source;
+			const selection = initState ? initState.selection : { items: [], indices: {}, };
+
+			const { options, groups } = this.grouped ? this.buildGroupOptions(initOptions) : { options: initOptions, groups: null };
+
+			return { source, options, selection, groups, };
 		},
 		focusInput: function (dropdownState = null) {
 			setTimeout(() => {
@@ -151,6 +161,8 @@ export default {
 			return className;
 		},
 		resetOptions: function () {
+			this.reason = 0;
+
 			if (this.remote) {
 				if (typeof this.remote.prefetch === 'function') {
 					this.runPrefetcher(this.remote.prefetch);
@@ -158,12 +170,62 @@ export default {
 					this.source = [];
 					this.options = this.getOptions();
 				}
-			} else {
-				this.options = this.getOptions();
+
+				return;
 			}
+
+			this.options = this.getOptions();
+		},
+		buildGroupOptions: function (options) {
+			if (!options || options.length === 0) {
+				return { options, groups: null };
+			}
+
+			options = options.sort((a, b) => { 
+				if (a.group === "default") {
+					return -1;
+				}
+
+				if (b.group === "default") {
+					return 1;
+				}
+
+				if (a.group === b.group) {
+					return 0;
+				}
+
+				return a.group > b.group ? 1 : -1;
+			});
+
+			const groups = {};
+			let currKey = '';
+			let lastIdx = -1;
+			let count = 0;
+
+			for (let i = 0; i < options.length; i++) {
+				if (options[i].group !== currKey) {
+					if (lastIdx >= 0) {
+						groups[lastIdx] = { label: currKey, count, };
+					}
+
+					lastIdx = i;
+					currKey = options[i].group;
+					count = 0;
+				}
+
+				count++;
+			}
+
+			if (currKey !== '' && lastIdx >= 0) {
+				// push the last group into the store
+				groups[lastIdx] = { label: currKey, count, };
+			}
+
+			// console.log('groups:', groups, options);
+
+			return { options, groups, };
 		},
 		getOptions: function (source) {
-			
 			if (!source) {
 				source = this.source;
 			}
@@ -175,7 +237,15 @@ export default {
 
 			// console.log('filtering:', indices, source);
 
-			return source.filter(item => !hasProperty(indices, item.key));
+			let result = source.filter(item => !hasProperty(indices, item.key));
+
+			if (this.grouped) {
+				const { options, groups } = this.buildGroupOptions(result);
+				result = options;
+				this.groups = groups;
+			}
+
+			return result;
 		},
 		prepareOptions: function (options = []) {
 			const keys = {};
@@ -189,7 +259,7 @@ export default {
 						}
 
 						let key = item['key'];
-						if (typeof key !== 'string') {							
+						if (typeof key !== 'string') {
 							key = (key === null || key === undefined) 
 								? randomSuffix()
 								: key.toString();
@@ -203,7 +273,7 @@ export default {
 						keys[key] = null;
 
 						let label = item['label'];
-						if (typeof label !== 'string') {				
+						if (typeof label !== 'string') {
 							label = (label === null || label === undefined) 
 								? ''
 								: label.toString();
@@ -211,17 +281,29 @@ export default {
 
 						item['label'] = label;
 
+						if (this.grouped) {
+							let groupKey = item['group'];
+							if (typeof groupKey !== 'string') {
+								groupKey = (groupKey === null || groupKey === undefined) 
+									? "default"
+									: groupKey.toString();
+							}
+
+							item['group'] = groupKey;
+						}
+
 						return item;
 					});
 
 			return result || [];
 		},
-		prepareInitState: function (options) {
+		prepareInitState: function (options, selections) {
 			const indices = {};
+			const remainder = [];
+			const items = [];
 
-			for (let i = 0; i < this.initSelections.length; i++) {
-				let key = this.initSelections[i];
-
+			for (let i = 0; i < selections.length; i++) {
+				let key = selections[i];
 				if (typeof key !== 'string') {
 					key = key.toString();
 				}
@@ -233,9 +315,6 @@ export default {
 				}
 			}
 
-			const remainder = [];
-			const items = [];
-
 			for (let i = 0; i < options.length; i++) {
 				if (
 					hasProperty(indices, options[i]['key']) 
@@ -244,7 +323,7 @@ export default {
 					items.push(options[i]);
 				} else {
 					remainder.push(options[i]);
-				}				
+				}
 			}
 
 			return {
@@ -262,9 +341,10 @@ export default {
 			};
 
 			this.value = '';
+			this.reason = 1;
 
 			if (!this.remote) {
-				this.options = this.getOptions();				
+				this.options = this.getOptions();
 			} else {
 				if (typeof this.remote.prefetch === 'function') {
 					this.runPrefetcher(this.remote.prefetch);
@@ -275,21 +355,33 @@ export default {
 			}
 		},
 		reset: function () {
-			const { source, initState } = this.init();
+			const { options, selection, groups } = this.init();
 
 			this.value = '';
-
-			this.options = 
-				initState ? initState.options : source;
-
-			this.selection = 
-				initState ? initState.selection : { items: [], indices: {}, } ;
+			this.reason = 1;
+			this.options = options;
+			this.groups = groups;
+			this.selection = selection;
 		},
 		runPrefetcher: function (prefetcher) {
-			prefetcher(data => {
+			prefetcher((data, selections = []) => {
 				setTimeout(() => {
-					this.source = this.prepareOptions(data);
-					this.options = this.getOptions();
+					let initState = null;
+					let source = this.prepareOptions(data);
+
+					if (selections && selections.length > 0) {
+						initState = this.prepareInitState(source, selections);
+					}
+
+					const initOptions = initState ? initState.options : source;
+					const selection = initState ? initState.selection : { items: [], indices: {}, };
+
+					const { options, groups } = this.grouped ? this.buildGroupOptions(initOptions) : { options: initOptions, groups: null };
+
+					this.source = source;
+					this.options = options;
+					this.selection = selection;
+					this.groups = groups;
 				}, 0);
 			});
 		},
@@ -301,7 +393,7 @@ export default {
 			if (up) {
 				this._shieldId = setTimeout(() => {
 					this.shield = true;
-				}, 50);
+				}, 10);
 			} else {
 				this._shieldId = null;
 				this.shield = false;
@@ -316,21 +408,21 @@ export default {
 
 			// console.log('control get focus ... ', this.focusStatus, targetType);
 		},
-		handleShieldClick: function (evt) {
+		handleShieldClick: function (_evt) {
 			// move the cursor back to the input field
 			this.focusStatus = focusStatus.Shield;
 			this.focusInput();
 			
 			// console.log("shield clicked ... ", evt);
 		},
-		handleDbClick: function (evt) {
+		handleDbClick: function (_evt) {
 			// console.log('double click');
 
 			setTimeout(() => {
 				this.$refs.inputControl.select();
 			}, 0);
 		},
-		handleInputClick: function (evt) {
+		handleInputClick: function (_evt) {
 			this.focusStatus = focusStatus.Container;
 			this.focusInput();
 
@@ -392,7 +484,7 @@ export default {
 
 			this._debounceId = setTimeout(() => {
 				this._engine.query(value, (data = []) => {
-					console.log(data);
+					// console.log(data);
 
 					// for remote search, the source change every time on a search
 					// term, hence we need to update the source all the time
@@ -402,6 +494,8 @@ export default {
 					} else {
 						this.options = this.getOptions(data);
 					}
+
+					this.reason = 0;
 					
 					this.shieldAction(false);
 					this._debounceId = null;
@@ -430,7 +524,7 @@ export default {
 				items.push(this.options[i]);
 				indices[key] = null;
 
-				break;					
+				break;
 			}
 
 			this.selection = {
@@ -443,6 +537,7 @@ export default {
 				this.value = '';
 			}
 
+			this.reason = 1;
 			this.options = this.getOptions();
 
 			// console.log(idx, this.selection.items, this.selection.indices);
@@ -460,7 +555,6 @@ export default {
 
 			const { key } = item;
 			let { items, indices } = this.selection;
-			let { options } = this;
 
 			items = items.filter(item => item.key !== key);
 			delete indices[key];
@@ -471,6 +565,7 @@ export default {
 			};
 
 			// filter the options against the original list
+			this.reason = 1;
 			this.options = 
 				this.getOptions().filter(item => !hasProperty(indices, item.key));
 

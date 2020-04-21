@@ -1,6 +1,7 @@
 {
   "name": "vue-ahead",
   "version": "0.2.0",
+  "license": "GPL-3.0-or-later",
   "description": "An un-boring auto-complete control for VueJS",
   "main": "./dist/vue-ahead.umd.js",
   "scripts": {
@@ -8,11 +9,13 @@
     "build": "vue-cli-service build --target lib --name vue-ahead src/main.js && rm ./dist/demo.html",
     "build:watch": "vue-cli-service build --target lib --name vue-ahead src/main.js --watch",
     "rollup": "yarn rollup:umd --watch",
-    "rollup:all": "yarn rollup:umd && yarn rollup:es && yarn rollup:unpkg",
+    "rollup:all": "yarn rollup:umd -m && yarn rollup:es -m && yarn rollup:unpkg -m",
     "rollup:umd": "rollup --config rollup.config.js --format umd --file dist/vue-ahead.umd.js",
     "rollup:es": "rollup --config rollup.config.js --format es --file dist/vue-ahead.esm.js",
     "rollup:unpkg": "rollup --config rollup.config.js --format iife --file dist/vue-ahead.min.js",
-    "lint": "vue-cli-service lint"
+    "lint": "vue-cli-service lint",
+    "docs:dev": "vuepress dev docs --host localhost",
+    "docs:build": "vuepress build docs"
   },
   "dependencies": {
     "axios": "^0.19.2",
@@ -31,7 +34,8 @@
     "rollup-plugin-buble": "^0.19.8",
     "rollup-plugin-commonjs": "^10.0.1",
     "rollup-plugin-vue": "^5.0.1",
-    "vue-template-compiler": "^2.6.11"
+    "vue-template-compiler": "^2.6.11",
+    "vuepress": "^1.4.1"
   },
   "eslintConfig": {
     "root": true,

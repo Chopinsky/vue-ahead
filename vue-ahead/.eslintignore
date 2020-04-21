@@ -1,5 +1,6 @@
 /node_modules
 /dist
+engine.js
 *.md
 *.umd.js
 *.common.js

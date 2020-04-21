@@ -107,8 +107,8 @@ const contentHolderStyle = {
 };
 
 const fieldStyle = {
-  display: "inline-block",
-  padding: "0 0 1px 1px",
+	display: "inline-block",
+	padding: "0 0 1px 1px",
 };
 
 const clearIconPath = "M 14.348 14.849 c -0.469 0.469 -1.229 0.469 -1.697 0 l -2.651 -3.03 l -2.651 3.029 c -0.469 0.469 -1.229 0.469 -1.697 0 c -0.469 -0.469 -0.469 -1.229 0 -1.697 l 2.758 -3.15 l -2.759 -3.152 c -0.469 -0.469 -0.469 -1.228 0 -1.697 s 1.228 -0.469 1.697 0 l 2.652 3.031 l 2.651 -3.031 c 0.469 -0.469 1.228 -0.469 1.697 0 s 0.469 1.229 0 1.697 l -2.758 3.152 l 2.758 3.15 c 0.469 0.469 0.469 1.229 0 1.698 Z";
@@ -124,10 +124,7 @@ export default {
 			type: String,
 			default: '',
 		},
-		selection: { 
-			type: Array,
-			default: [],
-		},
+		selection: Array,
 		value: {
 			type: String,
 			default: '',
@@ -143,8 +140,8 @@ export default {
 		return {
 			styles: {
 				container: contentHolderStyle,
-        input: Object.assign({}, inputStyle),
-        field: fieldStyle,
+				input: Object.assign({}, inputStyle),
+				field: fieldStyle,
 			},
 			classes: {
 				wrapper: this.getWrapperClassName(),
@@ -174,8 +171,6 @@ export default {
 			const { input } = this.$refs;
 			const start = input.selectionStart;
 			const end = input.selectionEnd;
-
-			console.log(start, end);
 
 			if (start < end) {
 				input.setSelectionRange(this.value.length, this.value.length);
@@ -248,21 +243,21 @@ export default {
 			this.$emit('change', evt, val);
 		},
 		handleKeydown: function (evt, keyCode) {
-      if (!keyCode) {
-        if (!evt) {
-          return;
-        }
+			if (!keyCode) {
+				if (!evt) {
+					return;
+				}
 
-        keyCode = evt.keyCode || 0;        
-      }
+				keyCode = evt.keyCode || 0;        
+			}
       
 			switch (keyCode) {
 				case 8:
 					// backspace
 					if (this.isMulti && this.value === '' && this.selection.length > 0) {
-            // this.$emit('special-key', 'backspace');
-            const item = this.selection[this.selection.length - 1];
-            this.$emit('item-removal', evt, item);
+						// this.$emit('special-key', 'backspace');
+						const item = this.selection[this.selection.length - 1];
+						this.$emit('item-removal', evt, item);
 					}
 
 					break;
@@ -368,7 +363,7 @@ export default {
   -webkit-box-pack: justify;
   padding-left: 6px;
   padding-right: 4px;
-  min-height: 32px;
+  min-height: 18px;
   align-items: center;
   background-color: rgb(255, 255, 255);
   border-radius: 2px;
@@ -388,7 +383,7 @@ export default {
 }
 
 .input_container {
-  padding: 4px 0;
+  padding: 2px 0;
   color: rgb(51, 51, 51);
   position: relative;
   display: flex;
@@ -405,8 +400,8 @@ export default {
   position: absolute;
   top: 50%;
   color: rgb(128, 128, 128);
-  margin: 0;
-  padding: 2px 2px 0 2px;
+	margin: 0;
+	padding: 0 1px;
   transform: translateY(-50%);
   box-sizing: border-box;
   overflow: hidden;

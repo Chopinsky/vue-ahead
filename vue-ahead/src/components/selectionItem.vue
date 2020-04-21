@@ -57,13 +57,13 @@ export default {
 			const { keyCode } = evt;
 
 			if (keyCode === 13 || keyCode === 32) {
-        this.$emit('item-removal', evt, key);
-        evt.preventDefault();
-      }
+				this.$emit('item-removal', evt, key);
+				evt.preventDefault();
+			}
       
-      if (this.index === 0 && keyCode === 9 && evt.shiftKey) {
-        this.$emit('special-key');
-      }
+			if (this.index === 0 && keyCode === 9 && evt.shiftKey) {
+				this.$emit('special-key');
+			}
 		},
 	},
 };

@@ -5,6 +5,7 @@
 		</div>
     <div class="control row">
 			<VueAhead
+				:grouped="true"
         :initOptions="colors"
 				:initSelections="[1]"
 				placeholder="select a color"
@@ -69,12 +70,12 @@ export default {
 	data: function () {
 		return {
 			colors: [
-				{ label: 'White' },
+				{ label: 'White', group: "group a" },
 				{ label: 'Blue', key: 1 },  // denote a specific key for initSelection
-				{ label: 'Green' },
-				{ label: 'Gray' },
-				{ label: 'Black' },
-				{ label: 'Yellow' },
+				{ label: 'Green', group: "group b" },
+				{ label: 'Gray', group: "group a" },
+				{ label: 'Black', group: "group b" },
+				{ label: 'Yellow', group: "group c" },
 				{ label: 'many-many-colors-that-dont-yet-have-a-name-for-whatever-it-is-and-to-be' },
 			],
 			majors: [
