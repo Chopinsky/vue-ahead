@@ -1,17 +1,19 @@
 {
-  "name": "react-ahead-library",
-  "version": "0.2.0",
-  "description": "UI and trie-based engine for autocomplete",
-  "main": "index.js",
+  "name": "vue-ahead",
+  "version": "0.3.0",
+  "description": "a collection of the auto-complete libraries implemented for VueJS and React, specifically.",
+  "main": "./vue-ahead/dist/vue-ahead.umd.js",
   "private": true,
   "scripts": {
   },
   "keywords": [
     "react",
+    "vue",
     "select",
+    "auto complete",
     "UI",
     "engine"
   ],
-  "author": "Jacob Zuo <chopinsky@live.com>",
-  "license": "MIT"
+  "author": "Jacob Zuo <zuo@iastate.edu>",
+  "license": "GPL-3.0-or-later"
 }

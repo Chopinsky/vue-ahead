@@ -1,6 +1,6 @@
 {
   "name": "vue-ahead",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "license": "GPL-3.0-or-later",
   "description": "An un-boring auto-complete control for VueJS",
   "main": "./dist/vue-ahead.umd.js",
@@ -54,6 +54,7 @@
       "node_modules/"
     ],
     "rules": {
+      "no-fallthrough": 0,
       "space-before-function-paren": 0,
       "semi": [
         2,
