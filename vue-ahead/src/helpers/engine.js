@@ -1,6 +1,5 @@
 import { hasProperty } from "./common.js";
-
-const axios = require("axios");
+import axios from "axios";
 
 export default class NativeEngine {
 	constructor(props) {

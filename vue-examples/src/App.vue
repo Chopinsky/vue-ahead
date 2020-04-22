@@ -13,6 +13,7 @@
     </div>
     <div class="control row">
       <VueAhead
+				:highlight="true"
 				:isMulti="true"
 				:initOptions="majors"
 				:initSelections="[1, 2]"
@@ -42,15 +43,7 @@ const parser = function (data) {
 	});
 };
 
-const prefetcher = async function (cb) {
-	// await cb([
-	// 	{ label: 'ab' },
-	// 	{ label: 'bc' },
-	// 	{ label: 'cd' },
-	// 	{ label: 'de' },
-	// ]);
-	cb([]);
-};
+const prefetcher = async function (cb) { cb([]); };
 
 const remote = {
 	settings: {

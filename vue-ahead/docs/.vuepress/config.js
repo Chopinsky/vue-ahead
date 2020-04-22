@@ -4,7 +4,8 @@ module.exports = {
   themeConfig: {
     nav: [
       { text: 'SETUP', link: '/guide/setup' },
-      { text: 'API GUIDE', link: '/guide/api' },
+      { text: 'API', link: '/guide/api' },
+      { text: 'EXAMPLES', link: '/guide/examples' },
     ],
     sidebar: [
       {
@@ -13,6 +14,7 @@ module.exports = {
         children: [
           '/guide/setup',
           '/guide/api',
+          '/guide/examples',
         ],
       },
     ],

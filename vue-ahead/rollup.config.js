@@ -7,7 +7,11 @@ export default {
 	output: {
 		name: 'vueahead',
 		exports: 'named',
+		globals: {
+			'axios': 'axios',
+		},
 	},
+	external: ['axios'],
 	plugins: [
 		commonjs(),
 		vue({

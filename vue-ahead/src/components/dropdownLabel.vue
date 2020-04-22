@@ -1,5 +1,5 @@
 <template>
-<div class="group_label">
+<div class="group_label" @mousedown="$emit('mousedown', $event)">
     <span>
       {{ data.label || "Default" }}
     </span>

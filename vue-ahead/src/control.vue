@@ -7,7 +7,7 @@
 	<Input 
 		ref="inputControl"
 		:active="focusStatus !== 0"
-		:customClassName="customClassName"
+		:customClassNames="customClassNames"
 		:isMulti="isMulti"
 		:placeholder="placeholder"
 		:selection="selection.items"
@@ -24,8 +24,9 @@
 	<Dropdown
 		v-if="open"
 		ref="dropdownControl"
-		:className="(customClassName && customClassName.dropdown) || ''"
+		:customClassNames="customClassNames"
 		:groups="groups"
+		:highlight="highlight ? value.trim() : null"
 		:isRemoteInit="remote && value === ''"
 		:itemRenderer="itemRenderer"
 		:open="open"
@@ -70,8 +71,9 @@ export default {
 		//todo: send any remainder data to remote, if configured
 	},
 	props: {
-		customClassName: Object,
+		customClassNames: Object,
 		grouped: Boolean,
+		highlight: Boolean,
 		initOptions: Array,
 		initSelections: Array,
 		isMulti: Boolean,
@@ -154,8 +156,8 @@ export default {
 				className += " " + this.class;
 			}
 
-			if (this.customClassName && this.customClassName.control) {
-				className += " " + this.customClassName.control;
+			if (this.customClassNames && this.customClassNames.control) {
+				className += " " + this.customClassNames.control;
 			}
 
 			return className;
@@ -165,7 +167,7 @@ export default {
 
 			if (this.remote) {
 				if (typeof this.remote.prefetch === 'function') {
-					this.runPrefetcher(this.remote.prefetch);
+					this.runPrefetcher(this.remote.prefetch, true);
 				} else {
 					this.source = [];
 					this.options = this.getOptions();
@@ -227,7 +229,7 @@ export default {
 		},
 		getOptions: function (source) {
 			if (!source) {
-				source = this.source;
+				source = this.source || [];
 			}
 
 			const { indices } = this.selection || {};
@@ -252,7 +254,7 @@ export default {
 
 			const result = 
 				options
-					.filter(item => item !== null && item !== undefined)
+					.filter(item => typeof item === "object" && !!item)
 					.map((item, idx) => {
 						if (!hasProperty(item, 'key')) {
 							item['key'] = idx.toString() + "#" + randomSuffix();
@@ -363,18 +365,22 @@ export default {
 			this.groups = groups;
 			this.selection = selection;
 		},
-		runPrefetcher: function (prefetcher) {
+		runPrefetcher: function (prefetcher, keepSelections) {
 			prefetcher((data, selections = []) => {
 				setTimeout(() => {
-					let initState = null;
 					let source = this.prepareOptions(data);
+					let initOptions = source;
+					let selection = this.selection;
 
-					if (selections && selections.length > 0) {
-						initState = this.prepareInitState(source, selections);
+					if (
+						selections
+						&& selections.length > 0
+						&& (!keepSelections || !this.selection.items.length) 
+					) {
+						const initState = this.prepareInitState(source, selections);
+						selection = initState.selection;
+						initOptions = initState.options;
 					}
-
-					const initOptions = initState ? initState.options : source;
-					const selection = initState ? initState.selection : { items: [], indices: {}, };
 
 					const { options, groups } = this.grouped ? this.buildGroupOptions(initOptions) : { options: initOptions, groups: null };
 
@@ -464,14 +470,14 @@ export default {
 					}
 
 					this.focuseReset();
-				}, 0);				
+				}, 0);
 			}
 		},
 		handleInputChange: function (evt, value) {
 			this.value = value;
 			this.open = true;
 
-			if (value === '') {
+			if (value === '' || value.trim() === '') {
 				this.resetOptions();
 				return;
 			}
@@ -532,6 +538,12 @@ export default {
 				indices,
 			};
 
+			this.$emit("selection", {
+				type: "add",
+				items: this.selection.items,
+				value: this.value,
+			});
+
 			// reset the value to empty after a selection
 			if (this.value !== '') {
 				this.value = '';
@@ -540,7 +552,7 @@ export default {
 			this.reason = 1;
 			this.options = this.getOptions();
 
-			// console.log(idx, this.selection.items, this.selection.indices);
+			// console.log(key, this.selection.items, this.selection.indices);
 
 			this.focusStatus = focusStatus.Dropdown;
 			this.focusInput();
@@ -555,14 +567,28 @@ export default {
 
 			const { key } = item;
 			let { items, indices } = this.selection;
+			let deleted = null;
 
-			items = items.filter(item => item.key !== key);
 			delete indices[key];
+			items = items.filter(item => {
+				if (item.key === key) {
+					deleted = item;
+					return false;
+				} 
+
+				return true;
+			});
 
 			this.selection = {
 				items,
 				indices,
 			};
+
+			this.$emit("selection", {
+				type: "remove",
+				items: this.selection.items,
+				deleted,
+			});
 
 			// filter the options against the original list
 			this.reason = 1;

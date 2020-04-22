@@ -1,5 +1,5 @@
 <template>
-<div :class="classes">
+<div :class="className">
   <div
     v-if="shield"
     :style="styles.shield"
@@ -10,17 +10,20 @@
     </h3>
   </div>
   <div 
-    class="dropdown_content"
+    class="dropdown_container"
     ref="contentWrapper"
   >
     <div v-for="(item, idx) in options" :key="item.key">
       <GroupLabel
         v-if="groups && groups.hasOwnProperty(idx)"
         :data="groups[idx]"
+				@mousedown.stop="handleLabelClicked"
       />
       <Item
         v-if="!itemRenderer"
         :active="activeIdx === idx"
+				:class="(customClassNames && customClassNames.activeItem) || ''"
+				:highlight="highlight"
         :item="item"
         :index="idx"
         @mouseover="handleMouseOver"
@@ -29,6 +32,7 @@
       />
       <div 
         v-else
+				:class="(customClassNames && customClassNames.activeItem) || ''"
         :ref="'item_' + idx.toString()"
         @mouseover="handleMouseOver($event, idx)"
         @mousedown.stop="$emit('item-selection', $event, item.key)"
@@ -36,6 +40,7 @@
       >
         <CustomItem
           :active="activeIdx === idx"
+					:highlight="highlight"
           :item="item"
           :index="idx"
         />
@@ -64,10 +69,8 @@ const shieldStyle = {
 	height: '100%',
 	textAlign: 'center',
 	justifyContent: 'center',
-	zIndex: 100000,
+	zIndex: 1000000,
 	backgroundColor: 'transparent',
-	// backgroundColor: '#F5F5F5',
-	// opacity: 0.5,
 	userSelect: 'none',
 };
 
@@ -85,8 +88,9 @@ const shieldTitleStyle = {
 
 export default {
 	props: {
-		className: String,
+		customClassNames: Object,
 		groups: Object,
+		highlight: String,
 		isRemoteInit: Boolean,
 		itemRenderer: Object,
 		options: {
@@ -111,7 +115,7 @@ export default {
 
 		return {
 			activeIdx: 0,
-			classes: this.getClassName(),
+			className: this.getClassName(),
 			shieldVisible: false,
 			styles: {
 				shield: shieldStyle,
@@ -122,10 +126,10 @@ export default {
 	},
 	methods: {
 		getClassName: function () {
-			let className = "dropdown_container";
+			let className = "dropdown_wrapper";
 
-			if (this.className && this.className.dropdown) {
-				className += " " + this.className.dropdown;
+			if (this.customClassNames && this.customClassNames.dropdown) {
+				className += " " + this.customClassNames.dropdown;
 			}
 
 			return className;
@@ -166,6 +170,10 @@ export default {
 			const item = this.options[this.activeIdx];
 			this.$emit('item-selection', null, item.key);
 		},
+		handleLabelClicked: function (evt) {
+			const item = this.options[this.activeIdx];
+			this.$emit('item-selection', evt, item.key);
+		},
 		handleItemActivated: function (offsetTop, offsetHeight = 30) {
 			// console.log('offset top: ', offsetTop, offsetHeight);
 
@@ -185,7 +193,7 @@ export default {
 
 			this._manualMove = '';
 		},
-		handleMouseOver: function (evt, idx) {
+		handleMouseOver: function (_evt, idx) {
 			// console.log('mouse over:', idx);
 
 			if (idx < this.options.length) {
@@ -213,7 +221,7 @@ export default {
 			}
 		},
 		className: function () {
-			this.classes = this.getClassName();
+			this.className = this.getClassName();
 		},
 		isRemoteInit: function () {
 			this.emptyText = this.getEmptyText();
@@ -254,14 +262,14 @@ export default {
 </script>
 
 <style scoped>
-.dropdown_container {
+.dropdown_wrapper {
   top: 100%;
   background-color: rgb(255, 255, 255);
   box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 0px 1px, rgba(0, 0, 0, 0.1) 0px 4px 11px;
   margin: 4px 0;
   position: absolute;
   width: 100%;
-  z-index: 1;
+  z-index: 1000;
   box-sizing: border-box;
   border-radius: 2px;
   animation: menu-appear 50ms;
@@ -272,7 +280,7 @@ export default {
   to   { opacity: 1; }
 }
 
-.dropdown_content {
+.dropdown_container {
   max-height: 300px;
   overflow-y: auto;
   padding: 6px 0;

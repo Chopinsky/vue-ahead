@@ -4,6 +4,7 @@
     :grouped="true"
     :initOptions="colors"
     :initSelections="[1]"
+    class="control"
     placeholder="select a color"
   />
 </div>
@@ -34,6 +35,14 @@ export default {
 
 <style scoped>
 .container {
-  max-width: 300px;
+  margin: 20px 0;
+  padding: 20px;
+  max-width: 800px;
+  background-color: #E3F2FD;
+  border-radius: 8px;
+}
+
+.control {
+  max-width: 360px;
 }
 </style>

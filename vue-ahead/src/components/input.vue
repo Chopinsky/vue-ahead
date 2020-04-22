@@ -117,7 +117,7 @@ const dropdownIconPath = "M 4.516 7.548 c 0.436 -0.446 1.043 -0.481 1.576 0 l 3.
 export default {
 	props: {
 		active: Boolean,
-		customClassName: Object,
+		customClassNames: Object,
 		display: Function,
 		isMulti: Boolean,
 		placeholder: {
@@ -180,15 +180,17 @@ export default {
 		},
 		getWrapperClassName: function () {
 			let wrapperClassName = "control_wrapper";
+			 
+			if (this.customClassNames && this.customClassNames.input) {
+				wrapperClassName += " " + this.customClassNames.input;
+			}
 
 			if (this.active) {
-				if (this.customClassName && this.customClassName.active) {
-					wrapperClassName += " " + this.customClassName.active;
+				if (this.customClassNames && this.customClassNames.active) {
+					wrapperClassName += " " + this.customClassNames.active;
 				} else {
 					wrapperClassName += " control_active";
 				}
-			} else if (this.customClassName && this.customClassName.input) {
-				wrapperClassName += " " + this.customClassName.input;
 			}
 
 			return wrapperClassName;
@@ -350,7 +352,7 @@ export default {
 		active: function () {
 			this.classes.wrapper = this.getWrapperClassName();
 		},
-		customClassName: function () {
+		customClassNames: function () {
 			this.classes.wrapper = this.getWrapperClassName();
 		},
 	}
