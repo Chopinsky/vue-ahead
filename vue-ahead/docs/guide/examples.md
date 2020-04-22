@@ -396,11 +396,12 @@ data: {
 To understand how `CSS` overrides work for the control, it's important to discuss `VueAhead`'s `CSS` class hierarchy, as shown below:
 
 * `vue_ahead__control_container [class]`
-  * `vue_ahead__control_wrapper [customClassNames.input / customClassNames.active]`
+  * `vue_ahead__control_wrapper [customClassNames.input]` or `vue_ahead__control_wrapper [customClassNames.active]`
     * `vue_ahead__input_container` (_levels below omitted_)
     * `vue_ahead__icons_container` (_levels below omitted_)
   * `vue_ahead__dropdown_wrapper [customClassNames.dropdown]`
-    * `vue_ahead__dropdown_container` (_levels below omitted_)
+    * `vue_ahead__dropdown_container`
+      * `vue_ahead__menu_option vue_ahead__menu_option_active` or `vue_ahead__menu_option` 
 
 In this structure, `control_container` controls the out-most geometry of the whole control, such as the width, maximum height, padding, margins, etc. It will be compounded with the value set to the `class` attribute.
 

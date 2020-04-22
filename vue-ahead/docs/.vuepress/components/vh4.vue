@@ -58,14 +58,11 @@ export default {
 .app_control_input {
   border: 2px solid black;
   border-radius: 0;
+  padding: 6px 4px;
 }
 
 .app_control_input.app_control_active {
   border: 2px solid red;
-}
-
-.app_control_input {
-  padding: 6px 4px;
 }
 
 .app_control_input .vue_ahead__action_icon {

@@ -23,7 +23,7 @@
         v-if="!itemRenderer"
         :active="activeIdx === idx"
 				:class="(customClassNames && customClassNames.activeItem) || ''"
-				:highlight="highlight"
+				:highlightSource="highlightSource"
         :item="item"
         :index="idx"
         @mouseover="handleMouseOver"
@@ -41,7 +41,7 @@
         <component
 					:is="itemRenderer"
           :active="activeIdx === idx"
-					:highlight="highlight"
+					:highlightSource="highlightSource"
           :item="item"
           :index="idx"
         />
@@ -91,7 +91,7 @@ export default {
 	props: {
 		customClassNames: Object,
 		groups: Object,
-		highlight: String,
+		highlightSource: String,
 		isRemoteInit: Boolean,
 		itemRenderer: Object,
 		options: {

@@ -15,7 +15,7 @@ import { getItemLabel } from '../helpers/utils';
 export default {
 	props: {
 		active: Boolean,
-		highlight: String,
+		highlightSource: String,
 		item: Object,
 		index: Number,
 	},
@@ -27,7 +27,7 @@ export default {
 				text: {
 					padding: 0,
 					margin: 0,
-					opacity: this.highlight ? 0.8 : 1,
+					opacity: this.highlightSource ? 0.8 : 1,
 				},
 				hl: {
 					padding: 0,
@@ -51,9 +51,9 @@ export default {
 		getDisplay: function () {
 			const base = getItemLabel(this.item);
 
-			if (this.highlight && base) {
+			if (this.highlightSource && base) {
 				const src = base.trim().toLowerCase();
-				const tgt = this.highlight.trim().toLowerCase();
+				const tgt = this.highlightSource.trim().toLowerCase();
 				const pos = src.indexOf(tgt);
 
 				if (pos >= 0) {
@@ -77,9 +77,9 @@ export default {
 				this.$emit('item-activated', offsetTop, offsetHeight);
 			}
 		},
-		highlight: function () {
+		highlightSource: function () {
 			this.content = this.getDisplay();
-			this.styles.text['opacity'] = this.highlight ? 0.8 : 1;
+			this.styles.text['opacity'] = this.highlightSource ? 0.8 : 1;
 		},
 	},
 };
