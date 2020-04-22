@@ -2,6 +2,8 @@
 title: Examples
 ---
 
+[[toc]]
+
 ## Example 1: Grouped, Default Selections
 
 <vh1></vh1>
@@ -266,29 +268,129 @@ export default {
 </style>
 ```
 
-## Example 4: Styled Control
+## Example 4: Styled Control with Extra Highlights
 
 <vh4></vh4>
+
+* Features enabled in this example:
+
+  1. decorate the control however the userspace application wants
+  2. matching items show extra highlights
+
+* Source data provided to the above control:
+
+```javascript
+data: {
+  drinks: [
+    { label: 'Beer' },
+    { label: 'Water' },
+    { label: 'Coffee' },
+    { label: 'Tea' },
+    { label: 'Milk' },
+    { label: 'Wine' },
+    { label: 'Energy Drink' },
+    { label: 'Cider' },
+    { label: 'Soft Drink' },
+    { label: 'Whisky' },
+  ],
+  customClassNames: {
+    active: "app_control_active",
+    input: "app_control_input",
+    dropdown: "app_control_dropdown",
+  },
+},
+```
+
+* Custom Classes Definitions:
+
+```css
+.app_control_input {
+  border: 2px solid black;
+  border-radius: 0;
+}
+
+.app_control_input.app_control_active {
+  border: 2px solid red;
+}
+
+.app_control_input {
+  padding: 6px 4px;
+}
+
+.app_control_input .vue_ahead__action_icon {
+  color: black;
+}
+
+.app_control_active .vue_ahead__action_icon {
+  color: red;
+}
+
+.app_control_active .vue_ahead__action_icon:hover {
+  color: darkorange;
+}
+
+.app_control_input .vue_ahead__action_icon_separator {
+  background-color: black;
+}
+
+.app_control_active .vue_ahead__action_icon_separator {
+  background-color: red;
+}
+
+.app_control_dropdown {
+  margin: 2px 0;
+  border: 2px solid blueviolet;
+  border-radius: 0;
+}
+
+.app_control_dropdown .vue_ahead__dropdown_container {
+  max-height: 200px;
+}
+
+.app_control_dropdown .vue_ahead__dropdown_container::-webkit-scrollbar {
+  width: 1em;
+}
+ 
+.app_control_dropdown .vue_ahead__dropdown_container::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+}
+ 
+.app_control_dropdown .vue_ahead__dropdown_container::-webkit-scrollbar-thumb {
+  background-color: darkgrey;
+  outline: 1px solid slategrey;
+}
+```
+
+* Example's attribute definitions:
+
+```javascript
+<VueAhead
+  :customClassNames="customClassNames"
+  :highlight="true"
+  :initOptions="drinks"
+  placeholder="select your favorite beverage"
+/>
+```
 
 ::: tip
 To understand how `CSS` overrides work for the control, it's important to discuss `VueAhead`'s `CSS` class hierarchy, as shown below:
 
-* `control_container [class]`
-  * `control_wrapper [customClassNames.input / customClassNames.active]`
-    * `input_container` (_levels below omitted_)
-    * `icons_container` (_levels below omitted_)
-  * `dropdown_wrapper [customClassNames.dropdown]`
-    * `dropdown_container` (_levels below omitted_)
+* `vue_ahead__control_container [class]`
+  * `vue_ahead__control_wrapper [customClassNames.input / customClassNames.active]`
+    * `vue_ahead__input_container` (_levels below omitted_)
+    * `vue_ahead__icons_container` (_levels below omitted_)
+  * `vue_ahead__dropdown_wrapper [customClassNames.dropdown]`
+    * `vue_ahead__dropdown_container` (_levels below omitted_)
 
 In this structure, `control_container` controls the outmost geometry of the whole control, such as the width, maximum height, paddings, margins, etc.. It will be compounded with the value set to the `class` attribute.
 
-`control_wrapper` controls the input control's looks and geometry, such as border style (or focused style), border radius, etc.. An extra class with the value set in the `customClassNames.input` field will be added if the `customClassNames` attribute is set; and if the control is focused, it will take the compounded value from `customClassNames.input customClassNames.active` as the additional class names.
+`vue_ahead__control_wrapper` controls the input control's looks and geometry, such as border style (or focused style), border radius, etc.. An extra class with the value set in the `customClassNames.input` field will be added if the `customClassNames` attribute is set; and if the control is focused, it will take the compounded value from `customClassNames.input customClassNames.active` as the additional class names.
 
-`input_container` controls the looks and geometry of the real input field, where users type the search terms; and `icons_container` controls the  looks and geometry of the action icons (i.e. the `cancel all` and `dropdown` icons at the right side end of the input control).
+`vue_ahead__input_container` controls the looks and geometry of the real input field, where users type the search terms; and `icons_container` controls the  looks and geometry of the action icons (i.e. the `cancel all` and `dropdown` icons at the right side end of the input control).
 
-`dropdown_wrapper` controls the wrapping div over the dropdown menu, and it's usually used to control the positioning and look of the dropdown menu. An extra class with the value set in the `customClassNames.dropdown` field will be added as an additional class, such that control users can take charge of the dropdown menu styling. 
+`vue_ahead__dropdown_wrapper` controls the wrapping div over the dropdown menu, and it's usually used to control the positioning and look of the dropdown menu. An extra class with the value set in the `customClassNames.dropdown` field will be added as an additional class, such that control users can take charge of the dropdown menu styling. 
 
-`dropdown_container` is where the actual contents are held in the dropdown menu, and it controls the inner content menu's height, width, etc..
+`vue_ahead__dropdown_container` is where the actual contents are held in the dropdown menu, and it controls the inner content menu's height, width, etc..
 :::
 
 :::tip
@@ -306,24 +408,24 @@ customClassNames = {
 You can define the following selector rules to guarantee the styling overrides:
 
 ```css
-.control_wrapper.app_control_input {
-  /* override the `control_wrapper` styles */
+.app_control_input {
+  /* override the `vue_ahead__control_wrapper` styles */
 }
 
-.control_wrapper.app_control_input.app_control_active {
-  /* override the `control_wrapper` styles when focused */
+.app_control_input.app_control_active {
+  /* override the `vue_ahead__control_wrapper` styles when focused */
 }
 
-.app_control_input .input_container {
-  /* override the `input_container` styles */
+.app_control_input .vue_ahead__input_container {
+  /* override the `vue_ahead__input_container` styles */
 }
 
-.control_container .dropdown_wrapper.app_control_dropdown {
-  /* override the `dropdown_wrapper` styles */
+.app_control_dropdown {
+  /* override the `vue_ahead__dropdown_wrapper` styles */
 }
 
-.dropdown_wrapper.app_control_dropdown .dropdown_container {
-  /* override the `dropdown_container` styles */
+.app_control_dropdown .vue_ahead__dropdown_container {
+  /* override the `vue_ahead__dropdown_container` styles */
 }
 ```
 :::

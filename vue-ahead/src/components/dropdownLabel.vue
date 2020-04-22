@@ -1,9 +1,9 @@
 <template>
-<div class="group_label" @mousedown="$emit('mousedown', $event)">
+<div class="vue_ahead__group_label" @mousedown="$emit('mousedown', $event)">
     <span>
       {{ data.label || "Default" }}
     </span>
-    <span class="group_label_icon">
+    <span class="vue_ahead__group_label_icon">
       {{ data.count || 0 }}
     </span>
 </div>
@@ -17,8 +17,8 @@ export default {
 };
 </script>
 
-<style scoped>
-.group_label {
+<style>
+.vue_ahead__group_label {
   color: rgb(153, 153, 153);
   cursor: default;
   display: block;
@@ -33,7 +33,7 @@ export default {
   justify-content: space-between;
 }
 
-.group_label_icon {
+.vue_ahead__group_label_icon {
   background-color: #EBECF0;
   border-radius: 0.75em;
   color: #172B4D;

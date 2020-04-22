@@ -10,7 +10,7 @@
 </template>
 
 <script>
-import VueAhead from '../../../dist/vue-ahead.umd';
+import VueAhead from '../../../src/main.js';
 import OptionItem from './item.vue';
 
 const parser = function (data) {

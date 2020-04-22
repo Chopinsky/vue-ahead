@@ -7,7 +7,7 @@
   @blur.capture="$emit('blur', $event)"
 >
   <div 
-    class="input_container"
+    class="vue_ahead__input_container"
     :title="phContent.title"
   >
     <div 
@@ -51,17 +51,17 @@
     </div>
   </div>
 
-  <div class="icons_container">
+  <div class="vue_ahead__icons_container">
     <ControlIcon 
-      class="action_icon clear_icon"
+      class="vue_ahead__action_icon vue_ahead__clear_icon"
       title="clear all"
       :path="path.clear"
       @mousedown.native.stop="$emit('icon-event', $event, 'clear')"
       @keydown.stop="handleIconKeydown($event, 'clear')"
     />
-    <span class="action_icon_separator"></span>
+    <span class="vue_ahead__action_icon_separator"></span>
     <ControlIcon
-      class="action_icon" 
+      class="vue_ahead__action_icon" 
       title="dropdown menu"
       :path="path.dropdown"
       @mousedown.native.stop="$emit('icon-event', $event, 'dropdown')"
@@ -179,7 +179,7 @@ export default {
 			}
 		},
 		getWrapperClassName: function () {
-			let wrapperClassName = "control_wrapper";
+			let wrapperClassName = "vue_ahead__control_wrapper";
 			 
 			if (this.customClassNames && this.customClassNames.input) {
 				wrapperClassName += " " + this.customClassNames.input;
@@ -189,7 +189,7 @@ export default {
 				if (this.customClassNames && this.customClassNames.active) {
 					wrapperClassName += " " + this.customClassNames.active;
 				} else {
-					wrapperClassName += " control_active";
+					wrapperClassName += " vue_ahead__control_active";
 				}
 			}
 
@@ -200,7 +200,7 @@ export default {
 		},
 		getPlaceholder: function () {
 			const ph = {
-				placeholder: "placeholder",
+				placeholder: "vue_ahead__placeholder",
 				phContent: {
 					content: '',
 					title: '',
@@ -215,7 +215,7 @@ export default {
 			}
 
 			if (!this.isMulti && this.selection.length === 1) {
-				ph.placeholder += " placeholder_values";
+				ph.placeholder += " vue_ahead__placeholder_values";
 				ph.phContent.content = getDisplay(this.selection[0], this.display, 'selection');
 			} else if (this.selection.length === 0) {
 				ph.phContent.content = this.placeholder || '';
@@ -359,8 +359,8 @@ export default {
 };
 </script>
 
-<style scoped>
-.control_wrapper {
+<style>
+.vue_ahead__control_wrapper {
   -webkit-box-align: center;
   -webkit-box-pack: justify;
   padding-left: 6px;
@@ -370,7 +370,6 @@ export default {
   background-color: rgb(255, 255, 255);
   border-radius: 2px;
   border: 1px solid rgb(204, 204, 204);
-  cursor: text;
   position: relative;
   box-sizing: border-box;
   display: flex;
@@ -380,11 +379,11 @@ export default {
   outline: 0px !important;
 }
 
-.control_wrapper.control_active {
+.vue_ahead__control_wrapper.vue_ahead__control_active {
   border: 1px solid blue;
 }
 
-.input_container {
+.vue_ahead__input_container {
   padding: 2px 0;
   color: rgb(51, 51, 51);
   position: relative;
@@ -396,9 +395,10 @@ export default {
   visibility: visible;
   box-sizing: border-box;
   width: 100%;
+  cursor: text;
 }
 
-.placeholder {
+.vue_ahead__placeholder {
   position: absolute;
   top: 50%;
   color: rgb(128, 128, 128);
@@ -410,11 +410,11 @@ export default {
   text-overflow: ellipsis;
 }
 
-.placeholder.placeholder_values {
+.vue_ahead__placeholder.vue_ahead__placeholder_values {
   color: inherit;
 }
 
-.icons_container {
+.vue_ahead__icons_container {
   -webkit-box-align: center;
   align-items: center;
   align-self: stretch;
@@ -423,7 +423,7 @@ export default {
   box-sizing: border-box;
 }
 
-.action_icon {
+.vue_ahead__action_icon {
   color: rgb(204, 204, 204);
   display: flex;
   box-sizing: border-box;
@@ -431,26 +431,26 @@ export default {
   transition: color 150ms ease 0s;
 }
 
-.action_icon.clear_icon {
+.vue_ahead__action_icon.vue_ahead__clear_icon {
   padding-right: 4px;
 }
 
-.action_icon:hover {
+.vue_ahead__action_icon:hover {
   cursor: pointer;
   color: rgb(153, 153, 153);
 }
 
-.action_icon:active {
+.vue_ahead__action_icon:active {
   outline: none !important;
   color: rgb(92, 92, 92);
 }
 
-.action_icon:focus {
+.vue_ahead__action_icon:focus {
   color: rgb(153, 153, 153);
   outline: 2px dotted gray;
 }
 
-.action_icon_separator {
+.vue_ahead__action_icon_separator {
   align-self: stretch;
   background-color: rgb(204, 204, 204);
   margin: 8px 2px;

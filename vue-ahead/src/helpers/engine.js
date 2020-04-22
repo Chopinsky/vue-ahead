@@ -53,7 +53,7 @@ export default class NativeEngine {
 		}
     
 		// remote search 
-		if (this._props.remote) {
+		if (this._props.remote && axios) {
 			const params = {
 				q: val,
 			};
@@ -103,7 +103,7 @@ export default class NativeEngine {
 	}
 
 	prefetch(cb) {
-		if (!this._props.remote) {
+		if (!this._props.remote || !axios) {
 			return;
 		}
 

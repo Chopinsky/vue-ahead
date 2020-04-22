@@ -11,7 +11,7 @@
 </template>
 
 <script>
-import VueAhead from '../../../dist/vue-ahead.umd';
+import VueAhead from '../../../src/main.js';
 
 export default {
   components: {

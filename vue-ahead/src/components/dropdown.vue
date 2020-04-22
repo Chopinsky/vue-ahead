@@ -10,7 +10,7 @@
     </h3>
   </div>
   <div 
-    class="dropdown_container"
+    class="vue_ahead__dropdown_container"
     ref="contentWrapper"
   >
     <div v-for="(item, idx) in options" :key="item.key">
@@ -38,7 +38,8 @@
         @mousedown.stop="$emit('item-selection', $event, item.key)"
         @item-activated="handleItemActivated"
       >
-        <CustomItem
+        <component
+					:is="itemRenderer"
           :active="activeIdx === idx"
 					:highlight="highlight"
           :item="item"
@@ -48,7 +49,7 @@
     </div>
     <div
       v-if="!options || options.length === 0"
-      class="dropdown_empty_options"
+      class="vue_ahead__dropdown_empty_options"
     >
       {{ emptyText }}
     </div>
@@ -104,11 +105,6 @@ export default {
 		GroupLabel,
 		Item,
 	},
-	beforeMount() {
-		if (this.itemRenderer) {
-			this.updateCustomItem();
-		}
-	},
 	data: function () {
 		this._manualMove = "";
 		this._debounceId = null;
@@ -126,7 +122,7 @@ export default {
 	},
 	methods: {
 		getClassName: function () {
-			let className = "dropdown_wrapper";
+			let className = "vue_ahead__dropdown_wrapper";
 
 			if (this.customClassNames && this.customClassNames.dropdown) {
 				className += " " + this.customClassNames.dropdown;
@@ -136,9 +132,6 @@ export default {
 		},
 		getEmptyText: function () {
 			return this.isRemoteInit ? "Type to search" : "No option";
-		},
-		updateCustomItem: function () {
-			this.$options.components.CustomItem = this.itemRenderer;
 		},
 		move: function (dir) {
 			let { activeIdx } = this;
@@ -175,20 +168,20 @@ export default {
 			this.$emit('item-selection', evt, item.key);
 		},
 		handleItemActivated: function (offsetTop, offsetHeight = 30) {
-			// console.log('offset top: ', offsetTop, offsetHeight);
-
 			if (this.options.length < 4 || !this._manualMove) {
 				return;
 			}
 
 			const wrapper = this.$refs.contentWrapper;
 			const { height } = wrapper.getBoundingClientRect();
-			const adjustedHeight = offsetHeight + 10;
+			const { scrollTop } = wrapper;
 
-			if (offsetTop > height - adjustedHeight && this._manualMove === 'down') {
-				wrapper.scrollTo(0, offsetTop + adjustedHeight - height);
-			} else if (offsetTop < wrapper.scrollTop && this._manualMove === 'up') {
-				wrapper.scrollTo(0, wrapper.scrollTop - offsetHeight);
+			// console.log('scroll:', offsetTop, scrollTop);
+
+			if (offsetTop > scrollTop + height - offsetHeight && this._manualMove === 'down') {
+				wrapper.scrollTo(0, scrollTop + offsetHeight);
+			} else if (offsetTop < scrollTop + 5 && this._manualMove === 'up') {
+				wrapper.scrollTo(0, scrollTop - offsetHeight);
 			}
 
 			this._manualMove = '';
@@ -226,9 +219,6 @@ export default {
 		isRemoteInit: function () {
 			this.emptyText = this.getEmptyText();
 		},
-		itemRenderer: function () {
-			this.updateCustomItem();
-		},
 		options: function () {
 			if (this.reason === 0) {
 				this.activeIdx = 0;
@@ -261,8 +251,8 @@ export default {
 };
 </script>
 
-<style scoped>
-.dropdown_wrapper {
+<style>
+.vue_ahead__dropdown_wrapper {
   top: 100%;
   background-color: rgb(255, 255, 255);
   box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 0px 1px, rgba(0, 0, 0, 0.1) 0px 4px 11px;
@@ -272,15 +262,15 @@ export default {
   z-index: 1000;
   box-sizing: border-box;
   border-radius: 2px;
-  animation: menu-appear 50ms;
+  animation: vue_ahead__menu_appear 50ms;
 }
 
-@keyframes menu-appear {
+@keyframes vue_ahead__menu_appear {
   from { opacity: 0; }
   to   { opacity: 1; }
 }
 
-.dropdown_container {
+.vue_ahead__dropdown_container {
   max-height: 300px;
   overflow-y: auto;
   padding: 6px 0;
@@ -289,7 +279,7 @@ export default {
   text-align: start;
 }
 
-.dropdown_empty_options {
+.vue_ahead__dropdown_empty_options {
   color: rgb(153, 153, 153);
   cursor: default;
   text-align: center;

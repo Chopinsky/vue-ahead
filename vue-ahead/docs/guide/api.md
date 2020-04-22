@@ -2,6 +2,8 @@
 title: API Guide
 ---
 
+[[toc]]
+
 ## Attributes
 
 // TODO ...

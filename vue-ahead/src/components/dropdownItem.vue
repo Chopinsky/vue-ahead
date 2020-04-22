@@ -40,7 +40,7 @@ export default {
 	},
 	methods: {
 		getClassName: function () {
-			let base = this.active ? "menu_option menu_option_active" : "menu_option";
+			let base = this.active ? "vue_ahead__menu_option vue_ahead__menu_option_active" : "vue_ahead__menu_option";
 
 			if (this.class && this.active) {
 				base += " " + this.class;
@@ -85,8 +85,8 @@ export default {
 };
 </script>
 
-<style scoped>
-.menu_option {
+<style>
+.vue_ahead__menu_option {
   background-color: transparent;
   color: inherit;
   cursor: default;
@@ -98,7 +98,7 @@ export default {
   padding: 6px 12px;
 }
 
-.menu_option.menu_option_active {
+.vue_ahead__menu_option.vue_ahead__menu_option_active {
   background-color: rgb(222, 235, 255);
 }
 </style>

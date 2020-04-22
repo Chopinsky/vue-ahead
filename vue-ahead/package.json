@@ -14,12 +14,11 @@
     "rollup:es": "rollup --config rollup.config.js --format es --file dist/vue-ahead.esm.js",
     "rollup:unpkg": "rollup --config rollup.config.js --format iife --file dist/vue-ahead.min.js",
     "lint": "vue-cli-service lint",
-    "docs:dev": "vuepress dev docs --host localhost",
+    "docs:dev": "set DEV=1 && vuepress dev docs --host localhost",
     "docs:build": "vuepress build docs"
   },
   "dependencies": {
     "axios": "^0.19.2",
-    "core-js": "^3.6.4",
     "vue": "^2.6.11"
   },
   "devDependencies": {
@@ -28,6 +27,7 @@
     "@vue/cli-plugin-eslint": "~4.2.0",
     "@vue/cli-service": "~4.2.0",
     "babel-eslint": "^10.0.3",
+    "core-js": "^3.6.4",
     "eslint": "^6.7.2",
     "eslint-plugin-vue": "^6.1.2",
     "rollup": "^1.17.0",

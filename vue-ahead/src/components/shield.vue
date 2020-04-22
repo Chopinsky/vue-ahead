@@ -1,6 +1,6 @@
 <template>
 <div
-  class="control_input_shield" 
+  class="vue_ahead__control_input_shield" 
   :style="style"
   @mousedown="$emit('mousedown', $event)"
 >  
@@ -36,8 +36,8 @@ export default {
 };
 </script>
 
-<style scoped>
-.control_input_shield {
+<style>
+.vue_ahead__control_input_shield {
 	width: 100%;
 	height: 100%;
 	position: absolute;

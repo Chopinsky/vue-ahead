@@ -11,7 +11,7 @@
 </template>
 
 <script>
-import VueAhead from '../../../dist/vue-ahead.umd';
+import VueAhead from '../../../src/main.js';
 
 export default {
   components: {
@@ -55,38 +55,58 @@ export default {
   padding: 2px 0;
 }
 
-.control_wrapper.app_control_input {
+.app_control_input {
   border: 2px solid black;
   border-radius: 0;
 }
 
-.control_wrapper.app_control_input.app_control_active {
+.app_control_input.app_control_active {
   border: 2px solid red;
 }
 
-.app_control_input .input_container {
-  padding: 6px 0;
+.app_control_input {
+  padding: 6px 4px;
 }
 
-.control_container .dropdown_wrapper.app_control_dropdown {
+.app_control_input .vue_ahead__action_icon {
+  color: black;
+}
+
+.app_control_active .vue_ahead__action_icon {
+  color: red;
+}
+
+.app_control_active .vue_ahead__action_icon:hover {
+  color: darkorange;
+}
+
+.app_control_input .vue_ahead__action_icon_separator {
+  background-color: black;
+}
+
+.app_control_active .vue_ahead__action_icon_separator {
+  background-color: red;
+}
+
+.app_control_dropdown {
   margin: 2px 0;
   border: 2px solid blueviolet;
   border-radius: 0;
 }
 
-.dropdown_wrapper.app_control_dropdown .dropdown_container {
+.app_control_dropdown .vue_ahead__dropdown_container {
   max-height: 200px;
 }
 
-.dropdown_container::-webkit-scrollbar {
+.app_control_dropdown .vue_ahead__dropdown_container::-webkit-scrollbar {
   width: 1em;
 }
  
-.dropdown_container::-webkit-scrollbar-track {
+.app_control_dropdown .vue_ahead__dropdown_container::-webkit-scrollbar-track {
   box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
 }
  
-.dropdown_container::-webkit-scrollbar-thumb {
+.app_control_dropdown .vue_ahead__dropdown_container::-webkit-scrollbar-thumb {
   background-color: darkgrey;
   outline: 1px solid slategrey;
 }

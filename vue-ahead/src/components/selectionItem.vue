@@ -1,10 +1,10 @@
 <template>
-<div class="selection_container">
-  <div class="selection_content" :title="title">
+<div class="vue_ahead__selection_container">
+  <div class="vue_ahead__selection_content" :title="title">
     {{ text }}
   </div>
   <ControlIcon
-    class="selection_removal"
+    class="vue_ahead__selection_removal"
     title="remove selection"
     :path="iconPath"
     @mousedown.native.stop="$emit('item-removal', $event)"
@@ -70,7 +70,7 @@ export default {
 </script>
 
 <style>
-.selection_container {
+.vue_ahead__selection_container {
   background-color: rgb(230, 230, 230);
   display: flex;
   min-width: 0px;
@@ -79,7 +79,7 @@ export default {
   margin: 2px;
 }
 
-.selection_content {
+.vue_ahead__selection_content {
   color: rgb(51, 51, 51);
   font-size: 85%;
   text-overflow: ellipsis;
@@ -90,7 +90,7 @@ export default {
   padding: 2px 2px 2px 4px;
 }
 
-.selection_removal {
+.vue_ahead__selection_removal {
   -webkit-box-align: center;
   align-items: center;
   cursor: pointer;
@@ -101,7 +101,7 @@ export default {
   border-radius: 2px;
 }
 
-.selection_removal:hover {
+.vue_ahead__selection_removal:hover {
   background-color: rgb(255, 189, 173);
   color: rgb(222, 53, 11);
 }

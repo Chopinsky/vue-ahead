@@ -1,6 +1,8 @@
 module.exports = {
   title: 'Vue-Ahead',
   description: "Documentation site for the Vue-Ahead auto-complete control",
+  base: process.env.DEV ? '' : 'https://zuo.wd.its.iastate.edu/vueahead/',
+  evergreen: true,
   themeConfig: {
     nav: [
       { text: 'SETUP', link: '/guide/setup' },

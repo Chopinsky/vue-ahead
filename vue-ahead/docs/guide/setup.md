@@ -2,6 +2,8 @@
 title: Library Setup
 ---
 
+[[toc]]
+
 ## Install for a Vue Application
 
 The easiest way of using the `VueAhead` auto-complete control in your application is to add and install the package via package managers, e.g. `npm` or `yarn`.
