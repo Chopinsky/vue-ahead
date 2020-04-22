@@ -1,7 +1,7 @@
 module.exports = {
   title: 'Vue-Ahead',
   description: "Documentation site for the Vue-Ahead auto-complete control",
-  base: process.env.DEV ? '' : 'https://zuo.wd.its.iastate.edu/vueahead/',
+  base: process.env.DEV ? '' : '/vueahead/',
   evergreen: true,
   themeConfig: {
     nav: [

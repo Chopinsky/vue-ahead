@@ -13,6 +13,7 @@ title: Examples
   1. options are grouped, count of options in the group is shown as well
   2. the control is default to the selection of the color 'Blue'
 
+::: details
 * Source data provided to the above control:
 
 ```javascript
@@ -51,6 +52,7 @@ data: {
   placeholder="select a color"
 />
 ```
+:::
 
 ## Example 2: Extra Matching Highlight, Multi-Selections, Default Selections
 
@@ -63,14 +65,19 @@ data: {
   3. the control is default to the selection of the major 'Physcis' and 'Math'
 
 
+::: details
 * Source data provided to the above control:
 
 ```javascript
 data: {
   majors: [
     { label: 'Science' },
-    { label: 'Physics', key: "phy" }, // denote a specific key for initSelection
-    { label: 'Math', key:"math" },    // denote a specific key for initSelection
+    // the `key` field denotes to a specific key for  
+    // the item defined in the `initSelection`
+    { label: 'Physics', key: "phy" },
+    // the `key` field denotes to a specific key for 
+    // the item defined in the `initSelection`
+    { label: 'Math', key:"math" },
     { label: 'Technology' },
     { label: 'Engineering' },
     { label: 'Arts' },
@@ -103,6 +110,7 @@ data: {
   placeholder="select a major"
 />
 ```
+:::
 
 ## Example 3: Search with a Remote Source, Custom Option Item Display
 
@@ -113,6 +121,7 @@ data: {
   1. searching using a remote server
   2. items are displayed using a custom component (i.e. defined in the user space instead of in the library space)
 
+::: details
 * Source data provided to the above control:
 
 ```javascript
@@ -267,6 +276,7 @@ export default {
 }
 </style>
 ```
+:::
 
 ## Example 4: Styled Control with Extra Highlights
 
@@ -277,6 +287,7 @@ export default {
   1. decorate the control however the userspace application wants
   2. matching items show extra highlights
 
+::: details
 * Source data provided to the above control:
 
 ```javascript
@@ -371,6 +382,7 @@ data: {
   placeholder="select your favorite beverage"
 />
 ```
+:::
 
 ::: tip
 To understand how `CSS` overrides work for the control, it's important to discuss `VueAhead`'s `CSS` class hierarchy, as shown below:
