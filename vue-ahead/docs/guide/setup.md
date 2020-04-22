@@ -54,11 +54,11 @@ export default {
 </script>
 ```
 
-## Install for a Generic Application
+## Install as a Standalone Vue Component
 
-Alternatively, you can import the VueJS runtime with the control in browser, and create a Vue instance to use the control.
+Alternatively, you can import the VueJS runtime with the control in a browser, and create a Vue instance to use the control.
 
-For example, the `index.html` or `index.php` file below shows the simpliest way of importing the control and use it in your application:
+For example, the `index.html` or `index.php` file below shows the simplest way of importing the control and use it in your application:
 
 ```html
 <script src="https://cdn.jsdelivr.net/npm/vue"></script>
@@ -98,5 +98,5 @@ var control = new Vue({
 ::: warning
 Note: if using the control as a standalone Vue component in a `html` file, make sure to convert the control attributes from the `camelCase` to the `kebab-case`. 
 
-See official documentation for [`Prop Casing`](https://vuejs.org/v2/guide/components-props.html#Prop-Casing-camelCase-vs-kebab-case) for more details.
+See the official documentation for [`Prop Casing`](https://vuejs.org/v2/guide/components-props.html#Prop-Casing-camelCase-vs-kebab-case) for more details.
 :::

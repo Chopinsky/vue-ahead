@@ -10,8 +10,8 @@ title: Examples
 
 * Features enabled in this example:
 
-  1. options are grouped, count of options in the group is shown as well
-  2. the control is default to the selection of the color 'Blue'
+  1. grouping options by group keys; also showing the count of options in the group
+  2. selecting the color 'Blue' by default
 
 ::: details
 * Source data provided to the above control:
@@ -60,9 +60,9 @@ data: {
 
 * Features enabled in this example:
 
-  1. options matching a search term will display extra highlights
-  2. we can select more than 1 options from the searches
-  3. the control is default to the selection of the major 'Physcis' and 'Math'
+  1. matching items show extra highlights
+  2. enabling multiple selections (i.e. more than 1 items can be now selected) 
+  3. selecting the majors 'Physics' and 'Math' by default
 
 
 ::: details
@@ -114,12 +114,20 @@ data: {
 
 ## Example 3: Search with a Remote Source, Custom Option Item Display
 
+::: danger
+Disclaimer: this control queries a remote server *NOT* owned by IASTATE. 
+
+The control should only be used for demonstration purpose only, and used sparsely. Please limit your search frequency to at most 10 new searches per minute.
+
+(Repeating a seen search should be okay, as the control caches the search results.)
+:::
+
 <vh3></vh3>
 
 * Features enabled in this example:
 
-  1. searching using a remote server
-  2. items are displayed using a custom component (i.e. defined in the user space instead of in the library space)
+  1. searching options using a remote server
+  2. displaying items with a custom component (i.e. defined in the user space instead of in the library space)
 
 ::: details
 * Source data provided to the above control:
@@ -284,7 +292,7 @@ export default {
 
 * Features enabled in this example:
 
-  1. decorate the control however the userspace application wants
+  1. decorating the control however the user-space application wants
   2. matching items show extra highlights
 
 ::: details
@@ -394,15 +402,15 @@ To understand how `CSS` overrides work for the control, it's important to discus
   * `vue_ahead__dropdown_wrapper [customClassNames.dropdown]`
     * `vue_ahead__dropdown_container` (_levels below omitted_)
 
-In this structure, `control_container` controls the outmost geometry of the whole control, such as the width, maximum height, paddings, margins, etc.. It will be compounded with the value set to the `class` attribute.
+In this structure, `control_container` controls the out-most geometry of the whole control, such as the width, maximum height, padding, margins, etc. It will be compounded with the value set to the `class` attribute.
 
-`vue_ahead__control_wrapper` controls the input control's looks and geometry, such as border style (or focused style), border radius, etc.. An extra class with the value set in the `customClassNames.input` field will be added if the `customClassNames` attribute is set; and if the control is focused, it will take the compounded value from `customClassNames.input customClassNames.active` as the additional class names.
+`vue_ahead__control_wrapper` controls the input control's looks and geometry, such as border style (or focused style), border radius, etc. An extra class with the value set in the `customClassNames.input` field will be added if the `customClassNames` attribute is set; and if the control is focused, it will take the compounded value from `customClassNames.input customClassNames.active` as the additional class names.
 
-`vue_ahead__input_container` controls the looks and geometry of the real input field, where users type the search terms; and `icons_container` controls the  looks and geometry of the action icons (i.e. the `cancel all` and `dropdown` icons at the right side end of the input control).
+`vue_ahead__input_container` controls the looks and geometry of the real input field, where users type the search terms; and `icons_container` controls the  looks and geometry of the action icons (i.e. the `cancel all` and `dropdown` icons on the right side end of the input control).
 
 `vue_ahead__dropdown_wrapper` controls the wrapping div over the dropdown menu, and it's usually used to control the positioning and look of the dropdown menu. An extra class with the value set in the `customClassNames.dropdown` field will be added as an additional class, such that control users can take charge of the dropdown menu styling. 
 
-`vue_ahead__dropdown_container` is where the actual contents are held in the dropdown menu, and it controls the inner content menu's height, width, etc..
+`vue_ahead__dropdown_container` is where the actual contents are held in the dropdown menu, and it controls the inner content menu's height, width, etc.
 :::
 
 :::tip
