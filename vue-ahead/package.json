@@ -9,7 +9,7 @@
     "build": "vue-cli-service build --target lib --name vue-ahead src/main.js && rm ./dist/demo.html",
     "build:watch": "vue-cli-service build --target lib --name vue-ahead src/main.js --watch",
     "rollup": "yarn rollup:umd --watch",
-    "rollup:all": "yarn rollup:umd -m && yarn rollup:es -m && yarn rollup:unpkg -m",
+    "rollup:all": "yarn rollup:umd -m && yarn rollup:es -m && yarn rollup:unpkg -m && node ./scripts/postbuild.js",
     "rollup:umd": "rollup --config rollup.config.js --format umd --file dist/vue-ahead.umd.js",
     "rollup:es": "rollup --config rollup.config.js --format es --file dist/vue-ahead.esm.js",
     "rollup:unpkg": "rollup --config rollup.config.js --format iife --file dist/vue-ahead.min.js",

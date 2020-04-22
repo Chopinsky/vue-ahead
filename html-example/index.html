@@ -6,7 +6,10 @@
   <title>HTML Example</title>
 
   <script src="https://cdn.jsdelivr.net/npm/vue"></script>
-  <script src="https://cdn.jsdelivr.net/npm/axios@0.19.2/dist/axios.min.js"></script>
+  
+  <!-- Only import the `axios` library if using the `remote` feature -->
+  <!-- <script src="./library/axios.min.js"></script> -->
+  
   <script src="./library/vue-ahead.min.js"></script>
 
 </head>
@@ -15,11 +18,16 @@
 <div id="control">
   <vue-ahead 
     :placeholder="placeholder"
-    :init-options="food" 
+    :init-options="food"
+    @selection="handleSelection"
   />
 </div>
-  
+
 <script>
+  function handleSelection({ type, items }) {
+    console.log('selection:', type, items);
+  };
+
   var control = new Vue({
     el: '#control',
     components: {

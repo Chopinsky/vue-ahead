@@ -53,7 +53,11 @@ export default class NativeEngine {
 		}
     
 		// remote search 
-		if (this._props.remote && axios) {
+		if (this._props.remote) {
+			if (!axios) {
+				throw new Error("expecting `axios` module to be imported before the control, found none ... ");
+			}
+
 			const params = {
 				q: val,
 			};
@@ -103,8 +107,12 @@ export default class NativeEngine {
 	}
 
 	prefetch(cb) {
-		if (!this._props.remote || !axios) {
+		if (!this._props.remote) {
 			return;
+		}
+
+		if (!axios) {
+			throw new Error("expecting `axios` module to be imported before the control, found none ... ");
 		}
 
 		const params = {

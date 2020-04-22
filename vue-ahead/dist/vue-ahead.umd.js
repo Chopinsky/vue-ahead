@@ -117,7 +117,6 @@
 	    }
 	    return script;
 	}
-	//# sourceMappingURL=normalize-component.mjs.map
 
 	var isOldIE = typeof navigator !== 'undefined' &&
 	    /msie [6-9]\\b/.test(navigator.userAgent.toLowerCase());
@@ -171,7 +170,6 @@
 	        }
 	    }
 	}
-	//# sourceMappingURL=browser.mjs.map
 
 	/* script */
 	var __vue_script__ = script;
@@ -1630,7 +1628,11 @@
 		}
 	    
 		// remote search 
-		if (this._props.remote && axios) {
+		if (this._props.remote) {
+			if (!axios) {
+				throw new Error("expecting `axios` module to be imported before the control, found none ... ");
+			}
+
 			var params = {
 				q: val,
 			};
@@ -1679,8 +1681,12 @@
 	};
 
 	NativeEngine.prototype.prefetch = function prefetch (cb) {
-		if (!this._props.remote || !axios) {
+		if (!this._props.remote) {
 			return;
+		}
+
+		if (!axios) {
+			throw new Error("expecting `axios` module to be imported before the control, found none ... ");
 		}
 
 		var params = {
@@ -2528,3 +2534,4 @@
 	Object.defineProperty(exports, '__esModule', { value: true });
 
 })));
+//# sourceMappingURL=vue-ahead.umd.js.map

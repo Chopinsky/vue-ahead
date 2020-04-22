@@ -70,12 +70,17 @@ For example, the `index.html` or `index.php` file below shows the simplest way o
   <vue-ahead 
     :init-options="food"
     :placeholder="placeholder"
+    @selection="handleSelection"
   />
 </div>
 
 <!-- more application code -->
 
 <script>
+function handleSelection({ type, items }) {
+  console.log('selection updates - ', type, items);
+};
+
 var control = new Vue({
   el: '#control',
   components: {
