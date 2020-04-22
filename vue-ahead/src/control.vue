@@ -1,10 +1,10 @@
 <template>
 <div :class="className">
-	<Shield 
-		:on="shield" 
-		@mousedown.capture.stop="handleShieldClick" 
+	<Shield
+		:on="shield"
+		@mousedown.capture.stop="handleShieldClick"
 	/>
-	<Input 
+	<Input
 		ref="inputControl"
 		:active="focusStatus !== 0"
 		:customClassNames="customClassNames"
@@ -89,7 +89,7 @@ export default {
 
 		this._engine = new Engine({ remote: this.remote || null });
 		this._engine.add(source);
-		
+
 		this._shieldId = null;
 		this._debounceId = null;
 
@@ -123,8 +123,8 @@ export default {
 				}
 			}
 
-			const initOptions = initState ? initState.options : source;
-			const selection = initState ? initState.selection : { items: [], indices: {}, };
+			const initOptions = initState ? initState['options'] : source;
+			const selection = initState ? initState['selection'] : { items: [], indices: {}, };
 
 			const { options, groups } = this.grouped ? this.buildGroupOptions(initOptions) : { options: initOptions, groups: null };
 
@@ -183,7 +183,7 @@ export default {
 				return { options, groups: null };
 			}
 
-			options = options.sort((a, b) => { 
+			options = options.sort((a, b) => {
 				if (a.group === "default") {
 					return -1;
 				}
@@ -252,7 +252,7 @@ export default {
 		prepareOptions: function (options = []) {
 			const keys = {};
 
-			const result = 
+			const result =
 				options
 					.filter(item => typeof item === "object" && !!item)
 					.map((item, idx) => {
@@ -262,7 +262,7 @@ export default {
 
 						let key = item['key'];
 						if (typeof key !== 'string') {
-							key = (key === null || key === undefined) 
+							key = (key === null || key === undefined)
 								? randomSuffix()
 								: key.toString();
 						}
@@ -276,7 +276,7 @@ export default {
 
 						let label = item['label'];
 						if (typeof label !== 'string') {
-							label = (label === null || label === undefined) 
+							label = (label === null || label === undefined)
 								? ''
 								: label.toString();
 						}
@@ -286,7 +286,7 @@ export default {
 						if (this.grouped) {
 							let groupKey = item['group'];
 							if (typeof groupKey !== 'string') {
-								groupKey = (groupKey === null || groupKey === undefined) 
+								groupKey = (groupKey === null || groupKey === undefined)
 									? "default"
 									: groupKey.toString();
 							}
@@ -319,7 +319,7 @@ export default {
 
 			for (let i = 0; i < options.length; i++) {
 				if (
-					hasProperty(indices, options[i]['key']) 
+					hasProperty(indices, options[i]['key'])
 					&& (this.isMulti || items.length === 0)
 				) {
 					items.push(options[i]);
@@ -375,7 +375,7 @@ export default {
 					if (
 						selections
 						&& selections.length > 0
-						&& (!keepSelections || !this.selection.items.length) 
+						&& (!keepSelections || !this.selection.items.length)
 					) {
 						const initState = this.prepareInitState(source, selections);
 						selection = initState.selection;
@@ -418,7 +418,7 @@ export default {
 			// move the cursor back to the input field
 			this.focusStatus = focusStatus.Shield;
 			this.focusInput();
-			
+
 			// console.log("shield clicked ... ", evt);
 		},
 		handleDbClick: function (_evt) {
@@ -436,7 +436,7 @@ export default {
 		},
 		handleIconEvent: function (evt, type) {
 			// handle icon's click event, this event will NOT be bubbled up and thus
-			// we need to work on state setups we should do from the 
+			// we need to work on state setups we should do from the
 			// 'handleInputClick' handler.
 			this.focusStatus = focusStatus.Container;
 
@@ -448,7 +448,7 @@ export default {
 				case "dropdown":
 					this.open = !this.open;
 					break;
-			
+
 				default:
 					break;
 			}
@@ -502,7 +502,7 @@ export default {
 					}
 
 					this.reason = 0;
-					
+
 					this.shieldAction(false);
 					this._debounceId = null;
 				});
@@ -510,7 +510,7 @@ export default {
 		},
 		handleItemSelection: function (evt, key) {
 			// console.log('item selection ...', key, this.selection.indices);
-			
+
 			if (hasProperty(this.selection.indices, key)) {
 				return;
 			}
@@ -526,7 +526,7 @@ export default {
 				if (this.options[i].key !== key) {
 					continue;
 				}
-			
+
 				items.push(this.options[i]);
 				indices[key] = null;
 
@@ -574,7 +574,7 @@ export default {
 				if (item.key === key) {
 					deleted = item;
 					return false;
-				} 
+				}
 
 				return true;
 			});
@@ -592,7 +592,7 @@ export default {
 
 			// filter the options against the original list
 			this.reason = 1;
-			this.options = 
+			this.options =
 				this.getOptions().filter(item => !hasProperty(indices, item.key));
 
 			this.focusStatus = focusStatus.Icon;
@@ -638,7 +638,7 @@ export default {
 				case 'tab-out':
 					this.focuseReset();
 					break;
-			
+
 				default:
 					break;
 			}
@@ -666,7 +666,7 @@ export default {
 </script>
 
 <style>
-.vue_ahead__control_container {  
+.vue_ahead__control_container {
 	position: relative;
   box-sizing: border-box;
 }
