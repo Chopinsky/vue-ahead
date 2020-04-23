@@ -3,6 +3,14 @@ import axios from "axios";
 
 export default class NativeEngine {
 	constructor(props) {
+		if (!axios && !props.proxy) {
+			throw new Error("expecting `axios` module or a proxy settings to be provided before the control, found none ... ");
+		}
+
+		if (props.proxy && typeof props.proxy !== 'function') {
+			throw new Error("expecting `remote`'s proxy to be a function returning a Promise, but found wrong primitive type ... ");
+		}
+
 		this._props = props || {};
 
 		this._store = [];
@@ -10,6 +18,8 @@ export default class NativeEngine {
 			last: [],
 			data: {},
 		};
+
+		this._transport = props.proxy ? props.proxy : axios;
 
 		if (!this._props['cacheSize']) {
 			this._props['cacheSize'] = 10;
@@ -54,20 +64,20 @@ export default class NativeEngine {
     
 		// remote search 
 		if (this._props.remote) {
-			if (!axios) {
-				throw new Error("expecting `axios` module to be imported before the control, found none ... ");
-			}
-
-			const params = {
-				q: val,
-			};
-
 			const {
 				dataParser,
 				settings,
 			} = this._props.remote;
 
-			return axios(Object.assign({}, settings, { params }))
+			const remoteSettings = Object.assign({}, settings);
+
+			if (remoteSettings['params']) {
+				remoteSettings['params']['q'] = val;
+			} else {
+				remoteSettings['params'] = { q: val, };
+			}
+
+			return this._transport(remoteSettings)
 				.then(resp => {
 					// format data if a formatter is passed
 					const data =
@@ -111,10 +121,6 @@ export default class NativeEngine {
 			return;
 		}
 
-		if (!axios) {
-			throw new Error("expecting `axios` module to be imported before the control, found none ... ");
-		}
-
 		const params = {
 			q: '',
 			t: 'prefetch',
@@ -125,7 +131,7 @@ export default class NativeEngine {
 			settings,
 		} = this._props.remote;
 
-		axios(Object.assign({}, settings, { params }))
+		return this._transport(Object.assign({}, settings, { params }))
 			.then(resp => {
 				// format data if a formatter is passed
 				let data =

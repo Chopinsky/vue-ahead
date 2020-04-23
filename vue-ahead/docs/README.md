@@ -11,5 +11,5 @@ features:
   details: The control let users to select one or multiple options from a predefined or a hot loaded option list. The default search engine will match strings presented in the listed options.
 - title: Replacing TypeAhead
   details: The control is designed in mind of the TypeAhead library, which serves as the default auto-complete jQuery plugin for the IASTATE WebDev team. The control provides all the features offered by the plugin, plus bonus improvments and features. 
-footer: Copyright © 2020-Present • IASTATE WebDev
+footer: Copyright © 2020-Present • IASTATE • Jacob Zuo [zuo@iastate.edu]
 ---

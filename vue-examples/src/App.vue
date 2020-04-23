@@ -5,31 +5,32 @@
 		</div>
     <div class="control row">
 			<VueAhead
+				placeholder="select a color"
 				:grouped="true"
         :initOptions="colors"
 				:initSelections="[1]"
 				:singleSelRenderer="singleSelRenderer"
-				placeholder="select a color"
 				@selection="handleSelection(1, ...arguments)"
       />
     </div>
     <div class="control row">
       <VueAhead
+				placeholder="select a major"
 				:highlight="true"
 				:isMulti="true"
 				:initOptions="majors"
 				:initSelections="[1, 2]"
 				:multiSelRenderer="multiSelRenderer"
-				placeholder="select a major"
 				@selection="handleSelection(2, ...arguments)"
 			/>
     </div>
     <div class="control row">
       <VueAhead
+				placeholder="select a twitter handle"
 				:display="display"
+				:dropdownAutoScroll="true"
 				:remote="remote"
 				:optionRenderer="optionRenderer"
-				placeholder="select a twitter handle"
 				@selection="handleSelection(3, ...arguments)"
 			/>
     </div>

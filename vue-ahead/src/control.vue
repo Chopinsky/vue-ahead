@@ -27,6 +27,7 @@
 	<Dropdown
 		v-if="open"
 		ref="dropdownControl"
+		:autoScroll="dropdownAutoScroll"
 		:customClassNames="customClassNames"
 		:groups="groups"
 		:highlightSource="highlight ? value.trim() : null"
@@ -76,6 +77,7 @@ export default {
 	props: {
 		customClassNames: Object,
 		display: Function,
+		dropdownAutoScroll: Boolean,
 		grouped: Boolean,
 		highlight: Boolean,
 		initOptions: Array,
@@ -97,6 +99,10 @@ export default {
 		},
 	},
 	data() {
+		if (this.remote && (!this.remote.settings && !this.remote.proxy)) {
+			throw new Error("the remote expects the remote object to have a 'settings' property, but found nothing ... ");
+		}
+
 		const { source, options, selection, groups } = this.init();
 
 		this._engine = new Engine({ remote: this.remote || null });
@@ -126,8 +132,8 @@ export default {
 			let initState = null;
 
 			if (this.remote) {
-				if (typeof this.remote.prefetch === 'function') {
-					this.runPrefetcher(this.remote.prefetch);
+				if (typeof this.remote["prefetch"] === 'function') {
+					this.runPrefetcher(this.remote["prefetch"]);
 				}
 			} else {
 				source = this.prepareOptions(this.initOptions);

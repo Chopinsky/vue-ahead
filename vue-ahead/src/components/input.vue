@@ -17,7 +17,9 @@
 			<component
 				v-if="singleSelRenderer && selection.length === 1"
 				:is="singleSelRenderer"
-				:selection="selection[0]['src']"
+				:defaultText="phContent.content"
+				:display="display"
+				:item="selection[0]['src']"
 			/>
       <div v-else>{{ phContent.content }}</div>
     </div>
@@ -225,9 +227,7 @@ export default {
 			if (!this.isMulti && this.selection.length === 1) {
 				ph.placeholder += " vue_ahead__plain_text_values";
 				ph.phContent.content = 
-					!this.singleSelRenderer
-						? getDisplay(this.selection[0], this.display, 'selection')
-						: getItemLabel(this.selection[0]);
+					getDisplay(this.selection[0], this.display, 'selection');
 			} else if (this.selection.length === 0) {
 				ph.phContent.content = this.placeholder || '';
 			}

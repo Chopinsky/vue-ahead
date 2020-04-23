@@ -7,10 +7,12 @@
 <script>
 export default {
 	props: {
-		selection: Object,
+		defaultText: String,
+		display: Function,
+		item: Object,
 	},
 	data: function () {
-		const { main, supp } = this.handleDisplayValues(this.selection);
+		const { main, supp } = this.handleDisplayValues(this.item);
 
 		return {
 			main,
@@ -41,7 +43,7 @@ export default {
 	},
 	watch: {
 		selection: function () {
-			const { main, supp } = this.handleDisplayValues(this.selection);
+			const { main, supp } = this.handleDisplayValues(this.item);
 
 			this.main = main;
 			this.supp = supp;

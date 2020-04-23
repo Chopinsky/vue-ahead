@@ -88,6 +88,7 @@ const shieldTitleStyle = {
 
 export default {
 	props: {
+		autoScroll: Boolean,
 		customClassNames: Object,
 		groups: Object,
 		highlightSource: String,
@@ -186,16 +187,17 @@ export default {
 				target = scrollTop - offsetHeight;
 			}
 
-			if (this._moveDebounceId) {
-				clearTimeout(this._moveDebounceId);
-			}
-			
-			if (this._moveDelay > 0) {
-				this._moveDebounceId = setTimeout(() => {
+			if (target !== scrollTop) {
+				if (this._moveDebounceId) {
+					clearTimeout(this._moveDebounceId);
+				}
+				
+				if (this._moveDelay > 0) {
+					this._moveDebounceId = 
+						setTimeout(() => wrapper.scrollTo(0, target), this._moveDelay);			
+				} else {
 					wrapper.scrollTo(0, target);
-				}, this._moveDelay);			
-			} else {
-				wrapper.scrollTo(0, target);
+				}				
 			}
 
 			this._manualMove = '';
@@ -217,9 +219,9 @@ export default {
 	},
 	watch: {
 		activeIdx: function (_, oldVal) {
-			if (!this._manualMove) {
+			if (this.autoScroll && !this._manualMove) {
 				this._manualMove = this.activeIdx > oldVal ? "down" : "up";
-				this._moveDelay = 100;
+				this._moveDelay = 200;
 			}
 
 			if (!this.optionRenderer) {

@@ -2,7 +2,7 @@
 <div class="container">
   <VueAhead
     :remote="remote"
-    :itemRenderer="item"
+    :optionRenderer="item"
     class="control"
     placeholder="select a twitter handle"
   />
