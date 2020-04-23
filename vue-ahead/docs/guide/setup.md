@@ -62,7 +62,11 @@ For example, the `index.html` or `index.php` file below shows the simplest way o
 
 ```html
 <script src="https://cdn.jsdelivr.net/npm/vue"></script>
-<script src="/path/to/the/library/vue-ahead/dist/vue-ahead.min.js"></script>
+
+<!-- Will need to import the `axios` library if using the `remote` feature -->
+<!-- <script src="/path/to/the/library/axios.min.js"></script> -->
+
+<script src="/path/to/the/library/vue-ahead.min.js"></script>
 
 <!-- application code -->
 

@@ -20,11 +20,11 @@
 				@mousedown.stop="handleLabelClicked"
       />
       <Item
-        v-if="!itemRenderer"
+        v-if="!optionRenderer"
         :active="activeIdx === idx"
 				:class="(customClassNames && customClassNames.activeItem) || ''"
 				:highlightSource="highlightSource"
-        :item="item"
+        :item="item.src"
         :index="idx"
         @mouseover="handleMouseOver"
         @mousedown.stop="$emit('item-selection', $event, item.key)"
@@ -36,13 +36,12 @@
         :ref="'item_' + idx.toString()"
         @mouseover="handleMouseOver($event, idx)"
         @mousedown.stop="$emit('item-selection', $event, item.key)"
-        @item-activated="handleItemActivated"
       >
         <component
-					:is="itemRenderer"
+					:is="optionRenderer"
           :active="activeIdx === idx"
 					:highlightSource="highlightSource"
-          :item="item"
+          :item="item.src"
           :index="idx"
         />
       </div>
@@ -93,7 +92,7 @@ export default {
 		groups: Object,
 		highlightSource: String,
 		isRemoteInit: Boolean,
-		itemRenderer: Object,
+		optionRenderer: Object,
 		options: {
 			type: Array,
 			default: new Array(),
@@ -107,6 +106,7 @@ export default {
 	},
 	data: function () {
 		this._manualMove = "";
+		this._moveDebounceId = null;
 		this._debounceId = null;
 
 		return {
@@ -168,6 +168,8 @@ export default {
 			this.$emit('item-selection', evt, item.key);
 		},
 		handleItemActivated: function (offsetTop, offsetHeight = 30) {
+			// console.log('scroll:', offsetTop, offsetHeight, this._manualMove);
+
 			if (this.options.length < 4 || !this._manualMove) {
 				return;
 			}
@@ -176,15 +178,28 @@ export default {
 			const { height } = wrapper.getBoundingClientRect();
 			const { scrollTop } = wrapper;
 
-			// console.log('scroll:', offsetTop, scrollTop);
+			let target = scrollTop;
 
 			if (offsetTop > scrollTop + height - offsetHeight && this._manualMove === 'down') {
-				wrapper.scrollTo(0, scrollTop + offsetHeight);
+				target = scrollTop + offsetHeight;
 			} else if (offsetTop < scrollTop + 5 && this._manualMove === 'up') {
-				wrapper.scrollTo(0, scrollTop - offsetHeight);
+				target = scrollTop - offsetHeight;
+			}
+
+			if (this._moveDebounceId) {
+				clearTimeout(this._moveDebounceId);
+			}
+			
+			if (this._moveDelay > 0) {
+				this._moveDebounceId = setTimeout(() => {
+					wrapper.scrollTo(0, target);
+				}, this._moveDelay);			
+			} else {
+				wrapper.scrollTo(0, target);
 			}
 
 			this._manualMove = '';
+			this._moveDelay = 0;
 		},
 		handleMouseOver: function (_evt, idx) {
 			// console.log('mouse over:', idx);
@@ -201,13 +216,17 @@ export default {
 		},
 	},
 	watch: {
-		activeIdx: function () {
-			if (!this.itemRenderer) {
+		activeIdx: function (_, oldVal) {
+			if (!this._manualMove) {
+				this._manualMove = this.activeIdx > oldVal ? "down" : "up";
+				this._moveDelay = 100;
+			}
+
+			if (!this.optionRenderer) {
 				return;
 			}
 
 			const itemKey = `item_${this.activeIdx}`;
-
 			if (this.$refs[itemKey] && this.$refs[itemKey].length === 1) {
 				const { offsetTop, offsetHeight } = this.$refs[itemKey][0];
 				this.handleItemActivated(offsetTop, offsetHeight);

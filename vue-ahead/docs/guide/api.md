@@ -135,7 +135,9 @@ title: API Guide
 
   For `remote` searches where the option list may differ on every new search terms, we will keep the selected items even if they won't match the new search term.
 
-* __`itemRenderer`__ _(Object)_
+* __`multiSelRenderer`__ _(Vue-Object)_
+
+* __`optionRenderer`__ _(Vue-Object)_
 
   This attribute takes a `Vue` component object as the input, and it will be used to render the option items in the dropdown menu.
 
@@ -151,18 +153,18 @@ title: API Guide
 
   ::: details example
 
-  Once the item is defined, import it to your component using the control, and provide the customized item component as the data source to the `itemRenderer` attribute:
+  Once the item is defined, import it to your component using the control, and provide the customized item component as the data source to the `optionRenderer` attribute:
 
   ```javascript
   // in template
-  <VueAhead :initOptions="options" :itemRenderer="customizedItem" />
+  <VueAhead :initOptions="options" :optionRenderer="customizedOption" />
 
   // in your script
-  import CustomizedItem from '/path/to/item.vue';
+  import CustomizedOption from '/path/to/option.vue';
 
   export default {
     data: {
-      customizedItem: CustomizedItem,
+      customizedOption: CustomizedOption,
       options: [ ... ],
     },
     // ...

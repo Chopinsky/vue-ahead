@@ -14,16 +14,22 @@
       v-if="phContent.content !== ''"
       :class="classes.placeholder"
     >
-      {{ phContent.content }}
+			<component
+				v-if="singleSelRenderer && selection.length === 1"
+				:is="singleSelRenderer"
+				:selection="selection[0]['src']"
+			/>
+      <div v-else>{{ phContent.content }}</div>
     </div>
 
     <div
       v-for="(item, index) in selection"
       :key="getSelectionKey(item, index)"
     >
-      <SelectionItem 
-        v-if="isMulti"
+      <SelectionItem
+				v-if="isMulti"
         :item="item"
+				:itemRenderer="multiSelRenderer"
         :index="index"
         @item-removal="$emit('item-removal', $event, item)"
         @special-key="$emit('special-key', 'tab-out')"
@@ -120,10 +126,12 @@ export default {
 		customClassNames: Object,
 		display: Function,
 		isMulti: Boolean,
+		multiSelRenderer: Object,
 		placeholder: {
 			type: String,
 			default: '',
 		},
+		singleSelRenderer: Object,
 		selection: Array,
 		value: {
 			type: String,
@@ -138,11 +146,6 @@ export default {
 		const { placeholder, phContent } = this.getPlaceholder();
 
 		return {
-			styles: {
-				container: contentHolderStyle,
-				input: Object.assign({}, inputStyle),
-				field: fieldStyle,
-			},
 			classes: {
 				wrapper: this.getWrapperClassName(),
 				placeholder,
@@ -151,8 +154,13 @@ export default {
 				clear: clearIconPath,
 				dropdown: dropdownIconPath,
 			},
-			width: 2,
 			phContent,
+			styles: {
+				container: contentHolderStyle,
+				input: Object.assign({}, inputStyle),
+				field: fieldStyle,
+			},
+			width: 2,
 		};
 	},
 	methods: {
@@ -200,7 +208,7 @@ export default {
 		},
 		getPlaceholder: function () {
 			const ph = {
-				placeholder: "vue_ahead__placeholder",
+				placeholder: "vue_ahead__plain_text",
 				phContent: {
 					content: '',
 					title: '',
@@ -215,16 +223,21 @@ export default {
 			}
 
 			if (!this.isMulti && this.selection.length === 1) {
-				ph.placeholder += " vue_ahead__placeholder_values";
-				ph.phContent.content = getDisplay(this.selection[0], this.display, 'selection');
+				ph.placeholder += " vue_ahead__plain_text_values";
+				ph.phContent.content = 
+					!this.singleSelRenderer
+						? getDisplay(this.selection[0], this.display, 'selection')
+						: getItemLabel(this.selection[0]);
 			} else if (this.selection.length === 0) {
 				ph.phContent.content = this.placeholder || '';
 			}
 
+			// the selection renderer shall take care of the title (i.e. the 
+			// hover over tip)
 			ph.phContent.title = ph.phContent.content;
 
-			if (ph.phContent.content && ph.phContent.content.length > 24) {
-				ph.phContent.content = ph.phContent.content.substr(0, 21) + " ...";
+			if (ph.phContent.content && ph.phContent.content.length > 32) {
+				ph.phContent.content = ph.phContent.content.substr(0, 30) + " ...";
 			}
 
 			return ph;
@@ -330,6 +343,7 @@ export default {
 			}
 		},
 	},
+	computed: {},
 	watch: {
 		value: function () {
 			if (this.value === '') {
@@ -398,7 +412,7 @@ export default {
   cursor: text;
 }
 
-.vue_ahead__placeholder {
+.vue_ahead__plain_text {
   position: absolute;
   top: 50%;
   color: rgb(128, 128, 128);
@@ -407,10 +421,12 @@ export default {
   transform: translateY(-50%);
   box-sizing: border-box;
   overflow: hidden;
-  text-overflow: ellipsis;
+	text-overflow: ellipsis;        
+	-ms-user-select: none;
+	user-select: none;
 }
 
-.vue_ahead__placeholder.vue_ahead__placeholder_values {
+.vue_ahead__plain_text.vue_ahead__plain_text_values {
   color: inherit;
 }
 

@@ -14,7 +14,7 @@ const getDisplay = (item, display, type) => {
 	let label = getItemLabel(item);
 
 	if (display) {
-		label = display(label, item, type);
+		label = display(label, item['src'], type);
 	}
 
 	if (typeof label !== 'string') {

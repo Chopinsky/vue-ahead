@@ -8,9 +8,12 @@
 		ref="inputControl"
 		:active="focusStatus !== 0"
 		:customClassNames="customClassNames"
+		:display="display"
+		:multiSelRenderer="multiSelRenderer"
 		:isMulti="isMulti"
 		:placeholder="placeholder"
 		:selection="selection.items"
+		:singleSelRenderer="singleSelRenderer"
 		:value="value"
 		@dblclick="handleDbClick"
 		@change="handleInputChange"
@@ -26,9 +29,9 @@
 		ref="dropdownControl"
 		:customClassNames="customClassNames"
 		:groups="groups"
-		:highlight="highlight ? value.trim() : null"
+		:highlightSource="highlight ? value.trim() : null"
 		:isRemoteInit="remote && value === ''"
-		:itemRenderer="itemRenderer"
+		:optionRenderer="optionRenderer"
 		:open="open"
 		:options="options"
 		:reason="reason"
@@ -42,7 +45,7 @@
 import Shield from './components/shield.vue';
 import Input from './components/input.vue';
 import Dropdown from './components/dropdown.vue';
-import { hasProperty, randomSuffix } from './helpers/common';
+import { buildItem, hasProperty, randomSuffix } from './helpers/common';
 import Engine from './helpers/engine';
 
 const focusStatus = {
@@ -72,17 +75,26 @@ export default {
 	},
 	props: {
 		customClassNames: Object,
+		display: Function,
 		grouped: Boolean,
 		highlight: Boolean,
 		initOptions: Array,
 		initSelections: Array,
 		isMulti: Boolean,
-		itemRenderer: {
+		multiSelRenderer: {
+			type: Object,
+			defualt: null,
+		},
+		optionRenderer: {
 			type: Object,
 			default: null,
 		},
 		placeholder: String,
 		remote: Object,
+		singleSelRenderer: {
+			type: Object,
+			default: null,
+		},
 	},
 	data() {
 		const { source, options, selection, groups } = this.init();
@@ -90,6 +102,7 @@ export default {
 		this._engine = new Engine({ remote: this.remote || null });
 		this._engine.add(source);
 
+		this._keys = null;
 		this._shieldId = null;
 		this._debounceId = null;
 
@@ -126,7 +139,7 @@ export default {
 			const initOptions = initState ? initState['options'] : source;
 			const selection = initState ? initState['selection'] : { items: [], indices: {}, };
 
-			const { options, groups } = this.grouped ? this.buildGroupOptions(initOptions) : { options: initOptions, groups: null };
+			const { options, groups } = this.grouped ? this.buildOptionGroups(initOptions) : { options: initOptions, groups: null };
 
 			return { source, options, selection, groups, };
 		},
@@ -178,7 +191,7 @@ export default {
 
 			this.options = this.getOptions();
 		},
-		buildGroupOptions: function (options) {
+		buildOptionGroups: function (options) {
 			if (!options || options.length === 0) {
 				return { options, groups: null };
 			}
@@ -242,7 +255,7 @@ export default {
 			let result = source.filter(item => !hasProperty(indices, item.key));
 
 			if (this.grouped) {
-				const { options, groups } = this.buildGroupOptions(result);
+				const { options, groups } = this.buildOptionGroups(result);
 				result = options;
 				this.groups = groups;
 			}
@@ -250,52 +263,20 @@ export default {
 			return result;
 		},
 		prepareOptions: function (options = []) {
-			const keys = {};
+			this._keys = {};
 
 			const result =
 				options
 					.filter(item => typeof item === "object" && !!item)
 					.map((item, idx) => {
-						if (!hasProperty(item, 'key')) {
-							item['key'] = idx.toString() + "#" + randomSuffix();
-						}
+						const controlItem = buildItem(item, idx, this._keys, this.grouped);
 
-						let key = item['key'];
-						if (typeof key !== 'string') {
-							key = (key === null || key === undefined)
-								? randomSuffix()
-								: key.toString();
-						}
+						this._keys[controlItem.key] = null;
 
-						while (hasProperty(keys, key)) {
-							key += randomSuffix();
-						}
-
-						item['key'] = key;
-						keys[key] = null;
-
-						let label = item['label'];
-						if (typeof label !== 'string') {
-							label = (label === null || label === undefined)
-								? ''
-								: label.toString();
-						}
-
-						item['label'] = label;
-
-						if (this.grouped) {
-							let groupKey = item['group'];
-							if (typeof groupKey !== 'string') {
-								groupKey = (groupKey === null || groupKey === undefined)
-									? "default"
-									: groupKey.toString();
-							}
-
-							item['group'] = groupKey;
-						}
-
-						return item;
+						return controlItem;
 					});
+
+			// console.log(this._keys);
 
 			return result || [];
 		},
@@ -382,7 +363,7 @@ export default {
 						initOptions = initState.options;
 					}
 
-					const { options, groups } = this.grouped ? this.buildGroupOptions(initOptions) : { options: initOptions, groups: null };
+					const { options, groups } = this.grouped ? this.buildOptionGroups(initOptions) : { options: initOptions, groups: null };
 
 					this.source = source;
 					this.options = options;
@@ -540,7 +521,7 @@ export default {
 
 			this.$emit("selection", {
 				type: "add",
-				items: this.selection.items,
+				items: this.selection.items.map(item => item.src),
 				value: this.value,
 			});
 
@@ -586,7 +567,7 @@ export default {
 
 			this.$emit("selection", {
 				type: "remove",
-				items: this.selection.items,
+				items: this.selection.items.map(item => item.src),
 				deleted,
 			});
 

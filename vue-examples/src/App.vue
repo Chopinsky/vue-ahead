@@ -8,7 +8,9 @@
 				:grouped="true"
         :initOptions="colors"
 				:initSelections="[1]"
+				:singleSelRenderer="singleSelRenderer"
 				placeholder="select a color"
+				@selection="handleSelection(1, ...arguments)"
       />
     </div>
     <div class="control row">
@@ -17,14 +19,18 @@
 				:isMulti="true"
 				:initOptions="majors"
 				:initSelections="[1, 2]"
+				:multiSelRenderer="multiSelRenderer"
 				placeholder="select a major"
+				@selection="handleSelection(2, ...arguments)"
 			/>
     </div>
     <div class="control row">
       <VueAhead
+				:display="display"
 				:remote="remote"
-				:itemRenderer="item"
+				:optionRenderer="optionRenderer"
 				placeholder="select a twitter handle"
+				@selection="handleSelection(3, ...arguments)"
 			/>
     </div>
   </div>
@@ -33,6 +39,8 @@
 <script>
 import VueAhead from 'vue-ahead';
 import OptionItem from './Item.vue';
+import Selection from './Selection.vue';
+import MultiSelection from './MultiSelection.vue';
 
 const parser = function (data) {
 	return data.map(item => {
@@ -53,6 +61,15 @@ const remote = {
 	},
 	dataParser: parser,
 	prefetch: prefetcher,
+};
+
+const displayFormatter = function (label, item) {
+	if (item && item.extraData) {
+		const data = item.extraData;
+		return data['name'] + " (@" + data['screen_name'] + ")";
+	}
+
+	return label;
 };
 
 export default {
@@ -89,11 +106,17 @@ export default {
 				{ label: 'History' },
 				{ label: 'Mythology' },
 			],
+			display: displayFormatter,
 			remote,
-			item: OptionItem,
+			optionRenderer: OptionItem,
+			singleSelRenderer: Selection,
+			multiSelRenderer: MultiSelection,
 		};
 	},
 	methods: {
+		handleSelection: function (number, data) {
+			console.log('selection made in control #', number, ', with data:', data);
+		},
 	},
 };
 </script>

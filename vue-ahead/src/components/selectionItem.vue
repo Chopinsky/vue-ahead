@@ -1,11 +1,20 @@
 <template>
 <div class="vue_ahead__selection_container">
   <div class="vue_ahead__selection_content" :title="title">
-    {{ text }}
+		<component 
+			v-if="itemRenderer"
+			:is="itemRenderer"
+			:item="item"
+			:display="display"
+			:defaultText="text"
+		/>
+    <div v-else>
+			{{ text }}
+		</div>
   </div>
   <ControlIcon
     class="vue_ahead__selection_removal"
-    title="remove selection"
+    :title="'remove ' + title"
     :path="iconPath"
     @mousedown.native.stop="$emit('item-removal', $event)"
     @keydown.stop="handleRemovalKeydown($event)"
@@ -15,6 +24,7 @@
 
 <script>
 import ControlIcon from './controlIcon.vue';
+import { getDisplay } from '../helpers/utils';
 
 const clearIconPath = "M 14.348 14.849 c -0.469 0.469 -1.229 0.469 -1.697 0 l -2.651 -3.03 l -2.651 3.029 c -0.469 0.469 -1.229 0.469 -1.697 0 c -0.469 -0.469 -0.469 -1.229 0 -1.697 l 2.758 -3.15 l -2.759 -3.152 c -0.469 -0.469 -0.469 -1.228 0 -1.697 s 1.228 -0.469 1.697 0 l 2.652 3.031 l 2.651 -3.031 c 0.469 -0.469 1.228 -0.469 1.697 0 s 0.469 1.229 0 1.697 l -2.758 3.152 l 2.758 3.15 c 0.469 0.469 0.469 1.229 0 1.698 Z";
 
@@ -22,6 +32,7 @@ export default {
 	props: {
 		display: Function,
 		item: Object,
+		itemRenderer: Object,
 		index: Number,
 	},
 	components: {
@@ -29,6 +40,7 @@ export default {
 	},
 	data: function () {
 		const { text, title } = this.getDisplayText();
+
 		return {
 			text,
 			title,
@@ -38,7 +50,7 @@ export default {
 	methods: {
 		getDisplayText: function () {
 			const title = this.item.label || "...";
-			let text = title;
+			let text = getDisplay(this.item, this.display, 'multi-selection');
 
 			if (text && text.length > 8) {
 				text = text.substr(0, 6) + "...";
@@ -85,7 +97,6 @@ export default {
   text-overflow: ellipsis;
   white-space: nowrap;
   box-sizing: border-box;
-  border-radius: 2px;
   overflow: hidden;
   padding: 2px 2px 2px 4px;
 }
@@ -95,8 +106,7 @@ export default {
   align-items: center;
   cursor: pointer;
   display: flex;
-  padding-left: 0;
-  padding-right: 2px;
+  padding: 0 2px 2px 0;
   box-sizing: border-box;
   border-radius: 2px;
 }

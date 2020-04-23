@@ -73,8 +73,8 @@ export default {
 			this.className = this.getClassName();
 
 			if (this.active) {
-				const { offsetTop, offsetHeight } = this.$refs.elem;
-				this.$emit('item-activated', offsetTop, offsetHeight);
+				const { offsetTop, scrollHeight } = this.$refs.elem;
+				this.$emit('item-activated', offsetTop, scrollHeight);
 			}
 		},
 		highlightSource: function () {
