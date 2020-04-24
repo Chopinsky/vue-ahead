@@ -107,4 +107,16 @@ export default {
   background-color: darkgrey;
   outline: 1px solid slategrey;
 }
+
+.app_control_dropdown .vue_ahead__menu_option.vue_ahead__menu_option_active {
+  border: 2px dotted blue;
+  font-weight: bolder;
+  text-align: center;
+  animation: appearing-text 200ms;
+}
+
+@keyframes appearing-text {
+  from { opacity: 0.1; }
+  to { opacity: 1; }
+}
 </style>

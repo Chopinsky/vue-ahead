@@ -451,3 +451,7 @@ export default {
 ## Public APIs and Events
 
 // TODO ...
+
+## Customized Decoration
+
+// TODO ...
