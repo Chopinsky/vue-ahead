@@ -22,6 +22,24 @@ For more related information, see the official documentation for [`Prop Casing`]
 
   This attribute uses the defualt `class` attribute. The given class will be added to the out-most div layer of the control.
 
+### `createable` _(Boolean)_
+
+  This attribute controls whether the control will allow user to create a new entry based on the entries.
+
+  If the attribute is toggled on, then the control will display an option matching the current user entry; if selected, the item will be added to the control selections and acknowledge the parent applicaiton. 
+
+  If the `grouped` attribute is also toggled on, the created item will be shown under the `NEW` group. 
+
+  ::: warning What values can be created
+
+  It's noteworthy that __NOT__ all user entries can be a legal createable item. It has to meet the following criteria:
+
+  1. user entered value must __NOT__ match any of the shown option's label text, which will be treated case-insensitive. For example, if the options contain an item with the label text of ` White ` (_i.e._ value with prefix and suffix spaces), then user entry of `white` will not be a createable entry.
+
+  2. user entered value must __NOTE__ match any of the selected option's label text, which will be treated case-incensitive. For example, if the current selection contain an item with the label text of ` White ` (_i.e._ value with prefix and suffix spaces), then user entry of `white` will not be a createable entry.
+
+  :::
+
 ### `customClassNames` _(Object)_
 
   This attribute is expecting an object that contains one or more the following fields:

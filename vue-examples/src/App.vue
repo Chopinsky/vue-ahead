@@ -34,6 +34,15 @@
 				@selection="handleSelection(3, ...arguments)"
 			/>
     </div>
+		<div class="control row">
+      <VueAhead
+				placeholder="select a createable color"
+				:createable="true"
+				:grouped="true"
+				:initOptions="colors"
+				@selection="handleSelection(4, ...arguments)"
+			/>
+    </div>
   </div>
 </template>
 

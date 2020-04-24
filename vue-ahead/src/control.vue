@@ -28,6 +28,7 @@
 		v-if="open"
 		ref="dropdownControl"
 		:autoScroll="dropdownAutoScroll"
+		:createable="createable"
 		:customClassNames="customClassNames"
 		:groups="groups"
 		:highlightSource="highlight ? value.trim() : null"
@@ -75,6 +76,7 @@ export default {
 		//todo: send any remainder data to remote, if configured
 	},
 	props: {
+		createable: Boolean,
 		customClassNames: Object,
 		display: Function,
 		dropdownAutoScroll: Boolean,
@@ -103,14 +105,14 @@ export default {
 			throw new Error("the remote expects the remote object to have a 'settings' property, but found nothing ... ");
 		}
 
+		this._keys = null;
+		this._shieldId = null;
+		this._debounceId = null;
+
 		const { source, options, selection, groups } = this.init();
 
 		this._engine = new Engine({ remote: this.remote || null });
 		this._engine.add(source);
-
-		this._keys = null;
-		this._shieldId = null;
-		this._debounceId = null;
 
 		return {
 			className: this.getClassName(),
@@ -203,6 +205,14 @@ export default {
 			}
 
 			options = options.sort((a, b) => {
+				if (a.type === "created") {
+					return 1;
+				}
+
+				if (b.type === "created") {
+					return -1;
+				}
+
 				if (a.group === "default") {
 					return -1;
 				}
@@ -282,7 +292,7 @@ export default {
 						return controlItem;
 					});
 
-			// console.log(this._keys);
+			// console.log('keys:', this._keys, result);
 
 			return result || [];
 		},
@@ -352,9 +362,45 @@ export default {
 			this.groups = groups;
 			this.selection = selection;
 		},
+		isValueCreateable: function (value = '', options = []) {
+			if (value === '') {
+				return false;
+			}
+
+			if (options.length === 0) {
+				return true;
+			}
+
+			value = value.trim().toLowerCase();
+
+			for (let i = 0; i < options.length; i++) {
+				const label = options[i]['label'];
+
+				if (label.trim().toLowerCase() === value) {
+					return false;
+				}
+			}
+
+			if (this.selection.items && this.selection.items.length > 0) {
+				for (let i = 0; i < this.selection.items.length; i++) {
+					const key = this.selection.items[i]['label'];
+
+					if (key.trim().toLowerCase() === value) {
+						return false;
+					}
+				}
+			}
+
+			return true;
+		},
 		runPrefetcher: function (prefetcher, keepSelections) {
+			/* 
+			 * The prefetcher is used to fetch default menu options, it should 
+			 * not need interaction with the `createable` features.
+			 */
 			prefetcher((data, selections = []) => {
 				setTimeout(() => {
+
 					let source = this.prepareOptions(data);
 					let initOptions = source;
 					let selection = this.selection;
@@ -478,17 +524,34 @@ export default {
 			this._debounceId = setTimeout(() => {
 				this._engine.query(value, (data = []) => {
 					// console.log(data);
+					let source;
 
 					// for remote search, the source change every time on a search
 					// term, hence we need to update the source all the time
 					if (this.remote) {
 						this.source = this.prepareOptions(data);
-						this.options = this.getOptions();
+						source = this.source;
 					} else {
-						this.options = this.getOptions(data);
+						source = data;
+					}
+
+					if (this.createable && this.isValueCreateable(value, source)) {
+						let key = value.trim().toLowerCase();
+
+						while (hasProperty(this._keys, key)) {
+							key += randomSuffix();
+						}
+
+						source.push({ 
+							label: value, 
+							key,
+							group: "new",
+							type: "created",
+						});
 					}
 
 					this.reason = 0;
+					this.options = this.getOptions(source);
 
 					this.shieldAction(false);
 					this._debounceId = null;
@@ -527,7 +590,7 @@ export default {
 
 			this.$emit("selection", {
 				type: "add",
-				items: this.selection.items.map(item => item.src),
+				items: this.selection.items.map(item => item["type"] === "created" ? item : item['src']),
 				value: this.value,
 			});
 
@@ -573,7 +636,7 @@ export default {
 
 			this.$emit("selection", {
 				type: "remove",
-				items: this.selection.items.map(item => item.src),
+				items: this.selection.items.map(item => item["type"] === "created" ? item : item['src']),
 				deleted,
 			});
 

@@ -5,7 +5,7 @@
   @mouseover.capture="$emit('mouseover', $event, index)"
   @mousedown="$emit('mousedown', $event, index)"
 >
-  <span :style="styles.text">{{ content[0] }}</span><span v-if="content[1]" :style="styles.hl">{{ content[1] }}</span><span v-if="content[2]" :style="styles.text">{{ content[2] }}</span>
+	<span v-if="created" :style="styles.prefix">Create: </span><span :style="styles.text">{{ content[0] }}</span><span v-if="content[1]" :style="styles.hl">{{ content[1] }}</span><span v-if="content[2]" :style="styles.text">{{ content[2] }}</span>
 </div>
 </template>
 
@@ -15,6 +15,7 @@ import { getItemLabel } from '../helpers/utils';
 export default {
 	props: {
 		active: Boolean,
+		created: Boolean,
 		highlightSource: String,
 		item: Object,
 		index: Number,
@@ -24,6 +25,11 @@ export default {
 			className: this.getClassName(),
 			content: this.getDisplay(),
 			styles: {
+				prefix: {
+					paddingRight: "2px",
+					opacity: 0.8,
+					fontWeight: 600,
+				},
 				text: {
 					padding: 0,
 					margin: 0,
@@ -51,7 +57,7 @@ export default {
 		getDisplay: function () {
 			const base = getItemLabel(this.item);
 
-			if (this.highlightSource && base) {
+			if (this.highlightSource && !this.created && base) {
 				const src = base.trim().toLowerCase();
 				const tgt = this.highlightSource.trim().toLowerCase();
 				const pos = src.indexOf(tgt);

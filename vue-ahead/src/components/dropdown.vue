@@ -23,8 +23,9 @@
         v-if="!optionRenderer"
         :active="activeIdx === idx"
 				:class="(customClassNames && customClassNames.activeItem) || ''"
+				:created="item['type'] === 'created'"
 				:highlightSource="highlightSource"
-        :item="item.src"
+        :item="getMenuItem(item)"
         :index="idx"
         @mouseover="handleMouseOver"
         @mousedown.stop="$emit('item-selection', $event, item.key)"
@@ -33,6 +34,7 @@
       <div 
         v-else
 				:class="(customClassNames && customClassNames.activeItem) || ''"
+				:created="item['type'] === 'created'"
         :ref="'item_' + idx.toString()"
         @mouseover="handleMouseOver($event, idx)"
         @mousedown.stop="$emit('item-selection', $event, item.key)"
@@ -41,7 +43,7 @@
 					:is="optionRenderer"
           :active="activeIdx === idx"
 					:highlightSource="highlightSource"
-          :item="item.src"
+          :item="getMenuItem(item)"
           :index="idx"
         />
       </div>
@@ -89,6 +91,7 @@ const shieldTitleStyle = {
 export default {
 	props: {
 		autoScroll: Boolean,
+		createable: Boolean,
 		customClassNames: Object,
 		groups: Object,
 		highlightSource: String,
@@ -132,7 +135,22 @@ export default {
 			return className;
 		},
 		getEmptyText: function () {
-			return this.isRemoteInit ? "Type to search" : "No option";
+			if (this.isRemoteInit) {
+				return "Type to search";
+			} 
+
+			if (this.createable) {
+				return "No option and unable to create";
+			}
+			
+			return "No option";
+		},
+		getMenuItem: function (item) {
+			if (item['type'] === 'created') {
+				return item;
+			}
+
+			return item['src'];
 		},
 		move: function (dir) {
 			let { activeIdx } = this;
