@@ -470,6 +470,82 @@ export default {
 
 // TODO ...
 
-## Customized Decoration
+## Styles and Decorations
 
-// TODO ...
+It is possible to decorate the majority portion of the control the way an application would need to. 
+
+Nevertheless, such jobs still need a good understanding of how the `CSS` decorations work for the control, and it's important to discuss `VueAhead`'s `CSS` class hierarchy, as shown below:
+
+:::tip `CSS` Class Hierarchy
+
+* `vue_ahead__control_container [class]`
+  * `vue_ahead__control_wrapper [customClassNames.input]` or `vue_ahead__control_wrapper [customClassNames.active]`
+    * `vue_ahead__input_container`
+      * (single-selection-mode) `vue_ahead__plain_text` or `vue_ahead__plain_text vue_ahead__plain_text_values`
+      * (multi-selection-mode) `vue_ahead__selection_container`
+        * `vue_ahead__selection_content`
+        * `vue_ahead__selection_removal`
+    * `vue_ahead__icons_container`
+      * `vue_ahead__action_icon`
+      * `vue_ahead__action_icon_separator`
+  * `vue_ahead__dropdown_wrapper [customClassNames.dropdown]`
+    * `vue_ahead__dropdown_container`
+      * (active option) `vue_ahead__menu_option vue_ahead__menu_option_active` 
+      * (normal option) `vue_ahead__menu_option` 
+
+_(contents inside the `[ ... ]` refer to the values passed to the named attribute)_
+:::
+
+In this structure:
+
+* `control_container` controls the out-most geometry of the whole control, such as the width, maximum height, padding, margins, etc. It will be compounded with the value set to the `class` attribute.
+
+* `vue_ahead__control_wrapper` controls the input control's looks and geometry, such as border style (or focused style), border radius, etc. An extra class with the value set in the `customClassNames.input` field will be added if the `customClassNames` attribute is set; and if the control is focused, it will take the compounded value from `customClassNames.input customClassNames.active` as the additional class names.
+
+* `vue_ahead__input_container` controls the looks and geometry of the real input field, where users type the search terms; and `icons_container` controls the  looks and geometry of the action icons (i.e. the `cancel all` and `dropdown` icons on the right side end of the input control).
+
+* `vue_ahead__dropdown_wrapper` controls the wrapping div over the dropdown menu, and it's usually used to control the positioning and look of the dropdown menu. An extra class with the value set in the `customClassNames.dropdown` field will be added as an additional class, such that control users can take charge of the dropdown menu styling. 
+
+* `vue_ahead__dropdown_container` is where the actual contents are held in the dropdown menu, and it controls the inner content menu's height, width, etc.
+:::
+
+:::tip Example
+With the knowledge of the `VueAhead`'s class hierarchy, it will be easy to override the default control styling.
+
+For example, for the `customClassNames` set to the following:
+```javascript
+customClassNames = {
+  input: "app_control_input",
+  active: "app_control_active",
+  dropdown: "app_control_dropdown",
+};
+```
+
+You can define the following selector rules to guarantee the styling overrides:
+
+```css
+.app_control_input {
+  /* override the `vue_ahead__control_wrapper` styles */
+}
+
+.app_control_input.app_control_active {
+  /* override the `vue_ahead__control_wrapper` styles when focused */
+}
+
+.app_control_input .vue_ahead__input_container {
+  /* override the `vue_ahead__input_container` styles */
+}
+
+.app_control_dropdown {
+  /* override the `vue_ahead__dropdown_wrapper` styles */
+}
+
+.app_control_dropdown .vue_ahead__dropdown_container {
+  /* override the `vue_ahead__dropdown_container` styles */
+}
+```
+:::
+
+::: warning
+Due to `CSS` selector rules, the class definitions should **_NOT_** be scoped, otherwise they may not apply correctly to the corresponding control elements.
+:::

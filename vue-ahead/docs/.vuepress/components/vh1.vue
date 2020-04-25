@@ -1,5 +1,5 @@
 <template>
-<div class="container">
+<div class="control_container">
   <VueAhead
     :grouped="true"
     :initOptions="colors"
@@ -34,7 +34,10 @@ export default {
 </script>
 
 <style scoped>
-.container {
+.control_container {
+	display: block;
+	text-align: left;
+	color: #495057;
   margin: 20px 0;
   padding: 20px;
   max-width: 800px;

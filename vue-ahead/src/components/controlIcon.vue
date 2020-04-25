@@ -28,8 +28,8 @@ export default {
 			required: true,
 		},
 		size: {
-			type: String,
-			default: "16",
+			type: Number,
+			default: 16,
 		},
 		viewBox: {
 			type: String,

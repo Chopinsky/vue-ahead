@@ -1,5 +1,5 @@
 <template>
-<div class="container">
+<div class="control_container">
   <VueAhead
     :customClassNames="customClassNames"
     :highlight="true"
@@ -42,7 +42,10 @@ export default {
 </script>
 
 <style>
-.container {
+.control_container {
+	display: block;
+	text-align: left;
+	color: #495057;
   margin: 20px 0;
   padding: 20px;
   max-width: 800px;

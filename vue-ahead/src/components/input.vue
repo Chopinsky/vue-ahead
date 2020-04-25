@@ -64,14 +64,16 @@
       class="vue_ahead__action_icon vue_ahead__clear_icon"
       title="clear all"
       :path="path.clear"
+			:size="18"
       @mousedown.native.stop="$emit('icon-event', $event, 'clear')"
       @keydown.stop="handleIconKeydown($event, 'clear')"
     />
     <span class="vue_ahead__action_icon_separator"></span>
     <ControlIcon
-      class="vue_ahead__action_icon" 
+      class="vue_ahead__action_icon vue_ahead__dropdown_icon" 
       title="dropdown menu"
       :path="path.dropdown"
+			:size="18"
       @mousedown.native.stop="$emit('icon-event', $event, 'dropdown')"
       @keydown.stop="handleIconKeydown($event, 'dropdown')"
     />
@@ -95,6 +97,7 @@ const inputStyle = {
 	height: "100%",
 	outline: "none",
 	border: 0,
+	padding: "0",
 };
 
 const contentHolderStyle = {
@@ -135,6 +138,7 @@ export default {
 		},
 		singleSelRenderer: Object,
 		selection: Array,
+		theme: String,
 		value: {
 			type: String,
 			default: '',
@@ -189,7 +193,11 @@ export default {
 			}
 		},
 		getWrapperClassName: function () {
-			let wrapperClassName = "vue_ahead__control_wrapper";
+			let wrapperClassName = !this.theme 
+				? "vue_ahead__control_wrapper vue_ahead__regular_theme" 
+				: "vue_ahead__control_wrapper form-control";
+
+			// console.log(this.theme);
 			 
 			if (this.customClassNames && this.customClassNames.input) {
 				wrapperClassName += " " + this.customClassNames.input;
@@ -199,7 +207,9 @@ export default {
 				if (this.customClassNames && this.customClassNames.active) {
 					wrapperClassName += " " + this.customClassNames.active;
 				} else {
-					wrapperClassName += " vue_ahead__control_active";
+					wrapperClassName += !this.theme 
+						? " vue_ahead__control_active" 
+						: " vue_ahead__themed_control_active";
 				}
 			}
 
@@ -377,24 +387,40 @@ export default {
 .vue_ahead__control_wrapper {
   -webkit-box-align: center;
   -webkit-box-pack: justify;
-  padding-left: 6px;
-  padding-right: 4px;
-  min-height: 18px;
-  align-items: center;
-  background-color: rgb(255, 255, 255);
-  border-radius: 2px;
-  border: 1px solid rgb(204, 204, 204);
   position: relative;
-  box-sizing: border-box;
   display: flex;
   flex-wrap: wrap;
+  align-items: center;
+  box-sizing: border-box;
   justify-content: space-between;
+}
+
+.vue_ahead__regular_theme {
+	padding-right: 6px;
+	padding-left: 6px;
+  background-color: rgb(255, 255, 255);
+  border: 1px solid rgb(204, 204, 204);
+  border-radius: 2px;
   transition: all 100ms ease 0s;
-  outline: 0px !important;
+}
+
+/* Theme accommodations */
+.vue_ahead__control_wrapper.form-control {
+	padding-right: 6px;
+	padding-top: 6px;
 }
 
 .vue_ahead__control_wrapper.vue_ahead__control_active {
   border: 1px solid blue;
+}
+
+/* Theme accommodations */
+.vue_ahead__control_wrapper.vue_ahead__themed_control_active {
+	color: #495057;
+	background-color: #fff;
+	border-color: #80bdff;
+	outline: 0;
+	box-shadow: 0 0 0 0.2rem rgba(0,123,255,.25);
 }
 
 .vue_ahead__input_container {
@@ -408,8 +434,8 @@ export default {
   overflow: hidden;
   visibility: visible;
   box-sizing: border-box;
-  width: 100%;
   cursor: text;
+	width: 100%;
 }
 
 .vue_ahead__plain_text {
@@ -421,9 +447,10 @@ export default {
   transform: translateY(-50%);
   box-sizing: border-box;
   overflow: hidden;
-	text-overflow: ellipsis;        
+	text-overflow: ellipsis;
 	-ms-user-select: none;
 	user-select: none;
+	padding-bottom: 2px;
 }
 
 .vue_ahead__plain_text.vue_ahead__plain_text_values {
@@ -439,6 +466,11 @@ export default {
   box-sizing: border-box;
 }
 
+/* Theme accommodations */
+.form-control > .vue_ahead__icons_container {
+	height: 100%
+}
+
 .vue_ahead__action_icon {
   color: rgb(204, 204, 204);
   display: flex;
@@ -449,6 +481,10 @@ export default {
 
 .vue_ahead__action_icon.vue_ahead__clear_icon {
   padding-right: 4px;
+}
+
+.vue_ahead__action_icon.vue_ahead__dropdown_icon {
+  margin-bottom: 1px;
 }
 
 .vue_ahead__action_icon:hover {
@@ -469,7 +505,7 @@ export default {
 .vue_ahead__action_icon_separator {
   align-self: stretch;
   background-color: rgb(204, 204, 204);
-  margin: 8px 2px;
+  margin: 6px 2px;
   width: 1px;
   box-sizing: border-box;
 }

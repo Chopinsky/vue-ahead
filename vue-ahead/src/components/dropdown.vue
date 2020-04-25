@@ -5,9 +5,9 @@
     :style="styles.shield"
     @mousedown.capture.stop="$emit('shield-click', $event)"
   >
-    <h3 v-show="shieldVisible" :style="styles.title">
+    <h5 v-show="shieldVisible" :style="styles.title">
       Loading ...
-    </h3>
+    </h5>
   </div>
   <div 
     class="vue_ahead__dropdown_container"
@@ -295,7 +295,7 @@ export default {
   top: 100%;
   background-color: rgb(255, 255, 255);
   box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 0px 1px, rgba(0, 0, 0, 0.1) 0px 4px 11px;
-  margin: 4px 0;
+  margin: 8px 0;
   position: absolute;
   width: 100%;
   z-index: 1000;

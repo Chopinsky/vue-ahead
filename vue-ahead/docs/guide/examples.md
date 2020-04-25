@@ -392,7 +392,8 @@ data: {
 ```
 :::
 
-::: tip
+::: details Control's `CSS` class hierarchy 
+
 To understand how `CSS` overrides work for the control, it's important to discuss `VueAhead`'s `CSS` class hierarchy, as shown below:
 
 * `vue_ahead__control_container [class]`
@@ -412,9 +413,11 @@ In this structure, `control_container` controls the out-most geometry of the who
 `vue_ahead__dropdown_wrapper` controls the wrapping div over the dropdown menu, and it's usually used to control the positioning and look of the dropdown menu. An extra class with the value set in the `customClassNames.dropdown` field will be added as an additional class, such that control users can take charge of the dropdown menu styling. 
 
 `vue_ahead__dropdown_container` is where the actual contents are held in the dropdown menu, and it controls the inner content menu's height, width, etc.
+
 :::
 
-:::tip
+::: details Tips on customizing the control appearence
+
 With the knowledge of the `VueAhead`'s class hierarchy, it will be easy to override the default control styling.
 
 For example, for the `customClassNames` set to the following:
@@ -449,8 +452,21 @@ You can define the following selector rules to guarantee the styling overrides:
   /* override the `vue_ahead__dropdown_container` styles */
 }
 ```
+
 :::
 
 ::: warning
 Due to `CSS` selector rules, the class definitions should **_NOT_** be scoped, otherwise they may not apply correctly to the corresponding control elements.
 :::
+
+
+## Example 5: With Bootstrap 4 Theme, Grouped, and Createable
+
+<vh5></vh5>
+
+* Features enabled in this example:
+
+  1. a classic Boostrap 4 form, with a generic input, a Vue-Ahead input control, and a text block
+  2. users can choose to create new items, which does not exist in the provided options array
+  3. options are grouped
+

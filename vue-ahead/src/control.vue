@@ -14,6 +14,7 @@
 		:placeholder="placeholder"
 		:selection="selection.items"
 		:singleSelRenderer="singleSelRenderer"
+		:theme="theme"
 		:value="value"
 		@dblclick="handleDbClick"
 		@change="handleInputChange"
@@ -99,6 +100,7 @@ export default {
 			type: Object,
 			default: null,
 		},
+		theme: String,
 	},
 	data() {
 		if (this.remote && (!this.remote.settings && !this.remote.proxy)) {
