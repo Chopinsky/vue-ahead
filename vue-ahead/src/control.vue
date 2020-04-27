@@ -594,7 +594,10 @@ export default {
 			let last = null;
 
 			if (!this.isMulti) {
-				last = items[0]["type"] === "created" ? items[0] : items[0]["src"];
+				if (items && items.length > 0) {
+					last = items[0]["type"] === "created" ? items[0] : items[0]["src"];
+				}
+				
 				items = [];
 				indices = {};
 			}
