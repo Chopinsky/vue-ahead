@@ -336,6 +336,8 @@ export default {
 			};
 		},
 		clear: function () {
+			const oldItems = this.selection.items;
+
 			this.selection = {
 				items: [],
 				indices: {},
@@ -354,8 +356,19 @@ export default {
 					this.options = this.getOptions();
 				}
 			}
+			
+			if (oldItems && oldItems.length > 0) {
+				this.$emit("selection", {
+					type: "clear",
+					items: [],
+					removed: oldItems.map(item => {
+						return item["type"] === "created" ? item : item["src"]
+					}),
+				});
+			}
 		},
 		reset: function () {
+			const oldItems = this.selection.items;
 			const { options, selection, groups } = this.init();
 
 			this.value = '';
@@ -363,6 +376,16 @@ export default {
 			this.options = options;
 			this.groups = groups;
 			this.selection = selection;
+			
+			if (oldItems && oldItems.length > 0) {
+				this.$emit("selection", {
+					type: "clear",
+					items: [],
+					removed: oldItems.map(item => {
+						return item["type"] === "created" ? item : item["src"]
+					}),
+				});
+			}
 		},
 		isValueCreateable: function (value = '', options = []) {
 			if (value === '') {
@@ -568,8 +591,10 @@ export default {
 			}
 
 			let { items, indices } = this.selection;
+			let last = null;
 
 			if (!this.isMulti) {
+				last = items[0]["type"] === "created" ? items[0] : items[0]["src"];
 				items = [];
 				indices = {};
 			}
@@ -592,7 +617,10 @@ export default {
 
 			this.$emit("selection", {
 				type: "add",
-				items: this.selection.items.map(item => item["type"] === "created" ? item : item['src']),
+				items: this.selection.items.map(item => {
+					return item["type"] === "created" ? item : item["src"]
+				}),
+				replaced: last,
 				value: this.value,
 			});
 
@@ -638,8 +666,10 @@ export default {
 
 			this.$emit("selection", {
 				type: "remove",
-				items: this.selection.items.map(item => item["type"] === "created" ? item : item['src']),
-				deleted,
+				items: this.selection.items.map(item => {
+					return item["type"] === "created" ? item : item["src"]
+				}),
+				removed: [deleted],
 			});
 
 			// filter the options against the original list

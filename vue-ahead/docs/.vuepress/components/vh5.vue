@@ -21,7 +21,7 @@
       />
     </div>
 
-    <div class="container row">
+    <div class="row" style="padding: 5px 20px;">
       <h5>Text: the standard Lorem Ipsum passage, used since the 1500s</h5>
 
       <p>

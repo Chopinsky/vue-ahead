@@ -466,7 +466,27 @@ Due to `CSS` selector rules, the class definitions should **_NOT_** be scoped, o
 
 * Features enabled in this example:
 
-  1. a classic Boostrap 4 form, with a generic input, a Vue-Ahead input control, and a text block
+  1. a classic Boostrap 4 form, with a generic input, a Vue-Ahead input control, and a text block _(the Bootstap 3 / IASTATE theme will be compatible as well, we're using the BS-4 here for demonstration, since this version is compatible with the overall website styling)_.
   2. users can choose to create new items, which does not exist in the provided options array
   3. options are grouped
 
+::: details
+
+To enable the themed control, set the theme attribute (currently only supporting the `bootstrap` theme) to the control:
+
+```html{8}
+<div class="control form-group">
+  <label for="formGroupExampleInput">
+    A Vue-Ahead input control
+  </label>
+  <VueAhead
+    id="formGroupExampleInput"
+    placeholder="Select a createable color"
+    theme="bootstrap"
+    :createable="true"
+    :grouped="true"
+    :initOptions="colors"
+  />
+</div>
+```
+:::

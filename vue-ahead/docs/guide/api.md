@@ -468,7 +468,63 @@ export default {
 
 ## Public APIs and Events
 
-// TODO ...
+### Events
+
+The control will emit the `selection` event when user selections have changed, such as on the event of a user selection, or a removal of the existing selections. 
+
+The event will not be invoked on control initialization or reset, even if default selections are provided.
+
+Note that when operating in the `single-selection-mode`, selecting a new option from the dropdown menu will replace and remove the existing selection, if presented. In such occasions, only one single `selection` event is going to be raised. You can look at the `replaced` field of the event object for the previously selected item.
+
+The event will contain the following fields:
+
+* `type` _(String / Required)_ 
+
+  The type of the event, possible values can only be either `add`, `remove`, or `clear`. 
+
+  * `add` denotes to the transpiring of a user selection; 
+  
+  * `remove` denotes to the transpiring of a removal of one or all user selections; 
+  
+  * `clear` denotes to the transpiring of the selections being removed from the control, it can be triggered by user clearing the control, or the parent application calling the `clear` or `reset` methods while there are existing selected items (regardless of they're default selections or user selections). Note that not all `clear` or `reset` will fire the `selection` event -- it's only fired if there're selected items in the control
+
+* `items` _(Array / Required)_
+
+  The list of the currently selected items. If the control contains no selections (either from default selections or user selections), an empty array will be returned.
+
+* `replaced` _(Object / Optional)_
+
+  The item that has been replaced by a user selection. This field is only provided in the `add` type of events in `single-selection-mode`, and it's only populated if an existing item has been selected in the control prior to the event.
+
+* `value` _(String / Optional)_
+
+  The string user entered that leads the user selection. This field is only provided in the `add` type of events. The value can be different from the search terms used to filter or firing the search process, which use the trimmed and lower-cased version. 
+
+* `removed` _(Array / Optional)_
+	
+  The item that has been removed by a user removal. This field is only provided in the `clear` or `remove` type of events. 
+  
+  If provided in the `clear` event type, the array will contain all items currently selected by the control. The length will always be 1 if the control is operating under the `single-selection-mode`, and the length will be 1 or more under the `multi-selection-mode`. 
+
+  If provided in the `remove` event type, the array length will always be 1, and the control is operatining under the `multi-selection-mode`. 
+
+::: warning
+
+1. depending on the nature of the vent, __NOT__ all fields except `type` and `items` will be presented in the event object.
+
+2. If there are no selections made to the control, the `selection` event will not fire even if a `clear` or `reset` event has been invoked.
+
+:::
+
+### Public APIs
+
+Most of the methods listed on the control visible to the parent application are however private methods, which handle and maintain internal control states. You are not expected to invoke them directly. 
+
+The only exceptions are listed below:
+
+* `clear`: this method will clear user selections as well as the user entries to control's input field, if any. 
+
+* `reset`: this method will reset the control to its initial state, which could contain default selections if present. 
 
 ## Styles and Decorations
 
