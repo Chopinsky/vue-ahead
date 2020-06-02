@@ -1,24 +1,22 @@
 <template>
 <div class="vue_ahead__selection_container">
-  <div class="vue_ahead__selection_content" :title="title">
-		<component 
-			v-if="itemRenderer"
+	<div class="vue_ahead__selection_content" :title="title">
+		<span v-if="!itemRenderer">{{ text }}</span>
+		<component
+			v-else
 			:is="itemRenderer"
 			:item="item"
 			:display="display"
 			:defaultText="text"
 		/>
-    <div v-else>
-			{{ text }}
-		</div>
-  </div>
-  <ControlIcon
-    class="vue_ahead__selection_removal"
-    :title="'remove ' + title"
-    :path="iconPath"
-    @mousedown.native.stop="$emit('item-removal', $event)"
-    @keydown.stop="handleRemovalKeydown($event)"
-  />
+	</div>
+	<ControlIcon
+		class="vue_ahead__selection_removal"
+		:title="'remove ' + title"
+		:path="iconPath"
+		@mousedown.native.stop="$emit('item-removal', $event)"
+		@keydown.stop="handleRemovalKeydown($event)"
+	/>
 </div>
 </template>
 
@@ -72,7 +70,7 @@ export default {
 				this.$emit('item-removal', evt, key);
 				evt.preventDefault();
 			}
-      
+
 			if (this.index === 0 && keyCode === 9 && evt.shiftKey) {
 				this.$emit('special-key');
 			}
@@ -83,36 +81,36 @@ export default {
 
 <style>
 .vue_ahead__selection_container {
-  background-color: rgb(230, 230, 230);
-  display: flex;
-  min-width: 0px;
-  box-sizing: border-box;
-  border-radius: 2px;
-  margin: 2px;
+	background-color: rgb(230, 230, 230);
+	display: flex;
+	min-width: 0px;
+	box-sizing: border-box;
+	border-radius: 2px;
+	margin: 2px 3px 2px 1px;
 }
 
 .vue_ahead__selection_content {
-  color: rgb(51, 51, 51);
-  font-size: 85%;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  box-sizing: border-box;
-  overflow: hidden;
-  padding: 2px 2px 2px 4px;
+	color: rgb(51, 51, 51);
+	font-size: 80%;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	box-sizing: border-box;
+	overflow: hidden;
+	padding: 1px 2px 1px 4px;
 }
 
 .vue_ahead__selection_removal {
-  -webkit-box-align: center;
-  align-items: center;
-  cursor: pointer;
-  display: flex;
-  padding: 0 2px 2px 0;
-  box-sizing: border-box;
-  border-radius: 2px;
+	-webkit-box-align: center;
+	align-items: center;
+	cursor: pointer;
+	display: flex;
+	padding: 0 2px 2px 0;
+	box-sizing: border-box;
+	border-radius: 2px;
 }
 
 .vue_ahead__selection_removal:hover {
-  background-color: rgb(255, 189, 173);
-  color: rgb(222, 53, 11);
+	background-color: rgb(255, 189, 173);
+	color: rgb(222, 53, 11);
 }
 </style>

@@ -1,9 +1,9 @@
 <template>
 <div
 	ref="elem"
-  :class="className"
-  @mouseover.capture="$emit('mouseover', $event, index)"
-  @mousedown="$emit('mousedown', $event, index)"
+	:class="className"
+	@mouseover.capture="$emit('mouseover', $event, index)"
+	@mousedown="$emit('mousedown', $event, index)"
 >
 	<span v-if="created" :style="styles.prefix">Create: </span><span :style="styles.text">{{ content[0] }}</span><span v-if="content[1]" :style="styles.hl">{{ content[1] }}</span><span v-if="content[2]" :style="styles.text">{{ content[2] }}</span>
 </div>
@@ -93,18 +93,18 @@ export default {
 
 <style>
 .vue_ahead__menu_option {
-  background-color: transparent;
-  color: inherit;
-  cursor: default;
-  display: block;
-  font-size: inherit;
-  width: 100%;
-  user-select: none;
-  box-sizing: border-box;
-  padding: 6px 12px;
+	background-color: transparent;
+	color: inherit;
+	cursor: default;
+	display: block;
+	font-size: inherit;
+	width: 100%;
+	user-select: none;
+	box-sizing: border-box;
+	padding: 6px 12px;
 }
 
 .vue_ahead__menu_option.vue_ahead__menu_option_active {
-  background-color: rgb(222, 235, 255);
+	background-color: rgb(222, 235, 255);
 }
 </style>

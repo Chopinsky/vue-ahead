@@ -1,60 +1,60 @@
 <template>
 <div :class="className">
-  <div
-    v-if="shield"
-    :style="styles.shield"
-    @mousedown.capture.stop="$emit('shield-click', $event)"
-  >
-    <h5 v-show="shieldVisible" :style="styles.title">
-      Loading ...
-    </h5>
-  </div>
-  <div 
-    class="vue_ahead__dropdown_container"
-    ref="contentWrapper"
-  >
-    <div v-for="(item, idx) in options" :key="item.key">
-      <GroupLabel
-        v-if="groups && groups.hasOwnProperty(idx)"
-        :data="groups[idx]"
+	<div
+		v-if="shield"
+		:style="styles.shield"
+		@mousedown.capture.stop="$emit('shield-click', $event)"
+	>
+		<h5 v-show="shieldVisible" :style="styles.title">
+			Loading ...
+		</h5>
+	</div>
+	<div 
+		class="vue_ahead__dropdown_container"
+		ref="contentWrapper"
+	>
+		<div v-for="(item, idx) in options" :key="item.key">
+			<GroupLabel
+				v-if="groups && groups.hasOwnProperty(idx)"
+				:data="groups[idx]"
 				@mousedown.stop="handleLabelClicked"
-      />
-      <Item
-        v-if="!optionRenderer"
-        :active="activeIdx === idx"
+			/>
+			<Item
+				v-if="!optionRenderer"
+				:active="activeIdx === idx"
 				:class="(customClassNames && customClassNames.activeItem) || ''"
 				:created="item['type'] === 'created'"
 				:highlightSource="highlightSource"
-        :item="getMenuItem(item)"
-        :index="idx"
-        @mouseover="handleMouseOver"
-        @mousedown.stop="$emit('item-selection', $event, item.key)"
-        @item-activated="handleItemActivated"
-      />
-      <div 
-        v-else
+				:item="getMenuItem(item)"
+				:index="idx"
+				@mouseover="handleMouseOver"
+				@mousedown.stop="$emit('item-selection', $event, item.key)"
+				@item-activated="handleItemActivated"
+			/>
+			<div 
+				v-else
 				:class="(customClassNames && customClassNames.activeItem) || ''"
 				:created="item['type'] === 'created'"
-        :ref="'item_' + idx.toString()"
-        @mouseover="handleMouseOver($event, idx)"
-        @mousedown.stop="$emit('item-selection', $event, item.key)"
-      >
-        <component
+				:ref="'item_' + idx.toString()"
+				@mouseover="handleMouseOver($event, idx)"
+				@mousedown.stop="$emit('item-selection', $event, item.key)"
+			>
+				<component
 					:is="optionRenderer"
-          :active="activeIdx === idx"
+					:active="activeIdx === idx"
 					:highlightSource="highlightSource"
-          :item="getMenuItem(item)"
-          :index="idx"
-        />
-      </div>
-    </div>
-    <div
-      v-if="!options || options.length === 0"
-      class="vue_ahead__dropdown_empty_options"
-    >
-      {{ emptyText }}
-    </div>
-  </div>
+					:item="getMenuItem(item)"
+					:index="idx"
+				/>
+			</div>
+		</div>
+		<div
+			v-if="!options || options.length === 0"
+			class="vue_ahead__dropdown_empty_options"
+		>
+			{{ emptyText }}
+		</div>
+	</div>
 </div>
 </template>
 
@@ -64,7 +64,7 @@ import GroupLabel from './dropdownLabel.vue';
 
 const shieldStyle = {
 	position: 'absolute',
-	display:  'default',
+	display: 'default',
 	top: 0,
 	left: 0,
 	width: '100%',
@@ -194,14 +194,20 @@ export default {
 			}
 
 			const wrapper = this.$refs.contentWrapper;
-			const { height } = wrapper.getBoundingClientRect();
-			const { scrollTop } = wrapper;
+			// const { height } = wrapper.getBoundingClientRect();
+			const { scrollTop, clientHeight } = wrapper;
 
 			let target = scrollTop;
 
-			if (offsetTop > scrollTop + height - offsetHeight && this._manualMove === 'down') {
+			if (
+				offsetTop + offsetHeight > scrollTop + clientHeight // height
+				&& this._manualMove === 'down'
+			) {
 				target = scrollTop + offsetHeight;
-			} else if (offsetTop < scrollTop + 5 && this._manualMove === 'up') {
+			} else if (
+				offsetTop < scrollTop + 5 
+				&& this._manualMove === 'up'
+			) {
 				target = scrollTop - offsetHeight;
 			}
 
@@ -211,11 +217,10 @@ export default {
 				}
 				
 				if (this._moveDelay > 0) {
-					this._moveDebounceId = 
-						setTimeout(() => wrapper.scrollTo(0, target), this._moveDelay);			
+					this._moveDebounceId = setTimeout(() => wrapper.scrollTo(0, target), this._moveDelay);
 				} else {
 					wrapper.scrollTo(0, target);
-				}				
+				}
 			}
 
 			this._manualMove = '';
@@ -229,7 +234,7 @@ export default {
 			} else {
 				this.activeIdx = this.options.length - 1;
 			}
-      
+			
 			if (this.activeIdx < 0) {
 				this.activeIdx = 0;
 			}
@@ -264,7 +269,7 @@ export default {
 				this.$refs.contentWrapper.scrollTo(0, 0);
 			} else if (this.activeIdx >= this.options.length) {
 				this.activeIdx = this.options.length - 1;
-			}      
+			}
 		},
 		shield: function () {
 			if (this.shield) {
@@ -276,7 +281,7 @@ export default {
 					this.shieldVisible = true;
 					this.styles.shield['opacity'] = 0.7;
 					this.styles.shield['backgroundColor'] = '#F5F5F5';
-				}, 200);				
+				}, 200);
 			} else {
 				clearTimeout(this._debounceId);
 				this._debounceId = null;
@@ -292,37 +297,37 @@ export default {
 
 <style>
 .vue_ahead__dropdown_wrapper {
-  top: 100%;
-  background-color: rgb(255, 255, 255);
-  box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 0px 1px, rgba(0, 0, 0, 0.1) 0px 4px 11px;
-  margin: 8px 0;
-  position: absolute;
-  width: 100%;
-  z-index: 1000;
-  box-sizing: border-box;
-  border-radius: 2px;
-  animation: vue_ahead__menu_appear 50ms;
+	top: 100%;
+	background-color: rgb(255, 255, 255);
+	box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 0px 1px, rgba(0, 0, 0, 0.1) 0px 4px 11px;
+	margin: 8px 0;
+	position: absolute;
+	width: 100%;
+	z-index: 1000;
+	box-sizing: border-box;
+	border-radius: 2px;
+	animation: vue_ahead__menu_appear 50ms;
 }
 
 @keyframes vue_ahead__menu_appear {
-  from { opacity: 0; }
-  to   { opacity: 1; }
+	from { opacity: 0; }
+	to   { opacity: 1; }
 }
 
 .vue_ahead__dropdown_container {
-  max-height: 300px;
-  overflow-y: auto;
-  padding: 6px 0;
-  position: relative;
-  box-sizing: border-box;
-  text-align: start;
+	max-height: 300px;
+	overflow-y: auto;
+	padding: 6px 0;
+	position: relative;
+	box-sizing: border-box;
+	text-align: start;
 }
 
 .vue_ahead__dropdown_empty_options {
-  color: rgb(153, 153, 153);
-  cursor: default;
-  text-align: center;
-  box-sizing: border-box;
-  padding: 6px 12px;
+	color: rgb(153, 153, 153);
+	cursor: default;
+	text-align: center;
+	box-sizing: border-box;
+	padding: 6px 12px;
 }
 </style>

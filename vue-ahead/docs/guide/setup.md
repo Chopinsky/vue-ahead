@@ -8,7 +8,7 @@ title: Library Setup
 
 The easiest way of using the `VueAhead` auto-complete control in your application is to add and install the package via package managers, e.g. `npm` or `yarn`.
   
-At your project root where `package.json` file is loacted, run the command below to install and activate the package:
+At your project root where `package.json` file is located, run the command below to install and activate the package:
 
 ```javascript
 // if use `yarn`

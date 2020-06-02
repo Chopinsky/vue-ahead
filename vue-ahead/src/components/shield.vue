@@ -1,8 +1,8 @@
 <template>
 <div
-  class="vue_ahead__control_input_shield" 
-  :style="style"
-  @mousedown="$emit('mousedown', $event)"
+	class="vue_ahead__control_input_shield" 
+	:style="style"
+	@mousedown="$emit('mousedown', $event)"
 >  
 </div>
 </template>

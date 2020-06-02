@@ -460,15 +460,17 @@ Due to `CSS` selector rules, the class definitions should **_NOT_** be scoped, o
 :::
 
 
-## Example 5: With Bootstrap 4 Theme, Grouped, and Createable
+## Example 5: With Bootstrap 4 Themes, Grouped, and Creatable
 
 <vh5></vh5>
 
 * Features enabled in this example:
 
-  1. a classic Boostrap 4 form, with a generic input, a Vue-Ahead input control, and a text block _(the Bootstap 3 / IASTATE theme will be compatible as well, we're using the BS-4 here for demonstration, since this version is compatible with the overall website styling)_.
+  1. a classic Bootstrap 4 form, with a generic input, a Vue-Ahead input control, and a text block _(the Bootstrap 3 / IASTATE theme will be compatible as well, we're using the BS-4 here for demonstration, since this version is compatible with the overall website styling)_.
   2. users can choose to create new items, which does not exist in the provided options array
   3. options are grouped
+  4. use callback to enforce "single" option selection
+  5. use item specific class to decorate selected item display
 
 ::: details
 

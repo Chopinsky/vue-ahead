@@ -46,7 +46,7 @@ For more related information, see the official documentation for [`Prop Casing`]
 
   * `input`: the name string of the class which shall apply or override the default input container div.
 
-  * `active`: the name string of the class which shall apply or override the default input contaioner div when it's focused. 
+  * `active`: the name string of the class which shall apply or override the default input container div when it's focused. 
 
   * `dropdown`: the name string of the class which shall apply or override the default dropdown menu container.
 
@@ -122,7 +122,7 @@ For more related information, see the official documentation for [`Prop Casing`]
 
 ### `highlight` _(Boolean)_
 
-  This attribute controls if we shall display extra highlights on the option items matching the search terms. The default matching behavior will bolden the portion of the string that matches the search term, and give this portion of the string an underline. 
+  This attribute controls if we shall display extra highlights on the option items matching the search terms. The default matching behavior will bolded the portion of the string that matches the search term, and give this portion of the string an underline. 
 
 ### `initOptions` _(Array)_
 
@@ -177,7 +177,7 @@ For more related information, see the official documentation for [`Prop Casing`]
 
 ### `initSelections` _(Array)_
 
-  This attribute defines the default options that will be selected when rendering for the first time, or reseting the control. 
+  This attribute defines the default options that will be selected when rendering for the first time, or resetting the control. 
   
   It expects an array of strings representing the `key` of the items that shall be selected by default before any searches are run. If such string matches an option item with the same value in its `key` field, the item will be used as the default selection in the control. 
 
@@ -201,7 +201,7 @@ For more related information, see the official documentation for [`Prop Casing`]
 
   The component shall take (at least) the following `props`, which may drive the behavior of the item display or rendering result:
 
-  * `defaultText` _(String)_ -- this is the default text content that will be displayed in the multi-seleciton items if the `multiSelRenderer` is not set. Note that this text is post-formatted with the `display` functoin, if it's made available to the control.
+  * `defaultText` _(String)_ -- this is the default text content that will be displayed in the multi-selection items if the `multiSelRenderer` is not set. Note that this text is post-formatted with the `display` function, if it's made available to the control.
 
   * `display` _(Function)_ -- this is the same `display` function passed to the control in the `display` attribute, and it should be used to format the display string if desired.
 
@@ -236,7 +236,7 @@ For more related information, see the official documentation for [`Prop Casing`]
 
   * `active` _(Boolean)_ -- if this item is activated, _i.e._ when the item has been hovered upon, or when the selection cursor has moved to this item.
 
-  * `highlightSource` _(String)_ -- if the `highlight` attribute is set to true, this property will contain the search string the user has entried. The component can decide if they want to use the information to render the component differently (or not).
+  * `highlightSource` _(String)_ -- if the `highlight` attribute is set to true, this property will contain the search string the user entered. The component can decide if they want to use the information to render the component differently (or not).
 
   * `item` _(Object)_ -- the original item object passed on to the control. It will be the same object from the `initOptions` array or from the remote resource. 
 
@@ -277,7 +277,7 @@ For more related information, see the official documentation for [`Prop Casing`]
 
   If your component only need to fetch the search options once, and then run all the searches against this static array of options, you should **NOT** use the `remote` object. 
 
-  Instead, fetch the options data from the remote resources as the application launches, and then provide the data to the `initOptions` attribute.
+  Instead, fetch the options' data from the remote resources as the application launches, and then provide the data to the `initOptions` attribute.
 
   :::
 
@@ -285,7 +285,7 @@ For more related information, see the official documentation for [`Prop Casing`]
 
   * `settings` _(Object/Required)_
 
-    The remote protocal settings for the AJAX communication with the remote server/resource; since the control use the `axios` module for the remote communications, this object shall contain the same configurations and hooks as accepted by the `axios` module. 
+    The remote protocol settings for the AJAX communication with the remote server/resource; since the control use the `axios` module for the remote communications, this object shall contain the same configurations and hooks as accepted by the `axios` module. 
   
     Please see the [full list](https://github.com/axios/axios#request-config) of the possible configurations and hooks. The `settings` object shall contain at least the `method` and `url` fields, which points to the remote endpoint that's expecting the search query from the control.
     
@@ -486,7 +486,7 @@ The event will contain the following fields:
   
   * `remove` denotes to the transpiring of a removal of one or all user selections; 
   
-  * `clear` denotes to the transpiring of the selections being removed from the control, it can be triggered by user clearing the control, or the parent application calling the `clear` or `reset` methods while there are existing selected items (regardless of they're default selections or user selections). Note that not all `clear` or `reset` will fire the `selection` event -- it's only fired if there're selected items in the control
+  * `clear` denotes to the transpiring of the selections being removed from the control, it can be triggered by user clearing the control, or the parent application calling the `clear` or `reset` methods while there are existing selected items (regardless they are default selections or user selections). Note that not all `clear` or `reset` will fire the `selection` event -- it's only fired if there're selected items in the control.
 
 * `items` _(Array / Required)_
 
@@ -506,7 +506,7 @@ The event will contain the following fields:
   
   If provided in the `clear` event type, the array will contain all items currently selected by the control. The length will always be 1 if the control is operating under the `single-selection-mode`, and the length will be 1 or more under the `multi-selection-mode`. 
 
-  If provided in the `remove` event type, the array length will always be 1, and the control is operatining under the `multi-selection-mode`. 
+  If provided in the `remove` event type, the array length will always be 1, and the control is operating under the `multi-selection-mode`. 
 
 ::: warning
 

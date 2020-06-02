@@ -335,7 +335,40 @@ export default {
 				}
 			};
 		},
-		clear: function () {
+		notify: function (content) {
+			if (!content) {
+				return;
+			}
+
+			this.$emit("selection", content, this.updateSelections);
+		},
+		updateSelections: function (selections) {			
+			if (!Array.isArray(selections) || !selections.length) {
+				throw new Error(
+					"illegal action on updating selections: wanted an array, find:",
+					selections
+				);
+			}
+
+			if (!this.isMulti && selections.length > 1) {
+				selections = [selections[0]];
+			}
+
+			let indices = {};
+			for (let i = 0; i < selections.length; i++) {
+				indices[selections[i].key] = null;
+			}
+
+			this.selection = {
+				items: selections,
+				indices,
+			};
+
+			// set the reason
+			this.reason = 1;
+			this.options = this.getOptions();
+		},
+		clear: function (force) {
 			const oldItems = this.selection.items;
 
 			this.selection = {
@@ -349,21 +382,19 @@ export default {
 			if (!this.remote) {
 				this.options = this.getOptions();
 			} else {
-				if (typeof this.remote.prefetch === 'function') {
+				if (typeof this.remote.prefetch === "function") {
 					this.runPrefetcher(this.remote.prefetch);
 				} else {
 					this.source = [];
 					this.options = this.getOptions();
 				}
 			}
-			
-			if (oldItems && oldItems.length > 0) {
-				this.$emit("selection", {
+
+			if (!force && oldItems && oldItems.length > 0) {
+				this.notify({
 					type: "clear",
 					items: [],
-					removed: oldItems.map(item => {
-						return item["type"] === "created" ? item : item["src"]
-					}),
+					removed: oldItems.map(item => item),
 				});
 			}
 		},
@@ -376,14 +407,12 @@ export default {
 			this.options = options;
 			this.groups = groups;
 			this.selection = selection;
-			
+
 			if (oldItems && oldItems.length > 0) {
-				this.$emit("selection", {
+				this.notify({
 					type: "clear",
 					items: [],
-					removed: oldItems.map(item => {
-						return item["type"] === "created" ? item : item["src"]
-					}),
+					removed: oldItems.map(item => item),
 				});
 			}
 		},
@@ -419,8 +448,8 @@ export default {
 			return true;
 		},
 		runPrefetcher: function (prefetcher, keepSelections) {
-			/* 
-			 * The prefetcher is used to fetch default menu options, it should 
+			/*
+			 * The prefetcher is used to fetch default menu options, it should
 			 * not need interaction with the `createable` features.
 			 */
 			prefetcher((data, selections = []) => {
@@ -472,25 +501,19 @@ export default {
 
 			// console.log('control get focus ... ', this.focusStatus, targetType);
 		},
-		handleShieldClick: function (_evt) {
+		handleShieldClick: function () {
 			// move the cursor back to the input field
 			this.focusStatus = focusStatus.Shield;
 			this.focusInput();
-
-			// console.log("shield clicked ... ", evt);
 		},
-		handleDbClick: function (_evt) {
-			// console.log('double click');
-
+		handleDbClick: function () {
 			setTimeout(() => {
 				this.$refs.inputControl.select();
 			}, 0);
 		},
-		handleInputClick: function (_evt) {
+		handleInputClick: function () {
 			this.focusStatus = focusStatus.Container;
 			this.focusInput();
-
-			// console.log('input clicked ...', evt);
 		},
 		handleIconEvent: function (evt, type) {
 			// handle icon's click event, this event will NOT be bubbled up and thus
@@ -516,8 +539,6 @@ export default {
 			this.focusInput(type === "dropdown" ? this.open : null);
 		},
 		handleInputBlur: function (evt, force) {
-			// console.log('blur?', this.focusStatus);
-
 			if (this.focusStatus <= focusStatus.Icon || force) {
 				this.focusStatus = focusStatus.Pending;
 
@@ -567,9 +588,10 @@ export default {
 							key += randomSuffix();
 						}
 
-						source.push({ 
-							label: value, 
+						source.push({
+							label: value,
 							key,
+							src: { label: value, class: "vue_ahead__created_item" },
 							group: "new",
 							type: "created",
 						});
@@ -584,8 +606,6 @@ export default {
 			}, debounceTimeout);
 		},
 		handleItemSelection: function (evt, key) {
-			// console.log('item selection ...', key, this.selection.indices);
-
 			if (hasProperty(this.selection.indices, key)) {
 				return;
 			}
@@ -597,7 +617,7 @@ export default {
 				if (items && items.length > 0) {
 					last = items[0]["type"] === "created" ? items[0] : items[0]["src"];
 				}
-				
+
 				items = [];
 				indices = {};
 			}
@@ -618,11 +638,9 @@ export default {
 				indices,
 			};
 
-			this.$emit("selection", {
+			this.notify({
 				type: "add",
-				items: this.selection.items.map(item => {
-					return item["type"] === "created" ? item : item["src"]
-				}),
+				items: this.selection.items.map(item => item),
 				replaced: last,
 				value: this.value,
 			});
@@ -635,7 +653,7 @@ export default {
 			this.reason = 1;
 			this.options = this.getOptions();
 
-			// console.log(key, this.selection.items, this.selection.indices);
+			// console.log('item selection', key, this.selection.items, this.selection.indices);
 
 			this.focusStatus = focusStatus.Dropdown;
 			this.focusInput();
@@ -667,11 +685,9 @@ export default {
 				indices,
 			};
 
-			this.$emit("selection", {
+			this.notify({
 				type: "remove",
-				items: this.selection.items.map(item => {
-					return item["type"] === "created" ? item : item["src"]
-				}),
+				items: this.selection.items.map(item => item),
 				removed: [deleted],
 			});
 
@@ -753,6 +769,6 @@ export default {
 <style>
 .vue_ahead__control_container {
 	position: relative;
-  box-sizing: border-box;
+	box-sizing: border-box;
 }
 </style>

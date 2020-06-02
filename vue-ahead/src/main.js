@@ -2,9 +2,13 @@ import VueAhead from './control.vue';
 
 // Declare install function executed by Vue.use()
 const install = function (Vue) {
-	if (install.installed) return;
+	if (install.installed) {
+		return;
+	}
+
 	install.installed = true;
-	Vue.component('VueAhead', VueAhead);
+
+	Vue.component('vue-ahead', VueAhead);
 };
 
 // Create module definition for Vue.use()
