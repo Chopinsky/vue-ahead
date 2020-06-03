@@ -3,11 +3,11 @@ import axios from "axios";
 
 export default class NativeEngine {
 	constructor(props) {
-		if (!axios && !props.proxy) {
+		if (props && props.remote && !axios && !props.remote.proxy) {
 			throw new Error("expecting `axios` module or a proxy settings to be provided before the control, found none ... ");
 		}
 
-		if (props.proxy && typeof props.proxy !== 'function') {
+		if (props && props.remote && props.remote.proxy && typeof props.remote.proxy !== 'function') {
 			throw new Error("expecting `remote`'s proxy to be a function returning a Promise, but found wrong primitive type ... ");
 		}
 
@@ -61,8 +61,8 @@ export default class NativeEngine {
 
 			return cb(data, val);
 		}
-    
-		// remote search 
+
+		// remote search
 		if (this._props.remote) {
 			const {
 				dataParser,
@@ -170,7 +170,7 @@ export default class NativeEngine {
 		if (typeof matchEval !== 'function') {
 			matchEval = null;
 		}
-    
+
 		return this._store.filter(
 			item => {
 				if (matchEval) {

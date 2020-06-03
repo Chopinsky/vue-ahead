@@ -5,18 +5,28 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>HTML Example</title>
 
-  <script src="./library/vue.min.js"></script>
-  
+  <script src="lib/vue.min.js"></script>
+
   <!-- Will need to import the `axios` library if using the `remote` feature -->
-  <!-- <script src="./library/axios.min.js"></script> -->
-  
-  <script src="./library/vue-ahead.min.js"></script>
+  <!-- <script src="lib/axios.min.js"></script> -->
+
+  <script src="lib/vue-ahead.min.js"></script>
+
+  <style>
+    #control {
+      width: 400px;
+      margin: 40px auto;
+      text-align: center;
+    }
+  </style>
 
 </head>
 <body>
 
 <div id="control">
-  <vue-ahead 
+  <h2>Vue-Ahead HTML Example</h2>
+
+  <vue-ahead
     :placeholder="placeholder"
     :init-options="food"
     @selection="handleSelection"

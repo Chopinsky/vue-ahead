@@ -1744,11 +1744,11 @@
 	var common_3 = common.randomSuffix;
 
 	var NativeEngine = function NativeEngine(props) {
-		if (!axios && !props.proxy) {
+		if (props && props.remote && !axios && !props.remote.proxy) {
 			throw new Error("expecting `axios` module or a proxy settings to be provided before the control, found none ... ");
 		}
 
-		if (props.proxy && typeof props.proxy !== 'function') {
+		if (props && props.remote && props.remote.proxy && typeof props.remote.proxy !== 'function') {
 			throw new Error("expecting `remote`'s proxy to be a function returning a Promise, but found wrong primitive type ... ");
 		}
 
@@ -1807,8 +1807,8 @@
 
 			return cb(data$1, val);
 		}
-	    
-		// remote search 
+
+		// remote search
 		if (this._props.remote) {
 			var ref = this._props.remote;
 				var dataParser = ref.dataParser;
@@ -1916,7 +1916,7 @@
 		if (typeof matchEval !== 'function') {
 			matchEval = null;
 		}
-	    
+
 		return this._store.filter(
 			function (item) {
 				if (matchEval) {
