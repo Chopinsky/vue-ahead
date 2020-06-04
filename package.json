@@ -4,8 +4,6 @@
   "description": "a collection of the auto-complete libraries implemented for VueJS and React, specifically.",
   "main": "./vue-ahead/dist/vue-ahead.umd.js",
   "private": true,
-  "scripts": {
-  },
   "keywords": [
     "react",
     "vue",
@@ -14,6 +12,5 @@
     "UI",
     "engine"
   ],
-  "author": "Jacob Zuo <zuo@iastate.edu>",
-  "license": "GPL-3.0-or-later"
+  "author": "Jacob Zuo <zuo@iastate.edu>"
 }
