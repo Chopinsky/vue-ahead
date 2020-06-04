@@ -4,6 +4,11 @@
   "license": "MIT",
   "description": "An un-boring auto-complete control for VueJS",
   "main": "./dist/vue-ahead.umd.js",
+  "unpkg": "./dist/vue-ahead.min.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Chopinsky/vue-ahead.git"
+  },
   "scripts": {
     "start": "vue-cli-service serve",
     "build": "vue-cli-service build --target lib --name vue-ahead src/main.js && rm ./dist/demo.html",
