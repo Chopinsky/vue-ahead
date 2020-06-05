@@ -9,7 +9,7 @@
 			Loading ...
 		</h5>
 	</div>
-	<div 
+	<div
 		class="vue_ahead__dropdown_container"
 		ref="contentWrapper"
 	>
@@ -31,7 +31,7 @@
 				@mousedown.stop="$emit('item-selection', $event, item.key)"
 				@item-activated="handleItemActivated"
 			/>
-			<div 
+			<div
 				v-else
 				:class="(customClassNames && customClassNames.activeItem) || ''"
 				:created="item['type'] === 'created'"
@@ -71,7 +71,7 @@ const shieldStyle = {
 	height: '100%',
 	textAlign: 'center',
 	justifyContent: 'center',
-	zIndex: 1000000,
+	zIndex: 65535,
 	backgroundColor: 'transparent',
 	userSelect: 'none',
 };
@@ -101,7 +101,10 @@ export default {
 			type: Array,
 			default: new Array(),
 		},
-		reason: Number,  // 0 -- new results; 1 -- selection/removal;
+		// Enum:
+		// 0 -- new results;
+		// 1 -- selection/removal;
+		reason: Number,
 		shield: Boolean,
 	},
 	components: {
@@ -137,12 +140,12 @@ export default {
 		getEmptyText: function () {
 			if (this.isRemoteInit) {
 				return "Type to search";
-			} 
+			}
 
 			if (this.createable) {
 				return "No option and unable to create";
 			}
-			
+
 			return "No option";
 		},
 		getMenuItem: function (item) {
@@ -205,7 +208,7 @@ export default {
 			) {
 				target = scrollTop + offsetHeight;
 			} else if (
-				offsetTop < scrollTop + 5 
+				offsetTop < scrollTop + 5
 				&& this._manualMove === 'up'
 			) {
 				target = scrollTop - offsetHeight;
@@ -215,7 +218,7 @@ export default {
 				if (this._moveDebounceId) {
 					clearTimeout(this._moveDebounceId);
 				}
-				
+
 				if (this._moveDelay > 0) {
 					this._moveDebounceId = setTimeout(() => wrapper.scrollTo(0, target), this._moveDelay);
 				} else {
@@ -230,11 +233,11 @@ export default {
 			// console.log('mouse over:', idx);
 
 			if (idx < this.options.length) {
-				this.activeIdx = idx;        
+				this.activeIdx = idx;
 			} else {
 				this.activeIdx = this.options.length - 1;
 			}
-			
+
 			if (this.activeIdx < 0) {
 				this.activeIdx = 0;
 			}
@@ -260,8 +263,12 @@ export default {
 		className: function () {
 			this.className = this.getClassName();
 		},
-		isRemoteInit: function () {
-			this.emptyText = this.getEmptyText();
+		isRemoteInit: function (val) {
+			if (val) {
+				// only update the empty text here when resetting to the remote init
+				// the search results will be updated when the shield is down.
+				this.emptyText = this.getEmptyText();
+			}
 		},
 		options: function () {
 			if (this.reason === 0) {
@@ -279,16 +286,21 @@ export default {
 
 				this._debounceId = setTimeout(() => {
 					this.shieldVisible = true;
-					this.styles.shield['opacity'] = 0.7;
+					this.styles.shield['opacity'] = 0.75;
+					this.styles.shield['backdrop-filter'] = 'blur(3px)';
 					this.styles.shield['backgroundColor'] = '#F5F5F5';
-				}, 200);
+				}, 300);
 			} else {
 				clearTimeout(this._debounceId);
 				this._debounceId = null;
 
 				this.shieldVisible = false;
 				this.styles.shield['opacity'] = 1;
+				this.styles.shield['backdrop-filter'] = '';
 				this.styles.shield['backgroundColor'] = 'transparent';
+
+				// the shield is done and the results are out, update the empty text
+				this.emptyText = this.getEmptyText();
 			}
 		}
 	}

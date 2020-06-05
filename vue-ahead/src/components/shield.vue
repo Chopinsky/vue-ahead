@@ -1,9 +1,9 @@
 <template>
 <div
-	class="vue_ahead__control_input_shield" 
+	class="vue_ahead__control_input_shield"
 	:style="style"
 	@mousedown="$emit('mousedown', $event)"
->  
+>
 </div>
 </template>
 
@@ -45,5 +45,4 @@ export default {
 	left: 0;
 	z-index: 100000;
 }
-
 </style>

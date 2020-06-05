@@ -19,13 +19,13 @@ title: Examples
 ```javascript
 data: {
   colors: [
-    // the `group` field tells the control to put the option under the 
+    // the `group` field tells the control to put the option under the
     // specific group label in the dropdown menu
     { label: 'White',  group: "group a" },
-    // the `key` field denotes to a specific key for initSelection; when 
-    // the `group` field is omitted for a grouped control, the option 
+    // the `key` field denotes to a specific key for initSelection; when
+    // the `group` field is omitted for a grouped control, the option
     // will be sent to the `default` group
-    { label: 'Blue',   key: "dflt" },  
+    { label: 'Blue',   key: "dflt" },
     { label: 'Green',  group: "group b" },
     { label: 'Gray',   group: "group a" },
     { label: 'Black',  group: "group b" },
@@ -44,7 +44,7 @@ data: {
   :grouped="true"
   // use `this.colors` as the default dropdown options
   :initOptions="colors"
-  // select the option with default key of `dflt`, if the control is set 
+  // select the option with default key of `dflt`, if the control is set
   // to allow multiple-selections, provide the full list of the options
   // with keys of each in the array.
   :initSelections="['dflt']"
@@ -61,7 +61,7 @@ data: {
 * Features enabled in this example:
 
   1. matching items show extra highlights
-  2. enabling multiple selections (i.e. more than 1 items can be now selected) 
+  2. enabling multiple selections (i.e. more than 1 items can be now selected)
   3. selecting the majors 'Physics' and 'Math' by default
 
 
@@ -72,10 +72,10 @@ data: {
 data: {
   majors: [
     { label: 'Science' },
-    // the `key` field denotes to a specific key for  
+    // the `key` field denotes to a specific key for
     // the item defined in the `initSelection`
     { label: 'Physics', key: "phy" },
-    // the `key` field denotes to a specific key for 
+    // the `key` field denotes to a specific key for
     // the item defined in the `initSelection`
     { label: 'Math', key:"math" },
     { label: 'Technology' },
@@ -115,7 +115,7 @@ data: {
 ## Example 3: Search with a Remote Source, Custom Option Item Display
 
 ::: danger
-Disclaimer: this control queries a remote server *NOT* owned by IASTATE. 
+Disclaimer: this control queries a remote server *NOT* owned by the library.
 
 The control should only be used for demonstration purpose only, and used sparsely. Please limit your search frequency to at most 10 new searches per minute.
 
@@ -136,7 +136,7 @@ The control should only be used for demonstration purpose only, and used sparsel
 import CustomItem from '/path/to/the/component.vue';
 
 export default {
-  // definitions and settings ... 
+  // definitions and settings ...
   data: function () {
     const parser = function (data) {
       return data.map(item => {
@@ -151,7 +151,7 @@ export default {
       settings: {
         method: 'get',
         url: 'https://typeahead-js-twitter-api-proxy.herokuapp.com/demo/search',
-        timeout: 1000,      
+        timeout: 1000,
       },
       dataParser: parser,
     };
@@ -161,7 +161,7 @@ export default {
       item: CustomItem,
     }
   },
-  // more definitions and settings ... 
+  // more definitions and settings ...
 };
 ```
 
@@ -183,8 +183,8 @@ export default {
 
 <template>
 <div ref="elem" :class="className">
-  <img 
-    class="avatar" 
+  <img
+    class="avatar"
     :src="info && info.profile_image_url_https"
   />
   <div class="info">
@@ -216,7 +216,7 @@ export default {
 		getClassName: function () {
 			return this.active ? "menu_option menu_option_active" : "menu_option";
 		},
-	},  
+	},
 	watch: {
 		active: function () {
 			this.className = this.getClassName();
@@ -369,11 +369,11 @@ data: {
 .app_control_dropdown .vue_ahead__dropdown_container::-webkit-scrollbar {
   width: 1em;
 }
- 
+
 .app_control_dropdown .vue_ahead__dropdown_container::-webkit-scrollbar-track {
   box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
 }
- 
+
 .app_control_dropdown .vue_ahead__dropdown_container::-webkit-scrollbar-thumb {
   background-color: darkgrey;
   outline: 1px solid slategrey;
@@ -392,7 +392,7 @@ data: {
 ```
 :::
 
-::: details Control's `CSS` class hierarchy 
+::: details Control's `CSS` class hierarchy
 
 To understand how `CSS` overrides work for the control, it's important to discuss `VueAhead`'s `CSS` class hierarchy, as shown below:
 
@@ -402,7 +402,7 @@ To understand how `CSS` overrides work for the control, it's important to discus
     * `vue_ahead__icons_container` (_levels below omitted_)
   * `vue_ahead__dropdown_wrapper [customClassNames.dropdown]`
     * `vue_ahead__dropdown_container`
-      * `vue_ahead__menu_option vue_ahead__menu_option_active` or `vue_ahead__menu_option` 
+      * `vue_ahead__menu_option vue_ahead__menu_option_active` or `vue_ahead__menu_option`
 
 In this structure, `control_container` controls the out-most geometry of the whole control, such as the width, maximum height, padding, margins, etc. It will be compounded with the value set to the `class` attribute.
 
@@ -410,7 +410,7 @@ In this structure, `control_container` controls the out-most geometry of the who
 
 `vue_ahead__input_container` controls the looks and geometry of the real input field, where users type the search terms; and `icons_container` controls the  looks and geometry of the action icons (i.e. the `cancel all` and `dropdown` icons on the right side end of the input control).
 
-`vue_ahead__dropdown_wrapper` controls the wrapping div over the dropdown menu, and it's usually used to control the positioning and look of the dropdown menu. An extra class with the value set in the `customClassNames.dropdown` field will be added as an additional class, such that control users can take charge of the dropdown menu styling. 
+`vue_ahead__dropdown_wrapper` controls the wrapping div over the dropdown menu, and it's usually used to control the positioning and look of the dropdown menu. An extra class with the value set in the `customClassNames.dropdown` field will be added as an additional class, such that control users can take charge of the dropdown menu styling.
 
 `vue_ahead__dropdown_container` is where the actual contents are held in the dropdown menu, and it controls the inner content menu's height, width, etc.
 

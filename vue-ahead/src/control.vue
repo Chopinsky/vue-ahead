@@ -62,6 +62,7 @@ const focusStatus = {
 };
 
 const debounceTimeout = 120;
+const shieldTimeout = 10;
 
 export default {
 	inheritAttrs: false,
@@ -342,7 +343,7 @@ export default {
 
 			this.$emit("selection", content, this.updateSelections);
 		},
-		updateSelections: function (selections) {			
+		updateSelections: function (selections) {
 			if (!Array.isArray(selections) || !selections.length) {
 				throw new Error(
 					"illegal action on updating selections: wanted an array, find:",
@@ -484,9 +485,7 @@ export default {
 			}
 
 			if (up) {
-				this._shieldId = setTimeout(() => {
-					this.shield = true;
-				}, 10);
+				this._shieldId = setTimeout(() => this.shield = true, shieldTimeout);
 			} else {
 				this._shieldId = null;
 				this.shield = false;
