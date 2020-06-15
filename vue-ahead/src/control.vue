@@ -61,7 +61,8 @@ const focusStatus = {
 	Pending: -1,
 };
 
-const debounceTimeout = 120;
+const debounceShort = 20;
+const debounceLong = 100;
 const shieldTimeout = 10;
 
 export default {
@@ -566,6 +567,7 @@ export default {
 				clearTimeout(this._debounceId);
 			}
 
+			const timeout = this.remote ? debounceLong : debounceShort;
 			this._debounceId = setTimeout(() => {
 				this._engine.query(value, (data = []) => {
 					// console.log(data);
@@ -602,7 +604,7 @@ export default {
 					this.shieldAction(false);
 					this._debounceId = null;
 				});
-			}, debounceTimeout);
+			}, timeout);
 		},
 		handleItemSelection: function (evt, key) {
 			if (hasProperty(this.selection.indices, key)) {
