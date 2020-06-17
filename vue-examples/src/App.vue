@@ -95,7 +95,7 @@ const remote = {
 	settings: {
 		method: 'get',
 		url: 'https://typeahead-js-twitter-api-proxy.herokuapp.com/demo/search',
-		timeout: 1000,      
+		timeout: 1000,
 	},
 	dataParser: parser,
 	prefetch: prefetcher,
