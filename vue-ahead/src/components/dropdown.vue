@@ -10,7 +10,7 @@
 		</h5>
 	</div>
 	<div
-		class="vue_ahead__dropdown_container"
+		class="container"
 		ref="contentWrapper"
 	>
 		<div v-for="(item, idx) in options" :key="item.key">
@@ -50,7 +50,7 @@
 		</div>
 		<div
 			v-if="!options || options.length === 0"
-			class="vue_ahead__dropdown_empty_options"
+			class="empty_options"
 		>
 			{{ emptyText }}
 		</div>
@@ -129,7 +129,7 @@ export default {
 	},
 	methods: {
 		getClassName: function () {
-			let className = "vue_ahead__dropdown_wrapper";
+			let className = "wrapper";
 
 			if (this.customClassNames && this.customClassNames.dropdown) {
 				className += " " + this.customClassNames.dropdown;
@@ -307,8 +307,8 @@ export default {
 };
 </script>
 
-<style>
-.vue_ahead__dropdown_wrapper {
+<style scoped>
+.wrapper {
 	top: 100%;
 	background-color: rgb(255, 255, 255);
 	box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 0px 1px, rgba(0, 0, 0, 0.1) 0px 4px 11px;
@@ -318,15 +318,15 @@ export default {
 	z-index: 1000;
 	box-sizing: border-box;
 	border-radius: 2px;
-	animation: vue_ahead__menu_appear 50ms;
+	animation: appear 50ms;
 }
 
-@keyframes vue_ahead__menu_appear {
+@keyframes appear {
 	from { opacity: 0; }
 	to   { opacity: 1; }
 }
 
-.vue_ahead__dropdown_container {
+.container {
 	max-height: 300px;
 	overflow-y: auto;
 	padding: 6px 0;
@@ -335,7 +335,7 @@ export default {
 	text-align: start;
 }
 
-.vue_ahead__dropdown_empty_options {
+.empty_options {
 	color: rgb(153, 153, 153);
 	cursor: default;
 	text-align: center;
