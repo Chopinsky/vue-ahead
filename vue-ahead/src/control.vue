@@ -73,8 +73,6 @@ export default {
 		Input,
 		Dropdown,
 	},
-	beforeMount: function () {
-	},
 	beforeDestroy: function () {
 		//todo: send any remainder data to remote, if configured
 	},
